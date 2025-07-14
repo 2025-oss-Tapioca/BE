@@ -1,0 +1,58 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.5.3'
+	id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'com.tapioca'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(17)
+	}
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	// --- Security: 인증·인가 ---
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+
+	// --- Data: JPA + DB ---
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	runtimeOnly    'org.postgresql:postgresql'
+
+	// --- Web: REST API, MVC ---
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+
+	// --- Lombok: 코드 자동 생성 (컴파일 시점) ---
+	compileOnly     'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+
+	// --- Testing: 단위·통합 테스트 지원 ---
+	testImplementation     'org.springframework.boot:spring-boot-starter-test'
+	testRuntimeOnly        'org.junit.platform:junit-platform-launcher'
+
+	// Jakarta Validation API
+	implementation 'jakarta.validation:jakarta.validation-api:3.0.2'
+	// Hibernate Validator (Jakarta Validation 구현체)
+	implementation 'org.hibernate.validator:hibernate-validator:7.0.5.Final'
+
+	// JWT 토큰 생성/파싱용 라이브러리 (JJWT 0.11.5 기준)
+	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+	runtimeOnly     'io.jsonwebtoken:jjwt-impl:0.11.5'
+	runtimeOnly     'io.jsonwebtoken:jjwt-jackson:0.11.5'  // JSON 직렬화/역직렬화
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
