@@ -46,6 +46,11 @@ dependencies {
 	implementation 'jakarta.validation:jakarta.validation-api:3.0.2'
 	// Hibernate Validator (Jakarta Validation 구현체)
 	implementation 'org.hibernate.validator:hibernate-validator:7.0.5.Final'
+
+	// JWT 토큰 생성/파싱용 라이브러리 (JJWT 0.11.5 기준)
+	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+	runtimeOnly     'io.jsonwebtoken:jjwt-impl:0.11.5'
+	runtimeOnly     'io.jsonwebtoken:jjwt-jackson:0.11.5'  // JSON 직렬화/역직렬화
 }
 
 tasks.named('test') {
