@@ -23,20 +23,18 @@ import java.security.Key;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Slf4j
 @Component
 public class JwtTokenProvider {
     private final Key key;
-    private final CustomUserDetailsService customUserDetailsService;
 
     // application.yml에서 secret 값 가져와서 key에 저장
     public JwtTokenProvider(
-            @Value("${jwt.secret}") String secretKey,
-            CustomUserDetailsService customUserDetailsService
+            @Value("${jwt.secret}") String secretKey
     ) {
-        this.customUserDetailsService = customUserDetailsService;
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
@@ -54,8 +52,9 @@ public class JwtTokenProvider {
         // Access Token 생성
         Date accessTokenExpiresIn = new Date(now + 86400000);
         String accessToken = Jwts.builder()
-                .setSubject(authentication.getName())
-                .claim("userId", userDetails.getUserId())
+                .setSubject(userDetails.getUserId().toString())
+                .claim("loginId", userDetails.getLoginId())
+                .claim("password",userDetails.getPassword())
                 .claim("auth", authorities)
                 .setExpiration(accessTokenExpiresIn)
                 .signWith(key, SignatureAlgorithm.HS256)
@@ -87,8 +86,11 @@ public class JwtTokenProvider {
         Collection<? extends GrantedAuthority> authorities = Arrays.stream(claims.get("auth").toString().split(","))
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
-        String userId = claims.getSubject();
-        UserDetails userDetails = customUserDetailsService.loadUserByUsername(userId);
+
+        UUID userId = UUID.fromString(claims.getSubject());
+        String loginId = claims.get("loginId", String.class);
+        String password = claims.get("password",String.class);
+        UserDetails userDetails = new CustomUserDetails(userId,loginId,password,authorities);
 
         return new UsernamePasswordAuthenticationToken(userDetails, "", authorities);
     }
