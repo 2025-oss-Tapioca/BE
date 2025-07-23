@@ -29,8 +29,6 @@ public class UserMapper {
         );
     }
 
-
-
     public UserEntity toEntity(User user){
         return UserEntity.builder()
                 .id(user.getId())
