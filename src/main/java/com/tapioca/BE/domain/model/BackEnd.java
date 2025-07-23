@@ -15,4 +15,9 @@ public class BackEnd {
         this.os=os;
         this.env=env;
     }
+
+    public String getEc2Host() { return ec2Host; }
+    public String getAuthToken() { return authToken; }
+    public String getOs() { return os; }
+    public String getEnv() { return env; }
 }
