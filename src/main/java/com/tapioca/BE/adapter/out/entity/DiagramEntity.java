@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+
 @Entity
 @Getter
 @Builder
@@ -26,6 +27,7 @@ public class DiagramEntity {
     @JoinColumn(name="erd_id", nullable = false)
     private ErdEntity erd;
 
+    @OneToMany(mappedBy = "diagram", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @Builder.Default
     private List<AttributeEntity> attributes = new ArrayList<>();
 

@@ -7,8 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import static jakarta.persistence.CascadeType.ALL;
-
 @Entity
 @Getter
 @Builder
@@ -27,7 +25,7 @@ public class ErdEntity {
     @Column(name = "erd_name")
     private String name;
 
-    @OneToMany(mappedBy = "erd", cascade = ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "erd", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @Builder.Default
     private List<DiagramEntity> diagrams = new ArrayList<>();
 
