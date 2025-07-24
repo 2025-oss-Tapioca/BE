@@ -22,6 +22,10 @@ public class DiagramEntity {
     @Column(name = "diagram_name")
     private String name;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="erd_id", nullable = false)
+    private ErdEntity erd;
+
     @Builder.Default
     private List<AttributeEntity> attributes = new ArrayList<>();
 
