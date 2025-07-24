@@ -17,7 +17,7 @@ public class ServerController {
     public CommonResponseDto<?> serverRegister(
             @RequestBody RegisterRequestDto registerRequestDto
     ) {
-        // dto에서 return type 확인하기
-        return CommonResponseDto.ok(serverRegisterUseCase.register(registerRequestDto));
+        serverRegisterUseCase.register(registerRequestDto);
+        return CommonResponseDto.created(null);
     }
 }
