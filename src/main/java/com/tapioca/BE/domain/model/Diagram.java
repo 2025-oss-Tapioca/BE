@@ -27,6 +27,14 @@ public class Diagram {
         return List.copyOf(attributes);
     }
 
+    public static Diagram of(UUID id, String name, List<Attribute> attributes) {
+        Diagram diagram = new Diagram(id, name);
+        for (Attribute a : attributes) {
+            diagram.addAttribute(a);
+        }
+        return diagram;
+    }
+
     public void addAttribute(Attribute attribute) {
         attributes.add(attribute);
     }

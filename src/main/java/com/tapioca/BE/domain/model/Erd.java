@@ -29,4 +29,15 @@ public class Erd {
     public void removeDiagram(UUID diagramId) {
         diagrams.removeIf(d -> d.getId().equals(diagramId));
     }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public UUID getTeamId() {
+        return teamId;
+    }
+    public String getName() {
+        return name;
+    }
 }

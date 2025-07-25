@@ -1,7 +1,8 @@
 package com.tapioca.BE.adapter.in.controller;
 
-import com.tapioca.BE.application.command.erd.CreateDiagramCommand;
-import com.tapioca.BE.application.dto.request.erd.CreateDiagramRequestDto;
+import com.tapioca.BE.application.command.erd.UpdateDiagramsCommand;
+import com.tapioca.BE.application.dto.request.erd.UpdateDiagramsRequestDto;
+import com.tapioca.BE.application.dto.response.erd.ErdResponseDto;
 import com.tapioca.BE.config.common.CommonResponseDto;
 import com.tapioca.BE.config.security.CustomUserDetails;
 import com.tapioca.BE.domain.port.in.usecase.erd.ErdUseCase;
@@ -19,15 +20,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class ErdController {
     private final ErdUseCase erdUseCase;
 
-    @PostMapping("/create/diagram")
-    public CommonResponseDto<?> createDiagram(
+    @PostMapping("/update/diagrams")
+    public CommonResponseDto<?> updateDiagrams(
             @AuthenticationPrincipal CustomUserDetails user,
-            @Valid @RequestBody CreateDiagramRequestDto requestDto
+            @Valid @RequestBody UpdateDiagramsRequestDto requestDto
     ){
-        CreateDiagramCommand command = new CreateDiagramCommand(
-                user.getUserId(),
-                requestDto.name(),
-                requestDto.toAttributeCommands()
-        );
+        UpdateDiagramsCommand cmd = requestDto.toCommand(user.getUserId());
+        ErdResponseDto result = erdUseCase.updateDiagrams(cmd);
+        return CommonResponseDto.ok(result);
     }
 }

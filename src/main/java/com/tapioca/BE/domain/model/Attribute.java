@@ -13,7 +13,7 @@ public class Attribute {
     private final boolean isPrimaryKey;
     private final boolean isForeignKey;
 
-    public Attribute(UUID id, String name, AttributeType attributeType, Integer length,  boolean isPrimaryKey, boolean isForeignKey, LinkType linkType) {
+    public Attribute(UUID id, String name, AttributeType attributeType, Integer length,  boolean isPrimaryKey, boolean isForeignKey) {
         this.id = id;
         this.name = name;
         this.attributeType = attributeType;
@@ -29,6 +29,7 @@ public class Attribute {
     public boolean isVarchar() {
         return attributeType == AttributeType.VARCHAR;
     }
+
     public Integer getLength() {
         if(isVarchar()) {
             return length;
@@ -36,5 +37,21 @@ public class Attribute {
         else {
             return 0;
         }
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public AttributeType getAttributeType() {
+        return attributeType;
+    }
+
+    public boolean getIsPrimaryKey() {
+        return isPrimaryKey;
+    }
+
+    public boolean getIsForeignKey() {
+        return isForeignKey;
     }
 }
