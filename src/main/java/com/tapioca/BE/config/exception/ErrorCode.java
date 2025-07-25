@@ -18,6 +18,7 @@ public enum ErrorCode {
     MISSING_REQUEST_PART("40005", HttpStatus.BAD_REQUEST, "Missing request part."),
     UNSUPPORTED_MEDIA_TYPE("40006", HttpStatus.BAD_REQUEST, "Unsupported Media Type."),
     DUPLICATION_LOGIN_ID("40007", HttpStatus.BAD_REQUEST, "duplication of login id"),
+    INVALID_MAPPING_VALUE("40008", HttpStatus.BAD_REQUEST, "GPT매핑이 이루어지지 않았습니다"),
 
 
 
@@ -55,6 +56,7 @@ public enum ErrorCode {
     NOT_FOUND_ADMIN("40404", HttpStatus.NOT_FOUND, "해당 매체사가 존재하지 않습니다."),
     NOT_FOUND_CVINFO("40405", HttpStatus.NOT_FOUND, "해당 광고 정보가 존재하지 않습니다."),
     NOT_FOUND_BIDHISTORY("40406", HttpStatus.NOT_FOUND, "해당 입찰 정보가 존재하지 않습니다."),
+    NOT_FOUND_ERD("40407",HttpStatus.NOT_FOUND, "팀에 해당하는 ERD가 존재하지 않습니다."),
 
 
 

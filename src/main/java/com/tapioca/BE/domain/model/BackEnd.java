@@ -1,5 +1,8 @@
 package com.tapioca.BE.domain.model;
 
+
+import java.util.UUID;
+
 public class BackEnd {
     private final String ec2Host;
     private final String authToken;

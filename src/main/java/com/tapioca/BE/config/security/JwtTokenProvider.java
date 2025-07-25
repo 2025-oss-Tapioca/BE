@@ -50,7 +50,8 @@ public class JwtTokenProvider {
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 
         // Access Token 생성
-        Date accessTokenExpiresIn = new Date(now + 86400000);
+        long thirtyDaysMs = 1000L * 60 * 60 * 24 * 30; // 30일
+        Date accessTokenExpiresIn = new Date(System.currentTimeMillis() + thirtyDaysMs);
         String accessToken = Jwts.builder()
                 .setSubject(userDetails.getUserId().toString())
                 .claim("loginId", userDetails.getLoginId())

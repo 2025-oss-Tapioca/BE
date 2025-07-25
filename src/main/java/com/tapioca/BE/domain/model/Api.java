@@ -18,4 +18,11 @@ public class Api {
     }
 
     // Api Service //
+
+    public static class Attribute {
+        private UUID id;
+        private UUID diagramId;
+        private String name;
+
+    }
 }

@@ -1,4 +1,8 @@
 package com.tapioca.BE.application.dto.response.gpt;
 
-public record GptResponseDto(String content) {
+import com.fasterxml.jackson.databind.JsonNode;
+
+public record GptResponseDto(
+        String type
+) {
 }
