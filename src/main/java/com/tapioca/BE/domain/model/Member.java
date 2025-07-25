@@ -18,5 +18,5 @@ public class Member {
         this.memberRole = memberRole;
     }
 
-    // Member Service //
+
 }
