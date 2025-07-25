@@ -18,6 +18,7 @@ public enum ErrorCode {
     MISSING_REQUEST_PART("40005", HttpStatus.BAD_REQUEST, "Missing request part."),
     UNSUPPORTED_MEDIA_TYPE("40006", HttpStatus.BAD_REQUEST, "Unsupported Media Type."),
     DUPLICATION_LOGIN_ID("40007", HttpStatus.BAD_REQUEST, "duplication of login id"),
+    INVALID_MAPPING_VALUE("40008", HttpStatus.BAD_REQUEST, "GPT매핑이 이루어지지 않았습니다"),
 
 
 
