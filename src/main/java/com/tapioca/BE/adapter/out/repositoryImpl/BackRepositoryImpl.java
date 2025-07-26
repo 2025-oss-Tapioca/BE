@@ -1,16 +1,16 @@
 package com.tapioca.BE.adapter.out.repositoryImpl;
 
 import com.tapioca.BE.adapter.out.entity.BackEntity;
-import com.tapioca.BE.adapter.out.jpaRepository.ServerJpaRepository;
-import com.tapioca.BE.domain.port.out.repository.server.ServerRepository;
+import com.tapioca.BE.adapter.out.jpaRepository.BackJpaRepository;
+import com.tapioca.BE.domain.port.out.repository.back.BackRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 @Repository
 @RequiredArgsConstructor
-public class ServerRepositoryImpl implements ServerRepository {
+public class BackRepositoryImpl implements BackRepository {
 
-    private final ServerJpaRepository serverJpaRepository;
+    private final BackJpaRepository jpaRepository;
 
     @Override
     public void save(BackEntity backEntity) {}

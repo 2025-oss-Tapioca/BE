@@ -1,7 +1,7 @@
 package com.tapioca.BE.adapter.out.mapper;
 
 import com.tapioca.BE.adapter.out.entity.BackEntity;
-import com.tapioca.BE.application.dto.request.server.RegisterRequestDto;
+import com.tapioca.BE.application.dto.request.back.RegisterRequestDto;
 import com.tapioca.BE.domain.model.BackEnd;
 import org.springframework.stereotype.Component;
 
