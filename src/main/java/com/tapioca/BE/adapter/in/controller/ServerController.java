@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ServerController {
     private final ServerRegisterUseCase serverRegisterUseCase;
 
-    @PostMapping("/signup/deploy/back")
+    @PostMapping("/api/signup/deploy/back")
     public CommonResponseDto<?> serverRegister(
             @RequestBody RegisterRequestDto registerRequestDto
     ) {

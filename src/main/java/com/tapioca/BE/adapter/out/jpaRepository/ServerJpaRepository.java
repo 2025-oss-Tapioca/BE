@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;
 
-public interface ServerJpaRepository extends JpaRepository<ServerEntity, UUID> {
-    public void save(BackEntity backEntity);
+public interface ServerJpaRepository extends JpaRepository<BackEntity, UUID> {
+    public BackEntity save(BackEntity backEntity);
 }
