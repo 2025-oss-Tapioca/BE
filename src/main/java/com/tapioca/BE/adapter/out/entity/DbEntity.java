@@ -40,4 +40,10 @@ public class DbEntity {
 
     @Column(name = "db_password")
     private String password;
+
+    @Column(name = "db_name")
+    private String dbName;
+
+    @Column(name = "db_port")
+    private Integer dbPort;
 }
