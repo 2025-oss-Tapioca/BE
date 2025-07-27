@@ -9,8 +9,10 @@ import com.tapioca.BE.adapter.out.jpaRepository.UserJpaRepository;
 import com.tapioca.BE.adapter.out.mapper.MemberMapper;
 import com.tapioca.BE.application.dto.request.team.CreateTeamRequestDto;
 import com.tapioca.BE.application.dto.response.team.TeamResponseDto;
+import com.tapioca.BE.config.exception.CustomException;
 import com.tapioca.BE.config.exception.ErrorCode;
 import com.tapioca.BE.domain.model.Member;
+import com.tapioca.BE.domain.model.type.MemberRole;
 import com.tapioca.BE.domain.port.in.usecase.team.TeamUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -28,16 +30,17 @@ public class TeamService implements TeamUseCase {
 
     @Override
     public TeamResponseDto getTeamInfo(UUID userId) {
-        MemberEntity memberEntity = memberRepository.findByUserEntity_Id(userId).orElseThrow(() -> new IllegalArgumentException(ErrorCode.NOT_FOUND_USER.getMessage()));
+        MemberEntity memberEntity = memberRepository.findByUserEntity_Id(userId).orElse(null);
 
         if (memberEntity == null) {
-            return new TeamResponseDto(null, List.of());
+            return new TeamResponseDto(null, null, List.of());
         }
 
         Member member = MemberMapper.toDomain(memberEntity);
         UUID teamId = member.getTeamId();
 
         TeamEntity teamEntity = teamRepository.findById(teamId).orElse(null);
+
         List<MemberEntity> memberEntities = memberRepository.findAllByTeamEntity_Id(teamId);
 
         List<TeamResponseDto.MemberDto> memberDtoList = memberEntities.stream().map(me -> {
@@ -46,7 +49,7 @@ public class TeamService implements TeamUseCase {
             return new TeamResponseDto.MemberDto(name, role);
         }).toList();
 
-        return new TeamResponseDto(teamEntity.getName(), memberDtoList);
+        return new TeamResponseDto(teamEntity.getName(), teamEntity.getCode(), memberDtoList);
     }
 
     @Override
@@ -78,6 +81,44 @@ public class TeamService implements TeamUseCase {
                 ))
                 .toList();
 
-        return new TeamResponseDto(teamEntity.getName(), memberList);
+        return new TeamResponseDto(teamEntity.getName(), teamEntity.getCode(), memberList);
+    }
+
+    @Override
+    public TeamResponseDto joinTeam(UUID userId, String teamCode) {
+        TeamEntity teamEntity = teamRepository.findByCode(teamCode)
+                .orElse(null);
+
+        if (teamEntity == null) return null;
+
+        if (memberRepository.findByUserEntity_Id(userId).isPresent()) {
+            throw new CustomException(ErrorCode.CONFLICT_TEAM_BUILDING);
+        }
+
+        UserEntity user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException(ErrorCode.NOT_FOUND_USER.getMessage()));
+
+        MemberEntity memberEntity = new MemberEntity(
+                null,
+                user,
+                teamEntity,
+                "NONE"
+        );
+        memberRepository.save(memberEntity);
+
+        List<MemberEntity> memberEntities = memberRepository.findAllByTeamEntity_Id(teamEntity.getId());
+
+        List<TeamResponseDto.MemberDto> memberDtos = memberEntities.stream()
+                .map(m -> new TeamResponseDto.MemberDto(m.getUserEntity().getName(), m.getMemberRole()))
+                .toList();
+
+        return new TeamResponseDto(teamEntity.getName(), teamCode, memberDtos);
+    }
+
+    @Override
+    public void leaveTeam(UUID userId) {
+        MemberEntity member = memberRepository.findByUserEntity_Id(userId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
+
+        memberRepository.delete(member);
     }
 }

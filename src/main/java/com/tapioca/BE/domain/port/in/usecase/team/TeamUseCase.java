@@ -8,4 +8,6 @@ import java.util.UUID;
 public interface TeamUseCase {
     TeamResponseDto getTeamInfo(UUID userId);
     TeamResponseDto createTeam(UUID userId, CreateTeamRequestDto createTeamRequestDto);
+    TeamResponseDto joinTeam(UUID userId, String teamCode);
+    void leaveTeam(UUID userId);
 }

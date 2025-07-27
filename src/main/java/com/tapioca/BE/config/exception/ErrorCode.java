@@ -50,7 +50,7 @@ public enum ErrorCode {
      * 404** Not Found
      */
     NOT_FOUND_END_POINT("40400", HttpStatus.NOT_FOUND, "존재하지 않는 엔드포인트입니다."),
-    NOT_FOUND_USER("40401", HttpStatus.NOT_FOUND, "해당 광고주가 존재하지 않습니다."),
+    NOT_FOUND_USER("40401", HttpStatus.NOT_FOUND, "해당 사용자가 존재하지 않습니다."),
     NOT_FOUND_AD("40402", HttpStatus.NOT_FOUND, "해당 광고가 존재하지 않습니다."),
     NOT_FOUND_ADSLOT("40403", HttpStatus.NOT_FOUND, "해당 광고 자리가 존재하지 않습니다."),
     NOT_FOUND_ADMIN("40404", HttpStatus.NOT_FOUND, "해당 매체사가 존재하지 않습니다."),
@@ -58,6 +58,7 @@ public enum ErrorCode {
     NOT_FOUND_BIDHISTORY("40406", HttpStatus.NOT_FOUND, "해당 입찰 정보가 존재하지 않습니다."),
     NOT_FOUND_ERD("40407",HttpStatus.NOT_FOUND, "팀에 해당하는 ERD가 존재하지 않습니다."),
     NOT_FOUND_MEMBER("40408",HttpStatus.NOT_FOUND, "팀에 해당하는 멤버가 존재하지 않습니다."),
+    NOT_FOUND_TEAM("40409",HttpStatus.NOT_FOUND, "팀이 존재하지 않습니다."),
 
 
 

@@ -8,4 +8,5 @@ import java.util.UUID;
 
 public interface TeamJpaRepository extends JpaRepository<TeamEntity, Long> {
     Optional<TeamEntity> findById(UUID id);
+    Optional<TeamEntity> findByCode(String code);
 }
