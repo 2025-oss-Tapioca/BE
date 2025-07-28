@@ -19,7 +19,7 @@ public class ErdEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(name = "team_id", nullable = false)
+    @Column
     private UUID teamId;
 
     @Column(name = "erd_name")

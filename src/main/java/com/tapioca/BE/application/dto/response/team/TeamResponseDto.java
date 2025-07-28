@@ -1,5 +1,7 @@
 package com.tapioca.BE.application.dto.response.team;
 
+import com.tapioca.BE.domain.model.type.MemberRole;
+
 import java.util.List;
 
 public record TeamResponseDto(
@@ -9,6 +11,6 @@ public record TeamResponseDto(
 ) {
     public record MemberDto(
             String memberName,
-            String memberRole
+            MemberRole memberRole
     ) {}
 }

@@ -1,5 +1,6 @@
 package com.tapioca.BE.application.service.team;
 
+import com.tapioca.BE.adapter.out.entity.ErdEntity;
 import com.tapioca.BE.adapter.out.entity.MemberEntity;
 import com.tapioca.BE.adapter.out.entity.TeamEntity;
 import com.tapioca.BE.adapter.out.entity.UserEntity;
@@ -22,15 +23,17 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class TeamService implements TeamUseCase {
     private final TeamJpaRepository teamRepository;
     private final UserJpaRepository userRepository;
     private final MemberJpaRepository memberRepository;
+    private final MemberMapper memberMapper;
 
     @Override
     public TeamResponseDto getTeamInfo(UUID userId) {
-        MemberEntity memberEntity = memberRepository.findByUserEntity_Id(userId).orElse(null);
+        MemberEntity memberEntity = memberRepository.findByUserEntity_Id(userId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_TEAM));
 
         if (memberEntity == null) {
             return new TeamResponseDto(null, null, List.of());
@@ -45,8 +48,8 @@ public class TeamService implements TeamUseCase {
 
         List<TeamResponseDto.MemberDto> memberDtoList = memberEntities.stream().map(me -> {
             String name = me.getUserEntity().getName();
-            String role = me.getMemberRole();
-            return new TeamResponseDto.MemberDto(name, role);
+            MemberRole role = me.getMemberRole();
+            return MemberMapper.toDto(me);
         }).toList();
 
         return new TeamResponseDto(teamEntity.getName(), teamEntity.getCode(), memberDtoList);
@@ -55,7 +58,7 @@ public class TeamService implements TeamUseCase {
     @Override
     @Transactional
     public TeamResponseDto createTeam(UUID userId, CreateTeamRequestDto createTeamRequestDto){
-        UserEntity user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException(ErrorCode.NOT_FOUND_USER.getMessage()));
+        UserEntity user = userRepository.findById(userId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
         String teamCode = UUID.randomUUID().toString().substring(0, 8);
 
         TeamEntity teamEntity = TeamEntity.builder()
@@ -69,16 +72,13 @@ public class TeamService implements TeamUseCase {
                 null,
                 user,
                 teamEntity,
-                "NONE"
+                MemberRole.NONE
         );
         memberRepository.save(memberEntity);
 
         List<MemberEntity> members = memberRepository.findAllByTeamEntity_Id(teamEntity.getId());
         List<TeamResponseDto.MemberDto> memberList = members.stream()
-                .map(member -> new TeamResponseDto.MemberDto(
-                        member.getUserEntity().getName(),
-                        member.getMemberRole()
-                ))
+                .map(MemberMapper::toDto)
                 .toList();
 
         return new TeamResponseDto(teamEntity.getName(), teamEntity.getCode(), memberList);
@@ -101,14 +101,14 @@ public class TeamService implements TeamUseCase {
                 null,
                 user,
                 teamEntity,
-                "NONE"
+                MemberRole.NONE
         );
         memberRepository.save(memberEntity);
 
         List<MemberEntity> memberEntities = memberRepository.findAllByTeamEntity_Id(teamEntity.getId());
 
         List<TeamResponseDto.MemberDto> memberDtos = memberEntities.stream()
-                .map(m -> new TeamResponseDto.MemberDto(m.getUserEntity().getName(), m.getMemberRole()))
+                .map(MemberMapper::toDto)
                 .toList();
 
         return new TeamResponseDto(teamEntity.getName(), teamCode, memberDtos);

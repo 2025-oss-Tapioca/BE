@@ -3,6 +3,7 @@ package com.tapioca.BE.adapter.out.mapper;
 import com.tapioca.BE.adapter.out.entity.AttributeEntity;
 import com.tapioca.BE.adapter.out.entity.DiagramEntity;
 import com.tapioca.BE.adapter.out.entity.ErdEntity;
+import com.tapioca.BE.adapter.out.entity.TeamEntity;
 import com.tapioca.BE.application.dto.response.erd.ErdResponseDto;
 import com.tapioca.BE.domain.model.Attribute;
 import com.tapioca.BE.domain.model.Diagram;
