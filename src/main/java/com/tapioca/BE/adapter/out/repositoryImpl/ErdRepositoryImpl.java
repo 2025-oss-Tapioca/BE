@@ -35,7 +35,7 @@ public class ErdRepositoryImpl implements ErdRepository {
         TeamEntity teamEntity = teamJpaRepository.findById(teamId)
                 .orElseThrow(() -> new IllegalArgumentException(ErrorCode.NOT_FOUND_TEAM.getMessage()));
 
-        ErdEntity entity = erdMapper.toEntity(erd, teamEntity);
+        ErdEntity entity = erdMapper.toEntity(erd);
         return erdMapper.toDomain(erdJpaRepository.save(entity));
     }
 }

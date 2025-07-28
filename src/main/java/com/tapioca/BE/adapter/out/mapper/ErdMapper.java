@@ -21,7 +21,7 @@ public class ErdMapper {
                 .toList();
 
         Erd erd = new Erd(erdEntity.getId(),
-                erdEntity.getTeamEntity().getId(),
+                erdEntity.getTeamId(),
                 erdEntity.getName());
 
         for (Diagram diagram : diagrams) {
@@ -52,10 +52,10 @@ public class ErdMapper {
         );
     }
 
-    public ErdEntity toEntity(Erd erd, TeamEntity teamEntity) {
+    public ErdEntity toEntity(Erd erd) {
         ErdEntity erdEntity = ErdEntity.builder()
                 .id(erd.getId())
-                .teamEntity(teamEntity)
+                .teamId(erd.getTeamId())
                 .name(erd.getName())
                 .build();
         for (Diagram diagram : erd.getDiagrams()) {

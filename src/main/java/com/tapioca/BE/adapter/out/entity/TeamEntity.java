@@ -21,16 +21,9 @@ public class TeamEntity {
     @Column(name = "team_id")
     private UUID id;
 
-    @OneToOne(mappedBy = "team", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private ErdEntity erdEntity;
-
     @Column(name = "team_name")
     private String name;
 
     @Column(name = "team_code")
     private String code;
-
-    public void setErd(ErdEntity erdEntity) {
-        this.erdEntity = erdEntity;
-    }
 }

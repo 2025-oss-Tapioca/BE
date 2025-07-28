@@ -33,7 +33,7 @@ public class TeamService implements TeamUseCase {
 
     @Override
     public TeamResponseDto getTeamInfo(UUID userId) {
-        MemberEntity memberEntity = memberRepository.findByUserEntity_Id(userId).orElse(null);
+        MemberEntity memberEntity = memberRepository.findByUserEntity_Id(userId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_TEAM));
 
         if (memberEntity == null) {
             return new TeamResponseDto(null, null, List.of());
@@ -58,7 +58,7 @@ public class TeamService implements TeamUseCase {
     @Override
     @Transactional
     public TeamResponseDto createTeam(UUID userId, CreateTeamRequestDto createTeamRequestDto){
-        UserEntity user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException(ErrorCode.NOT_FOUND_USER.getMessage()));
+        UserEntity user = userRepository.findById(userId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
         String teamCode = UUID.randomUUID().toString().substring(0, 8);
 
         TeamEntity teamEntity = TeamEntity.builder()
@@ -80,13 +80,6 @@ public class TeamService implements TeamUseCase {
         List<TeamResponseDto.MemberDto> memberList = members.stream()
                 .map(MemberMapper::toDto)
                 .toList();
-
-        ErdEntity erdEntity = ErdEntity.builder()
-                .name(createTeamRequestDto.teamName() + "의 ERD")
-                .teamEntity(teamEntity)
-                .build();
-
-        teamEntity.setErd(erdEntity);
 
         return new TeamResponseDto(teamEntity.getName(), teamEntity.getCode(), memberList);
     }
