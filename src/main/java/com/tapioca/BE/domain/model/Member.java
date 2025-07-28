@@ -12,12 +12,12 @@ public class Member {
 
     public Member(
             UUID id, UUID userId,
-            UUID teamId, String memberRole
+            UUID teamId, MemberRole memberRole
     ){
         this.id = id;
         this.userId = userId;
         this.teamId = teamId;
-        this.memberRole = MemberRole.valueOf(memberRole);
+        this.memberRole = memberRole;
     }
 
     public UUID getTeamId() {

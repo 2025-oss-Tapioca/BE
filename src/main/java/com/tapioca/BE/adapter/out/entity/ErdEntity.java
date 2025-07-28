@@ -19,8 +19,9 @@ public class ErdEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(name = "team_id", nullable = false)
-    private UUID teamId;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "team_id", referencedColumnName = "team_id", insertable = false, updatable = false)
+    private TeamEntity teamEntity;
 
     @Column(name = "erd_name")
     private String name;

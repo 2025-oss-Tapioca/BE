@@ -3,6 +3,7 @@ package com.tapioca.BE.adapter.out.mapper;
 import com.tapioca.BE.adapter.out.entity.AttributeEntity;
 import com.tapioca.BE.adapter.out.entity.DiagramEntity;
 import com.tapioca.BE.adapter.out.entity.ErdEntity;
+import com.tapioca.BE.adapter.out.entity.TeamEntity;
 import com.tapioca.BE.application.dto.response.erd.ErdResponseDto;
 import com.tapioca.BE.domain.model.Attribute;
 import com.tapioca.BE.domain.model.Diagram;
@@ -20,7 +21,7 @@ public class ErdMapper {
                 .toList();
 
         Erd erd = new Erd(erdEntity.getId(),
-                erdEntity.getTeamId(),
+                erdEntity.getTeamEntity().getId(),
                 erdEntity.getName());
 
         for (Diagram diagram : diagrams) {
@@ -51,10 +52,10 @@ public class ErdMapper {
         );
     }
 
-    public ErdEntity toEntity(Erd erd) {
+    public ErdEntity toEntity(Erd erd, TeamEntity teamEntity) {
         ErdEntity erdEntity = ErdEntity.builder()
                 .id(erd.getId())
-                .teamId(erd.getTeamId())
+                .teamEntity(teamEntity)
                 .name(erd.getName())
                 .build();
         for (Diagram diagram : erd.getDiagrams()) {

@@ -1,5 +1,6 @@
 package com.tapioca.BE.application.service.team;
 
+import com.tapioca.BE.adapter.out.entity.ErdEntity;
 import com.tapioca.BE.adapter.out.entity.MemberEntity;
 import com.tapioca.BE.adapter.out.entity.TeamEntity;
 import com.tapioca.BE.adapter.out.entity.UserEntity;
@@ -22,11 +23,13 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class TeamService implements TeamUseCase {
     private final TeamJpaRepository teamRepository;
     private final UserJpaRepository userRepository;
     private final MemberJpaRepository memberRepository;
+    private final MemberMapper memberMapper;
 
     @Override
     public TeamResponseDto getTeamInfo(UUID userId) {
@@ -45,8 +48,8 @@ public class TeamService implements TeamUseCase {
 
         List<TeamResponseDto.MemberDto> memberDtoList = memberEntities.stream().map(me -> {
             String name = me.getUserEntity().getName();
-            String role = me.getMemberRole();
-            return new TeamResponseDto.MemberDto(name, role);
+            MemberRole role = me.getMemberRole();
+            return MemberMapper.toDto(me);
         }).toList();
 
         return new TeamResponseDto(teamEntity.getName(), teamEntity.getCode(), memberDtoList);
@@ -69,17 +72,21 @@ public class TeamService implements TeamUseCase {
                 null,
                 user,
                 teamEntity,
-                "NONE"
+                MemberRole.NONE
         );
         memberRepository.save(memberEntity);
 
         List<MemberEntity> members = memberRepository.findAllByTeamEntity_Id(teamEntity.getId());
         List<TeamResponseDto.MemberDto> memberList = members.stream()
-                .map(member -> new TeamResponseDto.MemberDto(
-                        member.getUserEntity().getName(),
-                        member.getMemberRole()
-                ))
+                .map(MemberMapper::toDto)
                 .toList();
+
+        ErdEntity erdEntity = ErdEntity.builder()
+                .name(createTeamRequestDto.teamName() + "의 ERD")
+                .teamEntity(teamEntity)
+                .build();
+
+        teamEntity.setErd(erdEntity);
 
         return new TeamResponseDto(teamEntity.getName(), teamEntity.getCode(), memberList);
     }
@@ -101,14 +108,14 @@ public class TeamService implements TeamUseCase {
                 null,
                 user,
                 teamEntity,
-                "NONE"
+                MemberRole.NONE
         );
         memberRepository.save(memberEntity);
 
         List<MemberEntity> memberEntities = memberRepository.findAllByTeamEntity_Id(teamEntity.getId());
 
         List<TeamResponseDto.MemberDto> memberDtos = memberEntities.stream()
-                .map(m -> new TeamResponseDto.MemberDto(m.getUserEntity().getName(), m.getMemberRole()))
+                .map(MemberMapper::toDto)
                 .toList();
 
         return new TeamResponseDto(teamEntity.getName(), teamCode, memberDtos);

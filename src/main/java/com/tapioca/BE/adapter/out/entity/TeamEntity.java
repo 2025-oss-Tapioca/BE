@@ -1,11 +1,6 @@
 package com.tapioca.BE.adapter.out.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,9 +21,16 @@ public class TeamEntity {
     @Column(name = "team_id")
     private UUID id;
 
+    @OneToOne(mappedBy = "team", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private ErdEntity erdEntity;
+
     @Column(name = "team_name")
     private String name;
 
     @Column(name = "team_code")
     private String code;
+
+    public void setErd(ErdEntity erdEntity) {
+        this.erdEntity = erdEntity;
+    }
 }
