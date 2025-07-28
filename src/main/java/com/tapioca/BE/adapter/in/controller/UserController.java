@@ -16,18 +16,18 @@ public class UserController {
     private final UserLoginUseCase userLoginUseCase;
     private final UserSignUpUseCase userSignUpUseCase;
 
-    @PostMapping("/login")
+    @PostMapping("/api/login")
     public CommonResponseDto<?> userLogin(
             @RequestBody LoginRequestDto loginRequestDto
     ){
         return CommonResponseDto.ok(userLoginUseCase.login(loginRequestDto));
     }
 
-    @PostMapping("/signup")
+    @PostMapping("/api/signup")
     public CommonResponseDto<?> userSignUp(
             @RequestBody SignUpRequestDto signRequestDto
     ){
         userSignUpUseCase.signUp(signRequestDto);
-        return CommonResponseDto.created(null);
+        return CommonResponseDto.created("회원 가입 성공");
     }
 }
