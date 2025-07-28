@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface TeamJpaRepository extends JpaRepository<TeamEntity, Long> {
-    Optional<TeamEntity> findById(UUID id);
+public interface TeamJpaRepository extends JpaRepository<TeamEntity, UUID> {
     Optional<TeamEntity> findByCode(String code);
 }
