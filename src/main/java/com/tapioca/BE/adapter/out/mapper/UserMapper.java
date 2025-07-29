@@ -15,17 +15,16 @@ public class UserMapper {
                 id,
                 signUpRequestDto.email(),
                 signUpRequestDto.name(),
-                signUpRequestDto.userId(),
+                signUpRequestDto.loginId(),
                 signUpRequestDto.password()
         );
     }
 
-    public User toDomain(UUID id, LoginRequestDto userRequestDto){
+    public User toDomain(UUID id, LoginRequestDto loginRequestDto){
         return new User(
                 id,
-                userRequestDto.name(),
-                userRequestDto.userId(),
-                userRequestDto.password()
+                loginRequestDto.loginId(),
+                loginRequestDto.password()
         );
     }
 
@@ -33,7 +32,7 @@ public class UserMapper {
         return UserEntity.builder()
                 .id(user.getId())
                 .email(user.getEmail())
-                .userId(user.getUserId())
+                .loginId(user.getLoginId())
                 .name(user.getName())
                 .password(user.getPassword())
                 .build();
