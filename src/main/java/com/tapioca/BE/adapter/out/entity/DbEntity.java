@@ -10,15 +10,13 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.UUID;
 
 @Entity
 @Getter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "db")
@@ -42,8 +40,8 @@ public class DbEntity {
     private String password;
 
     @Column(name = "db_name")
-    private String dbName;
+    private String name;
 
     @Column(name = "db_port")
-    private Integer dbPort;
+    private String port;
 }
