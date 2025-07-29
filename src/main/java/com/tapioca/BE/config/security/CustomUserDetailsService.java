@@ -18,14 +18,14 @@ public class CustomUserDetailsService implements UserDetailsService {
     private final UserRepository userRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String userId){
-        UserEntity userEntity = userRepository.findByUserId(userId);
+    public UserDetails loadUserByUsername(String loginId){
+        UserEntity userEntity = userRepository.findByLoginId(loginId);
 
         List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_USER"));
 
         return new CustomUserDetails(
                 userEntity.getId(),            // UUID
-                userEntity.getUserId(),        // 로그인 ID
+                userEntity.getLoginId(),        // 로그인 ID
                 userEntity.getPassword(),
                 authorities                    // 권한
         );
