@@ -3,14 +3,13 @@ package com.tapioca.BE.domain.model;
 import com.fasterxml.jackson.databind.JsonNode;
 
 public class Mcp {
-    private final String type;
+    private final JsonNode json;
 
-    public Mcp(String type){
-        this.type=type;
+    public Mcp(JsonNode json){
+        this.json=json;
     }
 
-    public String getType(){
-        return type;
+    public JsonNode getJson(){
+        return json;
     }
-
 }
