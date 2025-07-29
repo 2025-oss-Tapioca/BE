@@ -21,7 +21,7 @@ public class ErdController {
         return CommonResponseDto.ok(erdUseCase.getErd(user.getUserId()));
     }
 
-    @PostMapping("/api/erd/update_digrams")
+    @PostMapping("/api/erd/update")
     public CommonResponseDto<?> updateDigrams(
             @AuthenticationPrincipal CustomUserDetails user,
             @RequestBody UpdateErdRequestDto updateDiagramsRequestDto)
