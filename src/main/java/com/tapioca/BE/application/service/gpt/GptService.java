@@ -2,7 +2,6 @@ package com.tapioca.BE.application.service.gpt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tapioca.BE.adapter.out.mapper.McpMapper;
-import com.tapioca.BE.application.dto.request.mcp.McpRequestDto;
 import com.tapioca.BE.application.dto.request.gpt.GptRequestDto;
 import com.tapioca.BE.application.dto.response.gpt.GptResponseDto;
 import com.tapioca.BE.application.prompt.GptPrompt;

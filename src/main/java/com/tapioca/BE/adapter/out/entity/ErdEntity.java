@@ -5,52 +5,42 @@ import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
+
+import static jakarta.persistence.FetchType.LAZY;
 
 @Entity
 @Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "erd")
 public class ErdEntity {
     @Id
-    @Column(name = "erd_id")
     @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "erd_id")
     private UUID id;
 
     @Column(name = "erd_name")
     private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(
-            name = "team_id",
-            nullable = false,
-            foreignKey = @ForeignKey(
-                    name = "fk_erd_team",
-                    foreignKeyDefinition =
-                            "FOREIGN KEY (team_id) REFERENCES team(team_id) ON DELETE CASCADE"
-            )
-    )
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "team_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private TeamEntity teamEntity;
 
-    @OneToMany(mappedBy = "erd", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "erdEntity",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY)
     @Builder.Default
-    private List<DiagramEntity> diagrams = new ArrayList<>();
+    private Set<DiagramEntity> diagrams = new HashSet<>();
 
-    public void setTeam(TeamEntity teamEntity) {
-        this.teamEntity = teamEntity;
-    }
-
-    public void addDiagram(DiagramEntity diagram) {
-        diagrams.add(diagram);
-        diagram.setErd(this);
-    }
-
-    public void removeDiagram(DiagramEntity diagram) {
-        diagrams.remove(diagram);
-        diagram.setErd(null);
-    }
+    @OneToMany(mappedBy = "erdEntity",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY)
+    @Builder.Default
+    private Set<AttributeLinkEntity> attributeLinks = new HashSet<>();
 }

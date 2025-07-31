@@ -11,11 +11,5 @@ import java.util.UUID;
 
 public interface MemberJpaRepository extends JpaRepository<MemberEntity, UUID> {
     Optional<MemberEntity> findByUserEntity_Id(UUID userId);
-
-    @Query("""
-    SELECT m FROM MemberEntity m
-    JOIN FETCH m.userEntity
-    WHERE m.teamEntity.id = :teamId
-""")
-    List<MemberEntity> findAllByTeamEntity_Id(@Param("teamId") UUID teamId);
+    List<MemberEntity> findAllByTeamEntity_Id(UUID teamId);
 }
