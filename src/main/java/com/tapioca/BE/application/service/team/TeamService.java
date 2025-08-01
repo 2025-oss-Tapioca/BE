@@ -15,6 +15,7 @@ import com.tapioca.BE.config.exception.ErrorCode;
 import com.tapioca.BE.domain.model.Member;
 import com.tapioca.BE.domain.model.type.MemberRole;
 import com.tapioca.BE.domain.port.in.usecase.team.TeamUseCase;
+import com.tapioca.BE.domain.port.out.repository.erd.ErdRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,14 +27,15 @@ import java.util.UUID;
 @Transactional
 @RequiredArgsConstructor
 public class TeamService implements TeamUseCase {
-    private final TeamJpaRepository teamRepository;
-    private final UserJpaRepository userRepository;
-    private final MemberJpaRepository memberRepository;
+    private final TeamJpaRepository teamJpaRepository;
+    private final ErdRepository erdRepository;
+    private final UserJpaRepository userJpaRepository;
+    private final MemberJpaRepository memberJpaRepository;
     private final MemberMapper memberMapper;
 
     @Override
     public TeamResponseDto getTeamInfo(UUID userId) {
-        MemberEntity memberEntity = memberRepository.findByUserEntity_Id(userId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_TEAM));
+        MemberEntity memberEntity = memberJpaRepository.findByUserEntity_Id(userId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_TEAM));
 
         if (memberEntity == null) {
             return new TeamResponseDto(null, null, List.of());
@@ -42,9 +44,9 @@ public class TeamService implements TeamUseCase {
         Member member = MemberMapper.toDomain(memberEntity);
         UUID teamId = member.getTeamId();
 
-        TeamEntity teamEntity = teamRepository.findById(teamId).orElse(null);
+        TeamEntity teamEntity = teamJpaRepository.findById(teamId).orElse(null);
 
-        List<MemberEntity> memberEntities = memberRepository.findAllByTeamEntity_Id(teamId);
+        List<MemberEntity> memberEntities = memberJpaRepository.findAllByTeamEntity_Id(teamId);
 
         List<TeamResponseDto.MemberDto> memberDtoList = memberEntities.stream().map(me -> {
             String name = me.getUserEntity().getName();
@@ -58,44 +60,50 @@ public class TeamService implements TeamUseCase {
     @Override
     @Transactional
     public TeamResponseDto createTeam(UUID userId, CreateTeamRequestDto createTeamRequestDto){
-        UserEntity user = userRepository.findById(userId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
+        UserEntity user = userJpaRepository.findById(userId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
         String teamCode = UUID.randomUUID().toString().substring(0, 8);
 
         TeamEntity teamEntity = TeamEntity.builder()
                 .name(createTeamRequestDto.teamName())
-                .code(teamCode)
+                .code(UUID.randomUUID().toString().substring(0, 8))
                 .build();
+        TeamEntity savedTeam = teamJpaRepository.save(teamEntity);
 
-        teamRepository.save(teamEntity);
+        ErdEntity erdEntity = ErdEntity.builder()
+                .name(createTeamRequestDto.teamName() + "'s ERD")
+                .build();
+        erdEntity.setTeamEntity(savedTeam);
+        erdRepository.save(erdEntity);
 
-        MemberEntity memberEntity = new MemberEntity(
-                null,
-                user,
-                teamEntity,
-                MemberRole.NONE
-        );
-        memberRepository.save(memberEntity);
+        MemberEntity member = new MemberEntity(null, userJpaRepository.getReferenceById(userId),
+                savedTeam, MemberRole.NONE);
+        memberJpaRepository.save(member);
 
-        List<MemberEntity> members = memberRepository.findAllByTeamEntity_Id(teamEntity.getId());
-        List<TeamResponseDto.MemberDto> memberList = members.stream()
+        List<TeamResponseDto.MemberDto> memberList = memberJpaRepository
+                .findAllByTeamEntity_Id(savedTeam.getId())
+                .stream()
                 .map(MemberMapper::toDto)
                 .toList();
 
-        return new TeamResponseDto(teamEntity.getName(), teamEntity.getCode(), memberList);
+        return new TeamResponseDto(
+                savedTeam.getName(),
+                savedTeam.getCode(),
+                memberList
+        );
     }
 
     @Override
     public TeamResponseDto joinTeam(UUID userId, String teamCode) {
-        TeamEntity teamEntity = teamRepository.findByCode(teamCode)
-                .orElse(null);
+        TeamEntity teamEntity = teamJpaRepository.findByCode(teamCode)
+                .orElseThrow(()-> new CustomException(ErrorCode.NOT_FOUND_TEAM));
 
         if (teamEntity == null) return null;
 
-        if (memberRepository.findByUserEntity_Id(userId).isPresent()) {
+        if (memberJpaRepository.findByUserEntity_Id(userId).isPresent()) {
             throw new CustomException(ErrorCode.CONFLICT_TEAM_BUILDING);
         }
 
-        UserEntity user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException(ErrorCode.NOT_FOUND_USER.getMessage()));
+        UserEntity user = userJpaRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException(ErrorCode.NOT_FOUND_USER.getMessage()));
 
         MemberEntity memberEntity = new MemberEntity(
                 null,
@@ -103,9 +111,9 @@ public class TeamService implements TeamUseCase {
                 teamEntity,
                 MemberRole.NONE
         );
-        memberRepository.save(memberEntity);
+        memberJpaRepository.save(memberEntity);
 
-        List<MemberEntity> memberEntities = memberRepository.findAllByTeamEntity_Id(teamEntity.getId());
+        List<MemberEntity> memberEntities = memberJpaRepository.findAllByTeamEntity_Id(teamEntity.getId());
 
         List<TeamResponseDto.MemberDto> memberDtos = memberEntities.stream()
                 .map(MemberMapper::toDto)
@@ -116,9 +124,9 @@ public class TeamService implements TeamUseCase {
 
     @Override
     public void leaveTeam(UUID userId) {
-        MemberEntity member = memberRepository.findByUserEntity_Id(userId)
+        MemberEntity member = memberJpaRepository.findByUserEntity_Id(userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
 
-        memberRepository.delete(member);
+        memberJpaRepository.delete(member);
     }
 }
