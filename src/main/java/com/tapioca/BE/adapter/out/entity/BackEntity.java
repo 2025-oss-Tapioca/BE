@@ -33,6 +33,9 @@ public class BackEntity {
     @Column(name = "back_ec2_host")
     private String ec2Host;
 
+    @Column(name = "back_ec2_url")
+    private String ec2Url;
+
     @Column(name = "back_auth_token")
     private String authToken;
 

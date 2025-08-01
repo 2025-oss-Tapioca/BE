@@ -24,7 +24,7 @@ public class UserSignUpService implements UserSignUpUseCase {
 
     @Override
     public void signUp(SignUpRequestDto dto){
-        if(userRepository.existsByUserId(dto.userId())){
+        if(userRepository.existsByLoginId(dto.loginId())){
             throw new CustomException(ErrorCode.DUPLICATION_LOGIN_ID);
         }
         User user =  userMapper.toDomain(null,dto);

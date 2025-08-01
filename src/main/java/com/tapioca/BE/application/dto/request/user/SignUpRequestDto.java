@@ -1,7 +1,7 @@
 package com.tapioca.BE.application.dto.request.user;
 
 public record SignUpRequestDto(
-        String userId,
+        String loginId,
         String email,
         String name,
         String password

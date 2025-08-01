@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,11 +29,15 @@ public class UserLoginService implements UserLoginUseCase {
 
     @Override
     public JwtTokenDto login(LoginRequestDto dto){
-        UserEntity userEntity = userRepository.findByUserId(dto.userId());
+        UserEntity userEntity = userRepository.findByLoginId(dto.loginId());
+        if (userEntity == null) {
+            throw new UsernameNotFoundException("로그인 ID에 해당하는 사용자가 없습니다.");
+        }
+
         User user =  userMapper.toDomain(userEntity.getId(),dto);
 
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(user.getUserId(),user.getPassword())
+                new UsernamePasswordAuthenticationToken(user.getLoginId(),user.getPassword())
         );
 
         return jwtTokenProvider.generateToken(authentication);

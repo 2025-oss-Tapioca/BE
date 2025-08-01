@@ -6,6 +6,8 @@ import com.tapioca.BE.domain.port.out.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 @RequiredArgsConstructor
 public class UserRepositoryImpl implements UserRepository {
@@ -13,8 +15,8 @@ public class UserRepositoryImpl implements UserRepository {
     private final UserJpaRepository userJpaRepository;
 
     @Override
-    public UserEntity findByUserId(String userId){
-        return userJpaRepository.findByUserId(userId);
+    public UserEntity findByLoginId(String loginId){
+        return userJpaRepository.findByLoginId(loginId);
     }
 
     @Override
@@ -23,7 +25,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public boolean existsByUserId(String userId){
-        return userJpaRepository.existsByUserId(userId);
+    public boolean existsByLoginId(String loginId){
+        return userJpaRepository.existsByLoginId(loginId);
     }
 }

@@ -3,6 +3,8 @@ package com.tapioca.BE.adapter.out.entity;
 import com.tapioca.BE.domain.model.type.MemberRole;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -40,6 +42,7 @@ public class MemberEntity {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private TeamEntity teamEntity;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "member_role")
     private MemberRole memberRole;
 }
