@@ -1,6 +1,5 @@
 package com.tapioca.BE.adapter.out.entity;
 
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
