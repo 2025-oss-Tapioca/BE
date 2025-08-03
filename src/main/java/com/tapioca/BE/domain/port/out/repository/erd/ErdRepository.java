@@ -1,11 +1,7 @@
 package com.tapioca.BE.domain.port.out.repository.erd;
 
-import com.tapioca.BE.domain.model.Erd;
-
-import java.util.Optional;
-import java.util.UUID;
+import com.tapioca.BE.adapter.out.entity.ErdEntity;
 
 public interface ErdRepository {
-    Optional<Erd> findByTeamId(UUID teamId);
-    Erd save(Erd erd);
+    ErdEntity save(ErdEntity erd);
 }

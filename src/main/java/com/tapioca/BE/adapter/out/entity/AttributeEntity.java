@@ -3,11 +3,14 @@ package com.tapioca.BE.adapter.out.entity;
 import com.tapioca.BE.domain.model.type.AttributeType;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.UUID;
 
 @Entity
 @Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -17,6 +20,11 @@ public class AttributeEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name="attribute_id")
     private UUID id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="diagram_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private DiagramEntity diagram;
 
     @Column(name = "attribute_name")
     private String name;
@@ -34,11 +42,10 @@ public class AttributeEntity {
     @Column(name = "is_fk", nullable = false)
     private boolean isForeignKey;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="diagram_id", nullable = false)
-    private DiagramEntity diagram;
+    public void setDiagram(DiagramEntity diagramEntity) {
+        this.diagram = diagramEntity;
+    }
 
-    public void setDiagram(DiagramEntity diagram) {
-        this.diagram = diagram;
+    public void setName(String s) {
     }
 }

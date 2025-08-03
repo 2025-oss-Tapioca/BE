@@ -1,6 +1,5 @@
 package com.tapioca.BE.adapter.in.controller;
 
-import com.tapioca.BE.adapter.out.entity.UserEntity;
 import com.tapioca.BE.application.dto.request.team.CreateTeamRequestDto;
 import com.tapioca.BE.application.dto.request.team.JoinTeamRequestDto;
 import com.tapioca.BE.application.dto.response.team.TeamResponseDto;

@@ -7,6 +7,7 @@ public class BackEnd {
     private final UUID id;
     private final UUID teamId;
     private final String ec2Host;
+    private final String ec2Url;
     private final String authToken;
     private final String os;
     private final String env;
@@ -14,7 +15,7 @@ public class BackEnd {
     public BackEnd(
         UUID id, UUID teamId,
         String ec2Host, String authToken,
-        String os, String env
+        String os, String env, String ec2Url
     ){
         this.id = id;
         this.teamId = teamId;
@@ -22,6 +23,11 @@ public class BackEnd {
         this.authToken=authToken;
         this.os=os;
         this.env=env;
+        this.ec2Url=ec2Url;
+    }
+
+    public String getEc2Url(){
+        return ec2Url;
     }
 
     public UUID getId() { return id; }

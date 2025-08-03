@@ -32,8 +32,8 @@ public class UserEntity {
     @Column(name = "user_name")
     private String name;
 
-    @Column(name = "user_user_id")
-    private String userId;
+    @Column(name = "user_login_id")
+    private String loginId;
 
     @Column(name = "user_password")
     private String password;
