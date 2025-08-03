@@ -9,6 +9,10 @@ public record RegisterRequestDto(
         String dbUser,
         String password,
         String dbName,
-        String dbPort
+        String dbPort,
+        String rdsInstanceId,
+        String awsRegion,
+        String awsAccessKey,
+        String awsSecretKey
 ) {
 }

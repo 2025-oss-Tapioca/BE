@@ -43,4 +43,16 @@ public class DbEntity {
 
     @Column(name = "db_port")
     private String port;
+
+    @Column(name = "db_rds_instance_id")
+    private String rdsInstanceId;
+
+    @Column(name = "db_aws_region")
+    private String awsRegion;
+
+    @Column(name = "db_aws_access_key")
+    private String awsAccessKey;
+
+    @Column(name = "db_aws_secret_key")
+    private String awsSecretKey;
 }

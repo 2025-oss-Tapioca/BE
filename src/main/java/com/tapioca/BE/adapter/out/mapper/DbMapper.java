@@ -16,7 +16,11 @@ public class DbMapper {
                 registerRequestDto.dbUser(),
                 registerRequestDto.password(),
                 registerRequestDto.dbName(),
-                registerRequestDto.dbPort()
+                registerRequestDto.dbPort(),
+                registerRequestDto.rdsInstanceId(),
+                registerRequestDto.awsRegion(),
+                registerRequestDto.awsAccessKey(),
+                registerRequestDto.awsSecretKey()
         );
     }
 
@@ -29,6 +33,10 @@ public class DbMapper {
                 .password(db.getPassword())
                 .name(db.getDbName())
                 .port(db.getDbPort())
+                .rdsInstanceId(db.getRdsInstanceId())
+                .awsRegion(db.getAwsRegion())
+                .awsAccessKey(db.getAwsAccessKey())
+                .awsSecretKey(db.getAwsSecretKey())
                 .build();
     }
 }
