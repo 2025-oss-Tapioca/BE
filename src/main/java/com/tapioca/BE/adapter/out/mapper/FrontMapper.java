@@ -1,6 +1,7 @@
 package com.tapioca.BE.adapter.out.mapper;
 
 import com.tapioca.BE.adapter.out.entity.FrontEntity;
+import com.tapioca.BE.adapter.out.entity.TeamEntity;
 import com.tapioca.BE.application.dto.request.front.RegisterRequestDto;
 import com.tapioca.BE.domain.model.Front;
 import org.springframework.stereotype.Component;
@@ -9,6 +10,8 @@ import org.springframework.stereotype.Component;
 public class FrontMapper {
     public Front toDomain(RegisterRequestDto registerRequestDto) {
         return new Front(
+                null,
+                null,
                 registerRequestDto.ec2Host(),
                 registerRequestDto.entryPoint(),
                 registerRequestDto.os(),
@@ -17,8 +20,10 @@ public class FrontMapper {
         );
     }
 
-    public FrontEntity toEntity(Front front) {
+    public FrontEntity toEntity(Front front, TeamEntity teamEntity) {
         return FrontEntity.builder()
+                .id(front.getId())
+                .teamEntity(teamEntity)
                 .ec2Host(front.getEc2Host())
                 .entryPoint(front.getEntryPoint())
                 .os(front.getOs())

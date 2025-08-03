@@ -3,8 +3,10 @@ package com.tapioca.BE.adapter.in.controller;
 import com.tapioca.BE.adapter.out.entity.FrontEntity;
 import com.tapioca.BE.application.dto.request.front.RegisterRequestDto;
 import com.tapioca.BE.config.common.CommonResponseDto;
+import com.tapioca.BE.config.security.CustomUserDetails;
 import com.tapioca.BE.domain.port.in.usecase.front.FrontRegisterUseCase;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,9 +19,10 @@ public class FrontController {
 
     @PostMapping("/api/signup/deploy/front")
     public CommonResponseDto<?> frontRegister(
+            @AuthenticationPrincipal CustomUserDetails user,
             @RequestBody RegisterRequestDto registerRequestDto
     ) {
-        frontRegisterUseCase.register(registerRequestDto);
+        frontRegisterUseCase.register(user.getUserId(), registerRequestDto);
         return CommonResponseDto.created(null);
     }
 }

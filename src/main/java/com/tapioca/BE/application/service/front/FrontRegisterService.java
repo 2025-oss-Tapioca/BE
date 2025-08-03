@@ -1,14 +1,19 @@
 package com.tapioca.BE.application.service.front;
 
 import com.tapioca.BE.adapter.out.entity.FrontEntity;
+import com.tapioca.BE.adapter.out.entity.MemberEntity;
+import com.tapioca.BE.adapter.out.entity.TeamEntity;
 import com.tapioca.BE.adapter.out.mapper.FrontMapper;
 import com.tapioca.BE.application.dto.request.front.RegisterRequestDto;
 import com.tapioca.BE.domain.model.Front;
 import com.tapioca.BE.domain.port.in.usecase.front.FrontRegisterUseCase;
 import com.tapioca.BE.domain.port.out.repository.front.FrontRepository;
+import com.tapioca.BE.domain.port.out.repository.user.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.UUID;
 
 @Service
 @Transactional
@@ -17,14 +22,19 @@ public class FrontRegisterService implements FrontRegisterUseCase {
 
     private final FrontRepository frontRepository;
     private final FrontMapper frontMapper;
+    private final MemberRepository memberRepository;
 
     @Override
-    public void register(RegisterRequestDto dto) {
+    public void register(UUID userId, RegisterRequestDto dto) {
         // 이미 등록된 서버인지 확인
+
+        MemberEntity memberEntity = memberRepository.findByUserId(userId);
+
+        TeamEntity teamEntity = memberEntity.getTeamEntity();
 
         Front front = frontMapper.toDomain(dto);
 
-        FrontEntity mappingFrontEntity = frontMapper.toEntity(front);
-        frontRepository.save(mappingFrontEntity);
+        FrontEntity frontEntity = frontMapper.toEntity(front, teamEntity);
+        frontRepository.save(frontEntity);
     }
 }
