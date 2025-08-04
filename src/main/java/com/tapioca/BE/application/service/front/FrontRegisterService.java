@@ -27,11 +27,8 @@ public class FrontRegisterService implements FrontRegisterUseCase {
 
     @Override
     public void register(RegisterRequestDto dto) {
-        // 이미 등록된 서버인지 확인
 
-
-        // TeamEntity teamEntity = teamRepository.findByTeamId();
-        TeamEntity teamEntity;
+        TeamEntity teamEntity = teamRepository.findByTeamId(dto.teamId());
 
         Front front = frontMapper.toDomain(dto);
 

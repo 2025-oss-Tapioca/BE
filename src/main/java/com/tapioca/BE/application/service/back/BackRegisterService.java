@@ -27,12 +27,8 @@ public class BackRegisterService implements BackRegisterUseCase {
 
     @Override
     public void register(RegisterRequestDto dto) {
-        // 이미 등록된 서버인지 확인
 
-        // dto의 teamId로 teamEntity 생성
-
-        // TeamEntity teamEntity = teamRepository.findbyTeamId();
-        TeamEntity teamEntity;
+        TeamEntity teamEntity = teamRepository.findByTeamId(dto.teamId());
 
         BackEnd backend = backMapper.toDomain(dto);
 

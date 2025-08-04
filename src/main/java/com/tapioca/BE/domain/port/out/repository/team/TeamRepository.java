@@ -7,4 +7,5 @@ import java.util.UUID;
 public interface TeamRepository {
     TeamEntity save(TeamEntity team);
     void deleteById(UUID teamId);
+    TeamEntity findByTeamId(UUID teamId);
 }
