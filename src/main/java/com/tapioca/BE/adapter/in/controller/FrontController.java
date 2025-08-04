@@ -19,10 +19,9 @@ public class FrontController {
 
     @PostMapping("/api/signup/deploy/front")
     public CommonResponseDto<?> frontRegister(
-            @AuthenticationPrincipal CustomUserDetails user,
             @RequestBody RegisterRequestDto registerRequestDto
     ) {
-        frontRegisterUseCase.register(user.getUserId(), registerRequestDto);
+        frontRegisterUseCase.register(registerRequestDto);
         return CommonResponseDto.created(null);
     }
 }

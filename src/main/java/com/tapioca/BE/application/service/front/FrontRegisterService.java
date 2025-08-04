@@ -8,6 +8,7 @@ import com.tapioca.BE.application.dto.request.front.RegisterRequestDto;
 import com.tapioca.BE.domain.model.Front;
 import com.tapioca.BE.domain.port.in.usecase.front.FrontRegisterUseCase;
 import com.tapioca.BE.domain.port.out.repository.front.FrontRepository;
+import com.tapioca.BE.domain.port.out.repository.team.TeamRepository;
 import com.tapioca.BE.domain.port.out.repository.user.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,15 +23,15 @@ public class FrontRegisterService implements FrontRegisterUseCase {
 
     private final FrontRepository frontRepository;
     private final FrontMapper frontMapper;
-    private final MemberRepository memberRepository;
+    private final TeamRepository teamRepository;
 
     @Override
-    public void register(UUID userId, RegisterRequestDto dto) {
+    public void register(RegisterRequestDto dto) {
         // 이미 등록된 서버인지 확인
 
-        MemberEntity memberEntity = memberRepository.findByUserId(userId);
 
-        TeamEntity teamEntity = memberEntity.getTeamEntity();
+        // TeamEntity teamEntity = teamRepository.findByTeamId();
+        TeamEntity teamEntity;
 
         Front front = frontMapper.toDomain(dto);
 

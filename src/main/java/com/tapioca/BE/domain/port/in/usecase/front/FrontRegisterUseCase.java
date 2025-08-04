@@ -5,5 +5,5 @@ import com.tapioca.BE.application.dto.request.front.RegisterRequestDto;
 import java.util.UUID;
 
 public interface FrontRegisterUseCase {
-    public void register(UUID userId, RegisterRequestDto frontRequestDto);
+    public void register(RegisterRequestDto frontRequestDto);
 }

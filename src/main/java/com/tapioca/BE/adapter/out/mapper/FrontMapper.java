@@ -11,7 +11,7 @@ public class FrontMapper {
     public Front toDomain(RegisterRequestDto registerRequestDto) {
         return new Front(
                 null,
-                null,
+                registerRequestDto.teamId(),
                 registerRequestDto.ec2Host(),
                 registerRequestDto.entryPoint(),
                 registerRequestDto.os(),
