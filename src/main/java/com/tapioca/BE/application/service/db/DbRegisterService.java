@@ -6,6 +6,7 @@ import com.tapioca.BE.adapter.out.entity.TeamEntity;
 import com.tapioca.BE.adapter.out.entity.UserEntity;
 import com.tapioca.BE.adapter.out.mapper.DbMapper;
 import com.tapioca.BE.application.dto.request.db.RegisterRequestDto;
+import com.tapioca.BE.application.dto.response.db.RegisterResponseDto;
 import com.tapioca.BE.config.security.CustomUserDetails;
 import com.tapioca.BE.domain.model.DB;
 import com.tapioca.BE.domain.port.in.usecase.db.DbRegisterUseCase;
@@ -29,7 +30,7 @@ public class DbRegisterService implements DbRegisterUseCase {
     private final TeamRepository teamRepository;
 
     @Override
-    public void register(RegisterRequestDto dbRequestDto) {
+    public RegisterResponseDto register(RegisterRequestDto dbRequestDto) {
 
         TeamEntity teamEntity = teamRepository.findByTeamId(dbRequestDto.teamId());
 
@@ -39,5 +40,18 @@ public class DbRegisterService implements DbRegisterUseCase {
         // 5. 엔티티로 변환해서 DB에 저장
         DbEntity dbEntity = dbMapper.toEntity(db, teamEntity);
         dbRepository.save(dbEntity);
+
+        return new RegisterResponseDto(
+                dbEntity.getTeamEntity().getId(),
+                dbEntity.getAddress(),
+                dbEntity.getUser(),
+                dbEntity.getPassword(),
+                dbEntity.getName(),
+                dbEntity.getPort(),
+                dbEntity.getRdsInstanceId(),
+                dbEntity.getAwsRegion(),
+                dbEntity.getAwsAccessKey(),
+                dbEntity.getAwsSecretKey()
+        );
     }
 }

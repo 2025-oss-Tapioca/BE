@@ -5,6 +5,7 @@ import com.tapioca.BE.adapter.out.entity.MemberEntity;
 import com.tapioca.BE.adapter.out.entity.TeamEntity;
 import com.tapioca.BE.adapter.out.mapper.BackEndMapper;
 import com.tapioca.BE.application.dto.request.back.RegisterRequestDto;
+import com.tapioca.BE.application.dto.response.back.RegisterResponseDto;
 import com.tapioca.BE.domain.model.BackEnd;
 import com.tapioca.BE.domain.port.in.usecase.back.BackRegisterUseCase;
 import com.tapioca.BE.domain.port.out.repository.backend.BackRepository;
@@ -26,13 +27,22 @@ public class BackRegisterService implements BackRegisterUseCase {
     private final TeamRepository teamRepository;
 
     @Override
-    public void register(RegisterRequestDto dto) {
+    public RegisterResponseDto register(RegisterRequestDto dto) {
 
         TeamEntity teamEntity = teamRepository.findByTeamId(dto.teamId());
 
         BackEnd backend = backMapper.toDomain(dto);
 
-        BackEntity mappingBackEntity = backMapper.toEntity(backend, teamEntity);
-        backRepository.save(mappingBackEntity);
+        BackEntity savedEntity = backMapper.toEntity(backend, teamEntity);
+        backRepository.save(savedEntity);
+
+        return new RegisterResponseDto(
+                savedEntity.getTeamEntity().getId(),
+                savedEntity.getEc2Host(),
+                savedEntity.getEc2Url(),
+                savedEntity.getAuthToken(),
+                savedEntity.getOs(),
+                savedEntity.getEnv()
+        );
     }
 }
