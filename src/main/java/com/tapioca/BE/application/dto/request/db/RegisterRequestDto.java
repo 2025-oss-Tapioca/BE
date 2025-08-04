@@ -4,7 +4,7 @@ import java.util.UUID;
 
 public record RegisterRequestDto(
         // UUID id,
-        // UUID teamId,
+        UUID teamId,
         String dbAddress,
         String dbUser,
         String password,

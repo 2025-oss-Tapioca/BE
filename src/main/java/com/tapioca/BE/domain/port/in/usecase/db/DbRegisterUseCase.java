@@ -7,5 +7,5 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import java.util.UUID;
 
 public interface DbRegisterUseCase {
-    public void register(UUID userId, RegisterRequestDto dbRequestDto);
+    public void register(RegisterRequestDto dbRequestDto);
 }

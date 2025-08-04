@@ -17,10 +17,9 @@ public class DbController {
 
     @PostMapping("/api/signup/deploy/db")
     public CommonResponseDto<?> dbRegister(
-            @AuthenticationPrincipal CustomUserDetails user,
             @RequestBody RegisterRequestDto registerRequestDto
     ) {
-        dbRegisterUseCase.register(user.getUserId(), registerRequestDto);
+        dbRegisterUseCase.register(registerRequestDto);
         return CommonResponseDto.ok(null);
     }
 }

@@ -11,7 +11,7 @@ public class DbMapper {
     public DB toDomain(RegisterRequestDto registerRequestDto) {
         return new DB(
                 null,
-                null,
+                registerRequestDto.teamId(),
                 registerRequestDto.dbAddress(),
                 registerRequestDto.dbUser(),
                 registerRequestDto.password(),

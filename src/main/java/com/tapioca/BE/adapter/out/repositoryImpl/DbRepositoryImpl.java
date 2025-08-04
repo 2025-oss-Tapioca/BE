@@ -14,6 +14,6 @@ public class DbRepositoryImpl implements DbRepository {
     private final DbJpaRepository jpaRepository;
 
     @Override
-    public void save(DbEntity dbEntity) {}
+    public DbEntity save(DbEntity dbEntity) { return jpaRepository.save(dbEntity); }
 
 }

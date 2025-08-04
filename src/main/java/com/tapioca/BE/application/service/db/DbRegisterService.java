@@ -10,6 +10,7 @@ import com.tapioca.BE.config.security.CustomUserDetails;
 import com.tapioca.BE.domain.model.DB;
 import com.tapioca.BE.domain.port.in.usecase.db.DbRegisterUseCase;
 import com.tapioca.BE.domain.port.out.repository.db.DbRepository;
+import com.tapioca.BE.domain.port.out.repository.team.TeamRepository;
 import com.tapioca.BE.domain.port.out.repository.user.MemberRepository;
 import com.tapioca.BE.domain.port.out.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,18 +25,14 @@ import java.util.UUID;
 public class DbRegisterService implements DbRegisterUseCase {
 
     private final DbRepository dbRepository;
-    private final MemberRepository memberRepository;
     private final DbMapper dbMapper;
+    private final TeamRepository teamRepository;
 
     @Override
-    public void register(UUID userId, RegisterRequestDto dbRequestDto) {
-        // 1. 등록 요청을 보낸 user의 id 찾기 -> userId가 매개변수
+    public void register(RegisterRequestDto dbRequestDto) {
 
-        // 2. 해당 user가 속한 MemberEntity 찾기
-        MemberEntity memberEntity = memberRepository.findByUserId(userId);
-
-        // 3. MemberEntity로 TeamEntity
-        TeamEntity teamEntity = memberEntity.getTeamEntity();
+        // TeamEntity teamEntity = teamRepository.findByTeamId();
+        TeamEntity teamEntity;
 
         // 4. 도메인으로 바꾸기
         DB db = dbMapper.toDomain(dbRequestDto);
