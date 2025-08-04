@@ -9,6 +9,7 @@ import com.tapioca.BE.adapter.out.jpaRepository.TeamJpaRepository;
 import com.tapioca.BE.adapter.out.jpaRepository.UserJpaRepository;
 import com.tapioca.BE.adapter.out.mapper.MemberMapper;
 import com.tapioca.BE.application.dto.request.team.CreateTeamRequestDto;
+import com.tapioca.BE.application.dto.response.team.TeamsDto;
 import com.tapioca.BE.application.dto.response.team.TeamResponseDto;
 import com.tapioca.BE.config.exception.CustomException;
 import com.tapioca.BE.config.exception.ErrorCode;
@@ -22,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -31,11 +33,27 @@ public class TeamService implements TeamUseCase {
     private final ErdRepository erdRepository;
     private final UserJpaRepository userJpaRepository;
     private final MemberJpaRepository memberJpaRepository;
-    private final MemberMapper memberMapper;
 
     @Override
-    public TeamResponseDto getTeamInfo(UUID userId) {
-        MemberEntity memberEntity = memberJpaRepository.findByUserEntity_Id(userId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_TEAM));
+    public List<TeamsDto> getTeam(UUID userId) {
+        List<MemberEntity> memberList = memberJpaRepository.findAllByUserEntity_Id(userId);
+
+        List<TeamsDto> teams = memberList.stream()
+                .map(member -> {
+                    TeamEntity team = member.getTeamEntity();
+                    return new TeamsDto(
+                            team.getName(),
+                            team.getCode()
+                    );
+                })
+                .collect(Collectors.toList());
+
+        return teams;
+    }
+
+    @Override
+    public TeamResponseDto getTeamInfo(UUID userId, String teamCode) {
+        MemberEntity memberEntity = memberJpaRepository.findByUserEntity_IdAndTeamEntity_Code(userId, teamCode).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_TEAM));
 
         if (memberEntity == null) {
             return new TeamResponseDto(null, null, List.of());
@@ -99,10 +117,6 @@ public class TeamService implements TeamUseCase {
 
         if (teamEntity == null) return null;
 
-        if (memberJpaRepository.findByUserEntity_Id(userId).isPresent()) {
-            throw new CustomException(ErrorCode.CONFLICT_TEAM_BUILDING);
-        }
-
         UserEntity user = userJpaRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException(ErrorCode.NOT_FOUND_USER.getMessage()));
 
         MemberEntity memberEntity = new MemberEntity(
@@ -123,8 +137,8 @@ public class TeamService implements TeamUseCase {
     }
 
     @Override
-    public void leaveTeam(UUID userId) {
-        MemberEntity member = memberJpaRepository.findByUserEntity_Id(userId)
+    public void leaveTeam(UUID userId,  String teamCode) {
+        MemberEntity member = memberJpaRepository.findByUserEntity_IdAndTeamEntity_Code(userId, teamCode)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
 
         memberJpaRepository.delete(member);
