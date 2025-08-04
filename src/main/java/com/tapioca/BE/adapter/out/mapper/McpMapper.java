@@ -1,6 +1,7 @@
 package com.tapioca.BE.adapter.out.mapper;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.tapioca.BE.application.dto.response.gpt.GptResponseDto;
 import com.tapioca.BE.domain.model.Mcp;
 import org.springframework.stereotype.Component;
 
