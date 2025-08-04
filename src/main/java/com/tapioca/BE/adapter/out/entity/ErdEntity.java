@@ -1,5 +1,7 @@
 package com.tapioca.BE.adapter.out.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
@@ -28,6 +30,7 @@ public class ErdEntity {
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "team_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonBackReference
     private TeamEntity teamEntity;
 
     @OneToMany(mappedBy = "erdEntity",
@@ -35,6 +38,7 @@ public class ErdEntity {
             orphanRemoval = true,
             fetch = FetchType.LAZY)
     @Builder.Default
+    @JsonManagedReference
     private Set<DiagramEntity> diagrams = new HashSet<>();
 
     @OneToMany(mappedBy = "erdEntity",
@@ -42,5 +46,6 @@ public class ErdEntity {
             orphanRemoval = true,
             fetch = FetchType.LAZY)
     @Builder.Default
+    @JsonManagedReference
     private Set<AttributeLinkEntity> attributeLinks = new HashSet<>();
 }

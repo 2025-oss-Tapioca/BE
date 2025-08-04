@@ -1,5 +1,6 @@
 package com.tapioca.BE.adapter.out.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.tapioca.BE.domain.model.type.AttributeType;
 import jakarta.persistence.*;
 import lombok.*;
@@ -24,6 +25,7 @@ public class AttributeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="diagram_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonBackReference
     private DiagramEntity diagram;
 
     @Column(name = "attribute_name")
