@@ -54,9 +54,6 @@ dependencies {
 	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'  // JSON 직렬화/역직렬화
 
 	implementation 'org.springframework.ai:spring-ai-openai-spring-boot-starter:1.0.0-M6'
-
-	// PostgreSQL 연결 문제로 인한 임시 테스트용 H2 DB 사용
-	implementation 'com.h2database:h2'
 }
 
 tasks.named('test') {

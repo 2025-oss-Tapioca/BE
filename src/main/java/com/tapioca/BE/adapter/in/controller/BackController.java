@@ -17,10 +17,9 @@ public class BackController {
 
     @PostMapping("/api/signup/deploy/back")
     public CommonResponseDto<?> backRegister(
-            @AuthenticationPrincipal CustomUserDetails user,
             @RequestBody RegisterRequestDto registerRequestDto
     ) {
-        backRegisterUseCase.register(user.getUserId(), registerRequestDto);
+        backRegisterUseCase.register(registerRequestDto);
         return CommonResponseDto.created(null);
     }
 }

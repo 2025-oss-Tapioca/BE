@@ -19,20 +19,17 @@ public class BackEnd {
     ){
         this.id = id;
         this.teamId = teamId;
-        this.ec2Host=ec2Host;
-        this.authToken=authToken;
-        this.os=os;
-        this.env=env;
-        this.ec2Url=ec2Url;
-    }
-
-    public String getEc2Url(){
-        return ec2Url;
+        this.ec2Host = ec2Host;
+        this.ec2Url = ec2Url;
+        this.authToken = authToken;
+        this.os = os;
+        this.env = env;
     }
 
     public UUID getId() { return id; }
     public UUID getTeamId() { return teamId; }
     public String getEc2Host() { return ec2Host; }
+    public String getEc2Url() { return ec2Url; }
     public String getAuthToken() { return authToken; }
     public String getOs() { return os; }
     public String getEnv() { return env; }
