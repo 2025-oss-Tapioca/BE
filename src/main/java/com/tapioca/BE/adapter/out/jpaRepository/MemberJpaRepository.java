@@ -11,5 +11,7 @@ import java.util.UUID;
 
 public interface MemberJpaRepository extends JpaRepository<MemberEntity, UUID> {
     Optional<MemberEntity> findByUserEntity_Id(UUID userId);
+    Optional<MemberEntity> findByUserEntity_IdAndTeamEntity_Code(UUID userId, String teamCode);
     List<MemberEntity> findAllByTeamEntity_Id(UUID teamId);
+    List<MemberEntity> findAllByUserEntity_Id(UUID userId);
 }
