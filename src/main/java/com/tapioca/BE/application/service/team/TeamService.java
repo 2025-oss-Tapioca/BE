@@ -76,7 +76,7 @@ public class TeamService implements TeamUseCase {
         erdRepository.save(erdEntity);
 
         MemberEntity member = new MemberEntity(null, userJpaRepository.getReferenceById(userId),
-                savedTeam, MemberRole.NONE);
+                savedTeam, MemberRole.ADMIN);
         memberJpaRepository.save(member);
 
         List<TeamResponseDto.MemberDto> memberList = memberJpaRepository
@@ -109,7 +109,7 @@ public class TeamService implements TeamUseCase {
                 null,
                 user,
                 teamEntity,
-                MemberRole.NONE
+                MemberRole.USER
         );
         memberJpaRepository.save(memberEntity);
 

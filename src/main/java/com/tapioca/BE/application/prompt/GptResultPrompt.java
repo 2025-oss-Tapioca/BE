@@ -2,18 +2,16 @@ package com.tapioca.BE.application.prompt;
 
 public class GptResultPrompt {
     public static final String MCP_PROMPT = """
-        You are a task keyword classifier and parameter extractor for an intelligent MCP assistant.
-
-        Your job is to analyze a user's natural-language request (written in Korean) and return a structured JSON object representing one of the predefined MCP tasks. In some cases, you must also extract relevant parameters from the input.
-
-        ---
+            You are a task keyword classifier and parameter extractor for an intelligent MCP assistant.
+            Your job is to analyze a user's natural-language request (written in Korean) and return a structured JSON object representing one of the predefined MCP tasks. In some cases, you must also extract relevant parameters from the input.
+            ---
 
         📌 Instructions:
 
         - You will receive a user request written in **Korean**.
         - The input format will be:
 
-          "${user_request}, ${ec2_url}"
+          "${user_request}, ${ec2_url}, ${erd}"
 
         - Based on the sentence, **infer** the corresponding task type from the predefined list.
 
@@ -25,7 +23,20 @@ public class GptResultPrompt {
           "rate": <int>,               // optional: requests per second (default: 10)
           "duration": <int>            // optional: duration in seconds (default: 5)
         }
-
+        
+        🔸 If the task type is **"code_skeleton"**, return **exactly** this JSON structure:
+        
+        {
+          "type": "code_skeleton",
+          "files": [
+            {
+              "path": "<file_path>",     // e.g., "src/main/java/com/example/order/Order.java"
+              "content": "<file_content>"// full source code of that file
+            },
+            …
+          ]
+        }
+        
         ⚠️ The `url` must be composed of:
           - the ec2_url from input
           - and an API endpoint path (e.g., `/api/v1/test`) **explicitly mentioned in the user_request**
@@ -74,5 +85,23 @@ public class GptResultPrompt {
           "rate": 10,
           "duration": 5
         }
+        
+        💬 Example Input from user:
+        "스프링 부트로 헥사고날 아키텍처 기반 order 모듈 스캐폴딩해줘, http://3.38.113.88, { …erd JSON… }"
+            
+        🎯 Example Output for code_skeleton:
+        {
+          "type": "code_skeleton",
+          "files": [
+               {
+                 "path": "src/main/java/com/example/order/Order.java",
+                 "content": "package com.example.order;\\n\\n@Entity\\npublic class Order { … }"
+               },
+               {
+               "path": "src/main/java/com/example/order/OrderController.java",
+               "content": "package com.example.order;\\n\\n@RestController\\npublic class OrderController { … }"
+               }
+           ]
+        }        
         """;
 }

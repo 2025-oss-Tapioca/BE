@@ -1,5 +1,7 @@
 package com.tapioca.BE.application.service.erd;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tapioca.BE.adapter.out.entity.*;
 import com.tapioca.BE.adapter.out.jpaRepository.*;
 import com.tapioca.BE.application.dto.request.erd.UpdateErdRequestDto;
@@ -23,6 +25,7 @@ import java.util.stream.Collectors;
 public class ErdService implements ErdUseCase {
     private final MemberJpaRepository memberJpaRepository;
     private final ErdJpaRepository erdJpaRepository;
+    private final ObjectMapper objectMapper;
 
     @Override
     public ErdResponseDto getErd(UUID userId) {
