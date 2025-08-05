@@ -28,8 +28,8 @@ public class BackEntity {
     @OneToOne
     private TeamEntity teamEntity;
 
-    @Column(name = "back_ec2_host")
-    private String ec2Host;
+    @Column(name = "login_path")
+    private String loginPath;
 
     @Column(name = "back_ec2_url")
     private String ec2Url;

@@ -27,9 +27,9 @@ public class BackRegisterService implements BackRegisterUseCase {
     private final TeamRepository teamRepository;
 
     @Override
-    public RegisterResponseDto register(RegisterRequestDto dto) {
+    public RegisterResponseDto register(RegisterRequestDto dto, String teamCode) {
 
-        TeamEntity teamEntity = teamRepository.findByTeamId(dto.teamId());
+        TeamEntity teamEntity = teamRepository.findByTeamCode(teamCode);
 
         BackEnd backend = backMapper.toDomain(dto);
 
@@ -37,8 +37,7 @@ public class BackRegisterService implements BackRegisterUseCase {
         backRepository.save(savedEntity);
 
         return new RegisterResponseDto(
-                savedEntity.getTeamEntity().getId(),
-                savedEntity.getEc2Host(),
+                savedEntity.getLoginPath(),
                 savedEntity.getEc2Url(),
                 savedEntity.getAuthToken(),
                 savedEntity.getOs(),
