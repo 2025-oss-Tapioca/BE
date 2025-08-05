@@ -6,6 +6,7 @@ import java.util.UUID;
 public class BackEnd {
     private final String loginPath;
     private final String ec2Url;
+    private final String authToken;
     private final String os;
     private final String env;
 

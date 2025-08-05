@@ -1,0 +1,19 @@
+package com.tapioca.BE.adapter.out.repositoryImpl;
+
+import com.tapioca.BE.adapter.out.entity.DbEntity;
+import com.tapioca.BE.adapter.out.jpaRepository.DbJpaRepository;
+import com.tapioca.BE.adapter.out.mapper.DbMapper;
+import com.tapioca.BE.domain.port.out.repository.db.DbRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Repository;
+
+@Repository
+@RequiredArgsConstructor
+public class DbRepositoryImpl implements DbRepository {
+
+    private final DbJpaRepository jpaRepository;
+
+    @Override
+    public DbEntity save(DbEntity dbEntity) { return jpaRepository.save(dbEntity); }
+
+}

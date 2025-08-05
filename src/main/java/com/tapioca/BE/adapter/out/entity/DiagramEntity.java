@@ -1,15 +1,18 @@
 package com.tapioca.BE.adapter.out.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 
 @Entity
 @Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -25,23 +28,15 @@ public class DiagramEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="erd_id", nullable = false)
-    private ErdEntity erd;
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonBackReference
+    private ErdEntity erdEntity;
 
-    @OneToMany(mappedBy = "diagram", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "diagram",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY)
     @Builder.Default
-    private List<AttributeEntity> attributes = new ArrayList<>();
-
-    public void setErd(ErdEntity erd) {
-        this.erd = erd;
-    }
-
-    public void addAttribute(AttributeEntity attr) {
-        attributes.add(attr);
-        attr.setDiagram(this);
-    }
-
-    public void removeAttribute(AttributeEntity attr) {
-        attributes.remove(attr);
-        attr.setDiagram(null);
-    }
+    @JsonManagedReference
+    private Set<AttributeEntity> attributes = new HashSet<>();
 }

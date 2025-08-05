@@ -3,7 +3,6 @@ package com.tapioca.BE.application.service.user;
 import com.tapioca.BE.adapter.out.entity.UserEntity;
 import com.tapioca.BE.adapter.out.mapper.UserMapper;
 import com.tapioca.BE.application.dto.request.user.LoginRequestDto;
-import com.tapioca.BE.application.dto.request.user.SignUpRequestDto;
 import com.tapioca.BE.config.security.JwtTokenDto;
 import com.tapioca.BE.config.security.JwtTokenProvider;
 import com.tapioca.BE.domain.model.User;

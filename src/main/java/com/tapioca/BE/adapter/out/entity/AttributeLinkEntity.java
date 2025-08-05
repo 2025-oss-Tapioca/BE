@@ -1,13 +1,19 @@
 package com.tapioca.BE.adapter.out.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.tapioca.BE.domain.model.type.LinkType;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.UUID;
 
+import static jakarta.persistence.FetchType.LAZY;
+
 @Entity
 @Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -18,23 +24,22 @@ public class AttributeLinkEntity {
     @Column(name="attribute_link_id")
     private UUID id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name="from_attribute", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private AttributeEntity fromAttribute;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name="to_attribute", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private AttributeEntity toAttribute;
 
     @Enumerated(EnumType.STRING)
     @Column(name="link_type")
     private LinkType linkType;
 
-    public void setFromAttribute(AttributeEntity attr) {
-        this.fromAttribute = attr;
-    }
-
-    public void setToAttribute(AttributeEntity attr) {
-        this.toAttribute = attr;
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="erd_id", nullable=false)
+    @JsonBackReference
+    private ErdEntity erdEntity;
 }

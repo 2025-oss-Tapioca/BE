@@ -1,6 +1,5 @@
 package com.tapioca.BE.adapter.in.controller;
 
-import com.tapioca.BE.adapter.out.entity.UserEntity;
 import com.tapioca.BE.application.dto.request.team.CreateTeamRequestDto;
 import com.tapioca.BE.application.dto.request.team.JoinTeamRequestDto;
 import com.tapioca.BE.application.dto.response.team.TeamResponseDto;
@@ -20,8 +19,15 @@ public class TeamController {
     private final TeamUseCase teamUseCase;
 
     @GetMapping("/api/team")
-    public CommonResponseDto<?> getTeamInfo(@AuthenticationPrincipal CustomUserDetails user) {
-        return CommonResponseDto.ok(teamUseCase.getTeamInfo(user.getUserId()));
+    public CommonResponseDto<?> getTeam(@AuthenticationPrincipal CustomUserDetails user) {
+        return CommonResponseDto.ok(teamUseCase.getTeam(user.getUserId()));
+    }
+
+    @GetMapping("/api/team/{teamCode}")
+    public CommonResponseDto<?> getTeamInfo(
+            @AuthenticationPrincipal CustomUserDetails user,
+            @PathVariable String teamCode) {
+        return CommonResponseDto.ok(teamUseCase.getTeamInfo(user.getUserId(),  teamCode));
     }
 
     @PostMapping("/api/team/create")
@@ -41,9 +47,11 @@ public class TeamController {
         return CommonResponseDto.ok(response);
     }
 
-    @DeleteMapping("/api/team/leave")
-    public CommonResponseDto<?> leaveTeam(@AuthenticationPrincipal CustomUserDetails user) {
-        teamUseCase.leaveTeam(user.getUserId());
+    @DeleteMapping("/api/team/{teamCode}/leave")
+    public CommonResponseDto<?> leaveTeam(
+            @AuthenticationPrincipal CustomUserDetails user,
+            @PathVariable String teamCode) {
+        teamUseCase.leaveTeam(user.getUserId(), teamCode);
         return CommonResponseDto.ok(null);
     }
 }

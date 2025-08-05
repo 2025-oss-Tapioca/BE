@@ -2,8 +2,11 @@ package com.tapioca.BE.domain.model;
 
 
 import com.tapioca.BE.domain.model.type.LinkType;
+import lombok.Getter;
+
 import java.util.UUID;
 
+@Getter
 public class AttributeLink {
     private final UUID id;
     private final UUID fromAttributeId;

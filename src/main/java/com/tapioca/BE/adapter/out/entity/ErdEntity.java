@@ -1,41 +1,51 @@
 package com.tapioca.BE.adapter.out.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
+
+import static jakarta.persistence.FetchType.LAZY;
 
 @Entity
 @Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "erd")
 public class ErdEntity {
     @Id
-    @Column(name = "erd_id")
     @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "erd_id")
     private UUID id;
-
-    @Column
-    private UUID teamId;
 
     @Column(name = "erd_name")
     private String name;
 
-    @OneToMany(mappedBy = "erd", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "team_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonBackReference
+    private TeamEntity teamEntity;
+
+    @OneToMany(mappedBy = "erdEntity",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY)
     @Builder.Default
-    private List<DiagramEntity> diagrams = new ArrayList<>();
+    @JsonManagedReference
+    private Set<DiagramEntity> diagrams = new HashSet<>();
 
-    public void addDiagram(DiagramEntity diagram) {
-        diagrams.add(diagram);
-        diagram.setErd(this);
-    }
-
-    public void removeDiagram(DiagramEntity diagram) {
-        diagrams.remove(diagram);
-        diagram.setErd(null);
-    }
+    @OneToMany(mappedBy = "erdEntity",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY)
+    @Builder.Default
+    @JsonManagedReference
+    private Set<AttributeLinkEntity> attributeLinks = new HashSet<>();
 }
