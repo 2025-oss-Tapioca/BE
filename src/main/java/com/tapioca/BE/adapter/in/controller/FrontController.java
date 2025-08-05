@@ -6,15 +6,17 @@ import com.tapioca.BE.domain.port.in.usecase.front.FrontRegisterUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("/api")
 @RequiredArgsConstructor
 public class FrontController {
 
     private final FrontRegisterUseCase frontRegisterUseCase;
 
-    @PostMapping("/api/signup/deploy/front")
+    @PostMapping("/signup/deploy/front")
     public CommonResponseDto<?> frontRegister(
             @RequestBody RegisterRequestDto registerRequestDto
     ) {

@@ -8,22 +8,24 @@ import com.tapioca.BE.domain.port.in.usecase.user.UserSignUpUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("/api")
 @RequiredArgsConstructor
 public class UserController {
     private final UserLoginUseCase userLoginUseCase;
     private final UserSignUpUseCase userSignUpUseCase;
 
-    @PostMapping("/api/login")
+    @PostMapping("/login")
     public CommonResponseDto<?> userLogin(
             @RequestBody LoginRequestDto loginRequestDto
     ){
         return CommonResponseDto.ok(userLoginUseCase.login(loginRequestDto));
     }
 
-    @PostMapping("/api/signup")
+    @PostMapping("/signup")
     public CommonResponseDto<?> userSignUp(
             @RequestBody SignUpRequestDto signRequestDto
     ){

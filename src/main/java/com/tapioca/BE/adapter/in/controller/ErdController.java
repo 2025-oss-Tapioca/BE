@@ -6,22 +6,20 @@ import com.tapioca.BE.config.security.CustomUserDetails;
 import com.tapioca.BE.domain.port.in.usecase.erd.ErdUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/api/erd")
 @RequiredArgsConstructor
 public class ErdController {
     private final ErdUseCase erdUseCase;
 
-    @GetMapping("/api/erd")
+    @GetMapping("")
     public CommonResponseDto<?> getErd(@AuthenticationPrincipal CustomUserDetails user) {
         return CommonResponseDto.ok(erdUseCase.getErd(user.getUserId()));
     }
 
-    @PostMapping("/api/erd/update")
+    @PostMapping("/update")
     public CommonResponseDto<?> updateDigrams(
             @AuthenticationPrincipal CustomUserDetails user,
             @RequestBody UpdateErdRequestDto updateDiagramsRequestDto)
