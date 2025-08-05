@@ -23,9 +23,9 @@ public class FrontRegisterService implements FrontRegisterUseCase {
     private final TeamRepository teamRepository;
 
     @Override
-    public RegisterResponseDto register(RegisterRequestDto dto) {
+    public RegisterResponseDto register(RegisterRequestDto dto, String teamCode) {
 
-        TeamEntity teamEntity = teamRepository.findByTeamId(dto.teamId());
+        TeamEntity teamEntity = teamRepository.findByTeamCode(teamCode);
 
         Front front = frontMapper.toDomain(dto);
 
@@ -33,7 +33,6 @@ public class FrontRegisterService implements FrontRegisterUseCase {
         frontRepository.save(frontEntity);
 
         return new RegisterResponseDto(
-                frontEntity.getTeamEntity().getId(),
                 frontEntity.getEc2Host(),
                 frontEntity.getEntryPoint(),
                 frontEntity.getOs(),

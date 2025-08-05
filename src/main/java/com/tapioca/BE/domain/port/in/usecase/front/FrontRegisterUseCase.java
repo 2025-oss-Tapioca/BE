@@ -6,5 +6,5 @@ import com.tapioca.BE.application.dto.response.front.RegisterResponseDto;
 import java.util.UUID;
 
 public interface FrontRegisterUseCase {
-    public RegisterResponseDto register(RegisterRequestDto frontRequestDto);
+    public RegisterResponseDto register(RegisterRequestDto frontRequestDto, String teamCode);
 }
