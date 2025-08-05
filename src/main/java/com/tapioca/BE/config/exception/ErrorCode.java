@@ -59,6 +59,8 @@ public enum ErrorCode {
     NOT_FOUND_ERD("40407",HttpStatus.NOT_FOUND, "팀에 해당하는 ERD가 존재하지 않습니다."),
     NOT_FOUND_MEMBER("40408",HttpStatus.NOT_FOUND, "팀에 해당하는 멤버가 존재하지 않습니다."),
     NOT_FOUND_TEAM("40409",HttpStatus.NOT_FOUND, "팀이 존재하지 않습니다."),
+    NOT_FOUND_TYPE("40410",HttpStatus.NOT_FOUND, "TYPE이 존재하지 않습니다."),
+    NOT_FOUND_RESULT("40411",HttpStatus.NOT_FOUND, "RESULT가 존재하지 않습니다."),
 
 
 
