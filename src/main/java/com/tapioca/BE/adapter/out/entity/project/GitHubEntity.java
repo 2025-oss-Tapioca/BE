@@ -25,15 +25,15 @@ public class GitHubEntity {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private TeamEntity teamEntity;
 
-    @Column(name = "repo_url", nullable = false)
+    @Column(name = "github_repo_url", nullable = false)
     private String repoUrl;
 
-    @Column(name = "is_private", nullable = false)
+    @Column(name = "github_is_private", nullable = false)
     private boolean isPrivate;
 
-    @Column(name = "access_token", nullable = false)
+    @Column(name = "github_access_token", nullable = false)
     private String accessToken;
 
-    @Column(name = "default_branch", nullable = false)
+    @Column(name = "github_default_branch", nullable = false)
     private String defaultBranch;
 }

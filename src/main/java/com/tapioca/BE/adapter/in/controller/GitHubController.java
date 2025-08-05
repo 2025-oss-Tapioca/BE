@@ -3,9 +3,11 @@ package com.tapioca.BE.adapter.in.controller;
 import com.tapioca.BE.application.dto.request.team.GitHubRequestDto;
 import com.tapioca.BE.config.common.CommonResponseDto;
 import com.tapioca.BE.domain.port.in.usecase.github.GitHubUseCase;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/github")
 public class GitHubController {
 
@@ -19,11 +21,11 @@ public class GitHubController {
         return CommonResponseDto.ok(gitHubUseCase.registerGitHub(gitHubRequestDto, teamCode));
     }
 
-    @PatchMapping("/{teamCode}")
-    public CommonResponseDto<?> updateGitHub(
-            @RequestBody GitHubRequestDto gitHubRequestDto,
-            @PathVariable String teamCode
-    ) {
-        return CommonResponseDto.ok(gitHubUseCase.updateGitHub(gitHubRequestDto, teamCode));
-    }
+//    @PatchMapping("/{teamCode}")
+//    public CommonResponseDto<?> updateGitHub(
+//            @RequestBody GitHubRequestDto gitHubRequestDto,
+//            @PathVariable String teamCode
+//    ) {
+//        return CommonResponseDto.ok(gitHubUseCase.updateGitHub(gitHubRequestDto, teamCode));
+//    }
 }
