@@ -3,23 +3,33 @@ package com.tapioca.BE.adapter.in.controller;
 import com.tapioca.BE.application.dto.request.back.RegisterRequestDto;
 import com.tapioca.BE.config.common.CommonResponseDto;
 import com.tapioca.BE.config.security.CustomUserDetails;
+import com.tapioca.BE.domain.port.in.usecase.back.BackDeleteUseCase;
 import com.tapioca.BE.domain.port.in.usecase.back.BackRegisterUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
 public class BackController {
     private final BackRegisterUseCase backRegisterUseCase;
+    private final BackDeleteUseCase backDeleteUseCase;
 
-    @PostMapping("/api/signup/deploy/back")
+    // Back server 등록
+    @PostMapping("/api/back/{teamCode}")
     public CommonResponseDto<?> backRegister(
-            @RequestBody RegisterRequestDto registerRequestDto
+            @RequestBody RegisterRequestDto registerRequestDto,
+            @PathVariable String teamCode
     ) {
-        backRegisterUseCase.register(registerRequestDto);
+        backRegisterUseCase.register(registerRequestDto, teamCode);
         return CommonResponseDto.created(null);
+    }
+
+    @DeleteMapping("/api/back/{teamCode}")
+    public CommonResponseDto<?> backDelete(
+            @PathVariable String teamCode
+    ) {
+        backDeleteUseCase.delete(teamCode);
+        return CommonResponseDto.noContent();
     }
 }

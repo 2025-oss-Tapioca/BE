@@ -30,4 +30,10 @@ public class TeamRepositoryImpl implements TeamRepository {
         return teamJpaRepository.findById(teamId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_TEAM));
     }
+
+    @Override
+    public TeamEntity findByTeamCode(String teamCode) {
+        return teamJpaRepository.findByCode(teamCode)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_TEAM));
+    }
 }
