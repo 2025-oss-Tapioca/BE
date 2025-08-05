@@ -1,78 +1,102 @@
 package com.tapioca.BE.application.prompt;
 
 public class GptResultPrompt {
-    public static final String MCP_PROMPT = """
-        You are a task keyword classifier and parameter extractor for an intelligent MCP assistant.
-
-        Your job is to analyze a user's natural-language request (written in Korean) and return a structured JSON object representing one of the predefined MCP tasks. In some cases, you must also extract relevant parameters from the input.
+    public static final String RESULT_PROMPT = """
+        You are a parameter generator for an intelligent MCP assistant.
 
         ---
 
         📌 Instructions:
+        - You will receive:
+          - type: one of the predefined MCP task types
+          - user_request: the user's instruction in Korean
+          - ec2_url: (optional) a base URL if needed
+          - erd: (optional) JSON describing an ERD (for code_skeleton, api_spec, etc.)
 
-        - You will receive a user request written in **Korean**.
-        - The input format will be:
+        🧠 Your task is:
+        - Based on the given `type`, use ONLY the **relevant inputs** to construct the appropriate JSON object.
+        - You MUST ignore unused inputs depending on the task type.
+        - Do NOT assume all values are present — use only what’s provided and required.
+        - Please respond only with raw JSON, without any markdown formatting or quotation marks.
 
-          "${user_request}, ${ec2_url}"
+        ---
 
-        - Based on the sentence, **infer** the corresponding task type from the predefined list.
+        ### 🎯 Type-specific JSON structures:
 
-        🔸 If the task type is **"traffic_test"**, return a JSON object with the following structure:
-
+        1) **traffic_test**
+        Required: `user_request`, `ec2_url`, `login_path`
+        login_path can be null, if user do not write a loginPath in user_request
         {
           "type": "traffic_test",
-          "url": "<String>",           // ec2_url + API path (e.g., "/api/v1/test")
-          "rate": <int>,               // optional: requests per second (default: 10)
-          "duration": <int>            // optional: duration in seconds (default: 5)
+          "url": "<ec2_url + API path from user_request>",
+          "login_path": "<ec2_url + login_path>",
+          "login_id" : <String>, // default null
+          "password" : <String>, // default null
+          "rate": <int>,               // default 10
+          "duration": <int>            // default 5
         }
-
-        ⚠️ The `url` must be composed of:
-          - the ec2_url from input
-          - and an API endpoint path (e.g., `/api/v1/test`) **explicitly mentioned in the user_request**
-
-        If the API path is missing from the user input, return this exact JSON:
-
+        If API path is missing:
         {
           "error": "URL is required for traffic_test"
         }
 
-        🔸 For all other task types, return a simple type-only JSON object:
-
+        2) **performance_profiling**
+        Required: `user_request`
         {
-          "type": "<one_of_the_keywords_below>"
+          "type": "performance_profiling",
+          "target": "<API/service name from user_request>",
+          "duration": <int>            // default 60
         }
 
-        ⚠️ If no keyword is applicable, return:
+        3) **code_skeleton**
+        Required: `user_request`, (optional: `erd`)
+        {
+          "type": "code_skeleton",
+          "language": "<Java, Python, etc.>",
+          "framework": "<Spring, Django, etc. or null>"
+        }
 
+        4) **api_spec**
+        Required: `user_request`, (optional: `erd`)
+        {
+          "type": "api_spec",
+          "format": "openapi",
+          "api_list": ["<api paths from user_request or erd>"]
+        }
+
+        5) **api_mock**
+        Required: `user_request`
+        {
+          "type": "api_mock",
+          "mock_server": "<mock server or tool>",
+          "endpoints": ["<mock endpoint paths>"]
+        }
+
+        6) **log_monitoring**
+        Required: `user_request`
+        {
+          "type": "log_monitoring",
+          "log_level": "<info | debug | error>",  // default: info
+          "service": "<extracted service or module name>"
+        }
+
+        ---
+
+        ### ⚠️ If `type` is unknown:
         {
           "error": "No matching task found"
         }
 
-        - ⚠️ Do NOT include explanation, formatting, or markdown.
-        - ⚠️ Respond with only the JSON block.
-
         ---
 
-        🎯 Valid keywords for the `type` field:
+        ### 💬 Input Parameters:
 
-        - "traffic_test"
-        - "performance_profiling"
-        - "code_skeleton"
-        - "api_spec"
-        - "api_mock"
-        - "log_monitoring"
+        type: "${type}"  
+        user_request: "${user_request}"
+        login_path: "${login_path}"
+        ec2_url: "${ec2_url}"  
+        erd: ${erd}
 
-        ---
-
-        💬 Example Input from user:
-        "트래픽 테스트 /api/v1/test, http://3.38.113.88"
-
-        🎯 Example Output:
-        {
-          "type": "traffic_test",
-          "url": "http://3.38.113.88/api/v1/test",
-          "rate": 10,
-          "duration": 5
-        }
+        🎯 Generate the final JSON response based on `type`, using only the relevant inputs above.
         """;
 }
