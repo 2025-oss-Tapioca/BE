@@ -22,10 +22,10 @@ public class FrontEntity {
     @OneToOne
     private TeamEntity teamEntity;
 
-    @Column(name = "front_ec2Host")
+    @Column(name = "front_ec2_host")
     private String ec2Host;
 
-    @Column(name = "front_entryPoint")
+    @Column(name = "front_entry_point")
     private String entryPoint;
 
     @Column(name = "front_os")
