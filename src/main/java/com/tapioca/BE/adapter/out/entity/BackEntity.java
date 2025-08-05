@@ -30,14 +30,11 @@ public class BackEntity {
     @OneToOne
     private TeamEntity teamEntity;
 
-    @Column(name = "back_ec2_host")
-    private String ec2Host;
+    @Column(name = "back_login_path")
+    private String loginPath;
 
     @Column(name = "back_ec2_url")
     private String ec2Url;
-
-    @Column(name = "back_auth_token")
-    private String authToken;
 
     @Column(name = "back_os")
     private String os;
