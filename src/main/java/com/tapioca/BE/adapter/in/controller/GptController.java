@@ -1,11 +1,9 @@
-package com.tapioca.BE.adapter.in.gpt;
+package com.tapioca.BE.adapter.in.controller;
 
-import com.tapioca.BE.application.dto.request.gpt.GptRequestDto;
+import com.tapioca.BE.application.dto.request.gpt.UserInputRequestDto;
 import com.tapioca.BE.config.common.CommonResponseDto;
-import com.tapioca.BE.config.security.CustomUserDetails;
-import com.tapioca.BE.domain.port.in.usecase.gpt.GptUseCase;
+import com.tapioca.BE.domain.port.in.usecase.gpt.GptTypeUseCase;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,14 +18,13 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class GptController {
 
-    private final GptUseCase gptUseCase;
+    private final GptTypeUseCase gptTypeUseCase;
 
     @PostMapping("/{teamId}")
     public CommonResponseDto<?> requestToGpt(
-            @RequestBody GptRequestDto gptRequestDto,
-            @PathVariable UUID teamId,
-            @RequestHeader("Authorization") String authorizationHeader
+            @RequestBody UserInputRequestDto userInputRequestDto,
+            @PathVariable UUID teamId
     ){
-        return CommonResponseDto.ok(gptUseCase.gptRequest(gptRequestDto,teamId,authorizationHeader));
+        return CommonResponseDto.ok(gptTypeUseCase.gptTypeRequest(userInputRequestDto,teamId));
     }
 }

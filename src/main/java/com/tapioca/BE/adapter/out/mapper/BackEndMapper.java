@@ -8,8 +8,7 @@ import org.springframework.stereotype.Component;
 public class BackEndMapper {
     public BackEnd toDomain(BackEntity backEntity){
         return new BackEnd(
-                backEntity.getEc2Host(),
-                backEntity.getAuthToken(),
+                backEntity.getLoginPath(),
                 backEntity.getOs(),
                 backEntity.getEnv(),
                 backEntity.getEc2Url()
