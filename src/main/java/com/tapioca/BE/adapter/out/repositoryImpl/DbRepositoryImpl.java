@@ -1,8 +1,7 @@
 package com.tapioca.BE.adapter.out.repositoryImpl;
 
-import com.tapioca.BE.adapter.out.entity.DbEntity;
+import com.tapioca.BE.adapter.out.entity.project.DbEntity;
 import com.tapioca.BE.adapter.out.jpaRepository.DbJpaRepository;
-import com.tapioca.BE.adapter.out.mapper.DbMapper;
 import com.tapioca.BE.domain.port.out.repository.db.DbRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;

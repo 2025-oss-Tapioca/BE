@@ -1,8 +1,8 @@
 package com.tapioca.BE.adapter.out.mapper.Erd;
 
-import com.tapioca.BE.adapter.out.entity.AttributeEntity;
-import com.tapioca.BE.adapter.out.entity.AttributeLinkEntity;
-import com.tapioca.BE.domain.model.AttributeLink;
+import com.tapioca.BE.adapter.out.entity.erd.AttributeEntity;
+import com.tapioca.BE.adapter.out.entity.erd.AttributeLinkEntity;
+import com.tapioca.BE.domain.model.erd.AttributeLink;
 import org.springframework.stereotype.Component;
 
 @Component

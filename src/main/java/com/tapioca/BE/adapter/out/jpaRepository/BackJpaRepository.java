@@ -1,6 +1,6 @@
 package com.tapioca.BE.adapter.out.jpaRepository;
 
-import com.tapioca.BE.adapter.out.entity.BackEntity;
+import com.tapioca.BE.adapter.out.entity.project.BackEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

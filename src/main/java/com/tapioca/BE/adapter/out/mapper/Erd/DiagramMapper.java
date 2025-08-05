@@ -1,8 +1,8 @@
 package com.tapioca.BE.adapter.out.mapper.Erd;
 
-import com.tapioca.BE.adapter.out.entity.DiagramEntity;
-import com.tapioca.BE.adapter.out.entity.ErdEntity;
-import com.tapioca.BE.domain.model.Diagram;
+import com.tapioca.BE.adapter.out.entity.erd.DiagramEntity;
+import com.tapioca.BE.adapter.out.entity.erd.ErdEntity;
+import com.tapioca.BE.domain.model.erd.Diagram;
 import org.springframework.stereotype.Component;
 
 @Component

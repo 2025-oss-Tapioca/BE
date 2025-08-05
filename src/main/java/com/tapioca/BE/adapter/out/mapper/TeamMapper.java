@@ -1,7 +1,7 @@
 package com.tapioca.BE.adapter.out.mapper;
 
-import com.tapioca.BE.adapter.out.entity.TeamEntity;
-import com.tapioca.BE.domain.model.Team;
+import com.tapioca.BE.adapter.out.entity.user.TeamEntity;
+import com.tapioca.BE.domain.model.user.Team;
 import org.springframework.stereotype.Component;
 
 @Component

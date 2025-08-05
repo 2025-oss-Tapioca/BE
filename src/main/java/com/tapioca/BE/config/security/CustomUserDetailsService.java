@@ -1,6 +1,6 @@
 package com.tapioca.BE.config.security;
 
-import com.tapioca.BE.adapter.out.entity.UserEntity;
+import com.tapioca.BE.adapter.out.entity.user.UserEntity;
 import com.tapioca.BE.domain.port.out.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;

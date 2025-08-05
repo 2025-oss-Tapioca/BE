@@ -1,9 +1,9 @@
 package com.tapioca.BE.adapter.out.mapper;
 
-import com.tapioca.BE.adapter.out.entity.UserEntity;
+import com.tapioca.BE.adapter.out.entity.user.UserEntity;
 import com.tapioca.BE.application.dto.request.user.LoginRequestDto;
 import com.tapioca.BE.application.dto.request.user.SignUpRequestDto;
-import com.tapioca.BE.domain.model.User;
+import com.tapioca.BE.domain.model.user.User;
 import org.springframework.stereotype.Component;
 
 import java.util.UUID;

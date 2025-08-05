@@ -1,6 +1,5 @@
 package com.tapioca.BE.application.service.back;
 
-import com.tapioca.BE.adapter.out.entity.BackEntity;
 import com.tapioca.BE.domain.port.in.usecase.back.BackDeleteUseCase;
 import com.tapioca.BE.domain.port.out.repository.backend.BackRepository;
 import com.tapioca.BE.domain.port.out.repository.team.TeamRepository;

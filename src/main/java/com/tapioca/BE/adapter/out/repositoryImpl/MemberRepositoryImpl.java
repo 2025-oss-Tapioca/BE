@@ -1,6 +1,6 @@
 package com.tapioca.BE.adapter.out.repositoryImpl;
 
-import com.tapioca.BE.adapter.out.entity.MemberEntity;
+import com.tapioca.BE.adapter.out.entity.user.MemberEntity;
 import com.tapioca.BE.adapter.out.jpaRepository.MemberJpaRepository;
 import com.tapioca.BE.config.exception.CustomException;
 import com.tapioca.BE.config.exception.ErrorCode;

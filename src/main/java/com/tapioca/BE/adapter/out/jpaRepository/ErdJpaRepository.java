@@ -1,7 +1,6 @@
 package com.tapioca.BE.adapter.out.jpaRepository;
 
-import com.tapioca.BE.adapter.out.entity.ErdEntity;
-import com.tapioca.BE.application.dto.response.erd.ErdResponseDto;
+import com.tapioca.BE.adapter.out.entity.erd.ErdEntity;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 

@@ -1,6 +1,6 @@
 package com.tapioca.BE.domain.port.out.repository.team;
 
-import com.tapioca.BE.adapter.out.entity.TeamEntity;
+import com.tapioca.BE.adapter.out.entity.user.TeamEntity;
 
 import java.util.UUID;
 

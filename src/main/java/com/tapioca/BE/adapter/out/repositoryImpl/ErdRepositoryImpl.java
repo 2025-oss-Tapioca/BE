@@ -1,6 +1,6 @@
 package com.tapioca.BE.adapter.out.repositoryImpl;
 
-import com.tapioca.BE.adapter.out.entity.ErdEntity;
+import com.tapioca.BE.adapter.out.entity.erd.ErdEntity;
 import com.tapioca.BE.adapter.out.jpaRepository.ErdJpaRepository;
 import com.tapioca.BE.domain.port.out.repository.erd.ErdRepository;
 import lombok.RequiredArgsConstructor;

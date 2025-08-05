@@ -1,12 +1,10 @@
 package com.tapioca.BE.adapter.out.repositoryImpl;
 
-import com.tapioca.BE.adapter.out.entity.UserEntity;
+import com.tapioca.BE.adapter.out.entity.user.UserEntity;
 import com.tapioca.BE.adapter.out.jpaRepository.UserJpaRepository;
 import com.tapioca.BE.domain.port.out.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-
-import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor

@@ -1,6 +1,6 @@
 package com.tapioca.BE.application.dto.response.team;
 
-import com.tapioca.BE.domain.model.type.MemberRole;
+import com.tapioca.BE.domain.model.enumType.MemberRole;
 
 import java.util.List;
 

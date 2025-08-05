@@ -1,9 +1,9 @@
 package com.tapioca.BE.application.dto.response.erd;
 
-import com.tapioca.BE.adapter.out.entity.AttributeEntity;
-import com.tapioca.BE.adapter.out.entity.AttributeLinkEntity;
-import com.tapioca.BE.adapter.out.entity.DiagramEntity;
-import com.tapioca.BE.adapter.out.entity.ErdEntity;
+import com.tapioca.BE.adapter.out.entity.erd.AttributeEntity;
+import com.tapioca.BE.adapter.out.entity.erd.AttributeLinkEntity;
+import com.tapioca.BE.adapter.out.entity.erd.DiagramEntity;
+import com.tapioca.BE.adapter.out.entity.erd.ErdEntity;
 
 import java.util.List;
 import java.util.UUID;

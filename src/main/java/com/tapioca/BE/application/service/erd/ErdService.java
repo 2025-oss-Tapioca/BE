@@ -1,15 +1,18 @@
 package com.tapioca.BE.application.service.erd;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tapioca.BE.adapter.out.entity.*;
+import com.tapioca.BE.adapter.out.entity.erd.AttributeEntity;
+import com.tapioca.BE.adapter.out.entity.erd.AttributeLinkEntity;
+import com.tapioca.BE.adapter.out.entity.erd.DiagramEntity;
+import com.tapioca.BE.adapter.out.entity.erd.ErdEntity;
+import com.tapioca.BE.adapter.out.entity.user.MemberEntity;
 import com.tapioca.BE.adapter.out.jpaRepository.*;
 import com.tapioca.BE.application.dto.request.erd.UpdateErdRequestDto;
 import com.tapioca.BE.application.dto.response.erd.ErdResponseDto;
 import com.tapioca.BE.config.exception.CustomException;
 import com.tapioca.BE.config.exception.ErrorCode;
-import com.tapioca.BE.domain.model.type.AttributeType;
-import com.tapioca.BE.domain.model.type.LinkType;
+import com.tapioca.BE.domain.model.enumType.AttributeType;
+import com.tapioca.BE.domain.model.enumType.LinkType;
 import com.tapioca.BE.domain.port.in.usecase.erd.ErdUseCase;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
