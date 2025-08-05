@@ -11,18 +11,18 @@ public class BackEndMapper {
     public BackEnd toDomain(BackEntity backEntity){
         return new BackEnd(
                 backEntity.getLoginPath(),
-                backEntity.getEc2Url(),
                 backEntity.getOs(),
-                backEntity.getEnv()
+                backEntity.getEnv(),
+                backEntity.getEc2Url()
                 );
     }
 
     public BackEnd toDomain(RegisterRequestDto dto) {
         return new BackEnd(
                 dto.loginPath(),
-                dto.ec2Url(),
                 dto.os(),
-                dto.env()
+                dto.env(),
+                dto.ec2Url()
         );
     }
 

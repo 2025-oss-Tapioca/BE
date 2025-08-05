@@ -36,7 +36,7 @@ public class TrafficTestService implements TrafficTestUseCase {
 
         String prompt = makePromptService.makeResultPrompt(type,userInput,backEnd.getEc2Url(),backEnd.getLoginPath());
         String result = openAiChatModel.call(prompt);
-
+        System.out.println(result);
         ObjectMapper mapper = new ObjectMapper();
         JsonNode resultJson;
         try{
