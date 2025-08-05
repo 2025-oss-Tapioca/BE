@@ -1,11 +1,11 @@
 package com.tapioca.BE.application.service.user;
 
-import com.tapioca.BE.adapter.out.entity.UserEntity;
+import com.tapioca.BE.adapter.out.entity.user.UserEntity;
 import com.tapioca.BE.adapter.out.mapper.UserMapper;
 import com.tapioca.BE.application.dto.request.user.LoginRequestDto;
 import com.tapioca.BE.config.security.JwtTokenDto;
 import com.tapioca.BE.config.security.JwtTokenProvider;
-import com.tapioca.BE.domain.model.User;
+import com.tapioca.BE.domain.model.user.User;
 import com.tapioca.BE.domain.port.in.usecase.user.UserLoginUseCase;
 import com.tapioca.BE.domain.port.out.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;

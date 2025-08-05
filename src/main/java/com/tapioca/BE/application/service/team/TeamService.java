@@ -1,9 +1,9 @@
 package com.tapioca.BE.application.service.team;
 
-import com.tapioca.BE.adapter.out.entity.ErdEntity;
-import com.tapioca.BE.adapter.out.entity.MemberEntity;
-import com.tapioca.BE.adapter.out.entity.TeamEntity;
-import com.tapioca.BE.adapter.out.entity.UserEntity;
+import com.tapioca.BE.adapter.out.entity.erd.ErdEntity;
+import com.tapioca.BE.adapter.out.entity.user.MemberEntity;
+import com.tapioca.BE.adapter.out.entity.user.TeamEntity;
+import com.tapioca.BE.adapter.out.entity.user.UserEntity;
 import com.tapioca.BE.adapter.out.jpaRepository.MemberJpaRepository;
 import com.tapioca.BE.adapter.out.jpaRepository.TeamJpaRepository;
 import com.tapioca.BE.adapter.out.jpaRepository.UserJpaRepository;
@@ -13,8 +13,8 @@ import com.tapioca.BE.application.dto.response.team.TeamsDto;
 import com.tapioca.BE.application.dto.response.team.TeamResponseDto;
 import com.tapioca.BE.config.exception.CustomException;
 import com.tapioca.BE.config.exception.ErrorCode;
-import com.tapioca.BE.domain.model.Member;
-import com.tapioca.BE.domain.model.type.MemberRole;
+import com.tapioca.BE.domain.model.user.Member;
+import com.tapioca.BE.domain.model.enumType.MemberRole;
 import com.tapioca.BE.domain.port.in.usecase.team.TeamUseCase;
 import com.tapioca.BE.domain.port.out.repository.erd.ErdRepository;
 import lombok.RequiredArgsConstructor;

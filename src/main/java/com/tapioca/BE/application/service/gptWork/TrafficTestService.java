@@ -2,13 +2,13 @@ package com.tapioca.BE.application.service.gptWork;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tapioca.BE.adapter.out.entity.BackEntity;
+import com.tapioca.BE.adapter.out.entity.project.BackEntity;
 import com.tapioca.BE.adapter.out.mapper.BackEndMapper;
 import com.tapioca.BE.application.service.gptCommon.MakePromptService;
 import com.tapioca.BE.application.service.gptCommon.SendToMcpService;
 import com.tapioca.BE.config.exception.CustomException;
 import com.tapioca.BE.config.exception.ErrorCode;
-import com.tapioca.BE.domain.model.BackEnd;
+import com.tapioca.BE.domain.model.project.BackEnd;
 import com.tapioca.BE.domain.port.in.usecase.gpt.TrafficTestUseCase;
 import com.tapioca.BE.domain.port.out.repository.backend.BackRepository;
 import lombok.RequiredArgsConstructor;

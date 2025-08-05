@@ -1,6 +1,6 @@
 package com.tapioca.BE.adapter.out.jpaRepository;
 
-import com.tapioca.BE.adapter.out.entity.DbEntity;
+import com.tapioca.BE.adapter.out.entity.project.DbEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;

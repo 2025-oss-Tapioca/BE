@@ -1,6 +1,6 @@
 package com.tapioca.BE.adapter.out.repositoryImpl;
 
-import com.tapioca.BE.adapter.out.entity.FrontEntity;
+import com.tapioca.BE.adapter.out.entity.project.FrontEntity;
 import com.tapioca.BE.adapter.out.jpaRepository.FrontJpaRepository;
 import com.tapioca.BE.domain.port.out.repository.front.FrontRepository;
 import lombok.RequiredArgsConstructor;

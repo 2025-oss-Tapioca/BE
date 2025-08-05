@@ -1,9 +1,9 @@
 package com.tapioca.BE.adapter.out.mapper;
 
-import com.tapioca.BE.adapter.out.entity.FrontEntity;
-import com.tapioca.BE.adapter.out.entity.TeamEntity;
+import com.tapioca.BE.adapter.out.entity.project.FrontEntity;
+import com.tapioca.BE.adapter.out.entity.user.TeamEntity;
 import com.tapioca.BE.application.dto.request.front.RegisterRequestDto;
-import com.tapioca.BE.domain.model.Front;
+import com.tapioca.BE.domain.model.project.Front;
 import org.springframework.stereotype.Component;
 
 @Component

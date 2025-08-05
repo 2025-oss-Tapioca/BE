@@ -1,6 +1,6 @@
 package com.tapioca.BE.adapter.out.jpaRepository;
 
-import com.tapioca.BE.adapter.out.entity.TeamEntity;
+import com.tapioca.BE.adapter.out.entity.user.TeamEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

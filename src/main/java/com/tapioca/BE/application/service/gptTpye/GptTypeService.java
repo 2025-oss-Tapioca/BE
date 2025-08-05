@@ -8,7 +8,7 @@ import com.tapioca.BE.application.service.gptCommon.MakePromptService;
 import com.tapioca.BE.application.service.gptCommon.SendToMcpService;
 import com.tapioca.BE.config.exception.CustomException;
 import com.tapioca.BE.config.exception.ErrorCode;
-import com.tapioca.BE.domain.model.UserInput;
+import com.tapioca.BE.domain.model.user.UserInput;
 import com.tapioca.BE.domain.port.in.usecase.gpt.GptTypeUseCase;
 import com.tapioca.BE.domain.port.in.usecase.gpt.TrafficTestUseCase;
 import lombok.RequiredArgsConstructor;
