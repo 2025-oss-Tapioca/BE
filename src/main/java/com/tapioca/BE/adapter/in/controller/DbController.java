@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class DbController {
     private final DbRegisterUseCase dbRegisterUseCase;
 
-    @PostMapping("/api/signup/deploy/db")
+    @PostMapping("/api/db")
     public CommonResponseDto<?> dbRegister(
             @RequestBody RegisterRequestDto registerRequestDto
     ) {
