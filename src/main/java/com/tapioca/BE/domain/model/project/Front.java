@@ -3,8 +3,6 @@ package com.tapioca.BE.domain.model.project;
 import java.util.UUID;
 
 public class Front {
-    private final UUID id;
-    private final UUID teamId;
     private final String ec2Host;
     private final String entryPoint;
     private final String os;
@@ -12,12 +10,9 @@ public class Front {
     private final String protocol;
 
     public Front(
-            UUID id, UUID teamId,
             String ec2Host, String entryPoint,
             String os, String env, String protocol
     ) {
-        this.id = id;
-        this.teamId = teamId;
         this.ec2Host = ec2Host;
         this.entryPoint = entryPoint;
         this.os = os;
@@ -25,8 +20,6 @@ public class Front {
         this.protocol = protocol;
     }
 
-    public UUID getId() { return id; }
-    public UUID getTeamId() { return teamId; }
     public String getEc2Host() { return ec2Host; }
     public String getEntryPoint() { return entryPoint; }
     public String getOs() { return os; }
