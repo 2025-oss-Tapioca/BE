@@ -13,19 +13,17 @@ public class GitHubController {
 
     private final GitHubUseCase gitHubUseCase;
 
-    @PostMapping("/{teamCode}")
+    @PostMapping
     public CommonResponseDto<?> registerGithub(
-            @RequestBody GitHubRequestDto gitHubRequestDto,
-            @PathVariable String teamCode
+            @RequestBody GitHubRequestDto gitHubRequestDto
     ) {
-        return CommonResponseDto.ok(gitHubUseCase.registerGitHub(gitHubRequestDto, teamCode));
+        return CommonResponseDto.ok(gitHubUseCase.registerGitHub(gitHubRequestDto));
     }
 
-//    @PatchMapping("/{teamCode}")
-//    public CommonResponseDto<?> updateGitHub(
-//            @RequestBody GitHubRequestDto gitHubRequestDto,
-//            @PathVariable String teamCode
-//    ) {
-//        return CommonResponseDto.ok(gitHubUseCase.updateGitHub(gitHubRequestDto, teamCode));
-//    }
+    @PatchMapping
+    public CommonResponseDto<?> updateGitHub(
+            @RequestBody GitHubRequestDto gitHubRequestDto
+    ) {
+        return CommonResponseDto.ok(gitHubUseCase.updateGitHub(gitHubRequestDto));
+    }
 }
