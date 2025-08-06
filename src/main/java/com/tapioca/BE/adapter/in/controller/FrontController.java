@@ -15,12 +15,11 @@ public class FrontController {
 
     private final FrontRegisterUseCase frontRegisterUseCase;
 
-    @PostMapping("/api/front/{teamCode}")
+    @PostMapping("/api/front")
     public CommonResponseDto<?> frontRegister(
-            @RequestBody RegisterRequestDto registerRequestDto,
-            @PathVariable String teamCode
+            @RequestBody RegisterRequestDto registerRequestDto
     ) {
-        frontRegisterUseCase.register(registerRequestDto, teamCode);
+        frontRegisterUseCase.register(registerRequestDto);
         return CommonResponseDto.created(null);
     }
 }
