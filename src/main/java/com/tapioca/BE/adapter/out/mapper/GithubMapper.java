@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 public class GithubMapper {
     public GitHub toDomain(GitHubRequestDto dto) {
         return new GitHub(
+                dto.teamCode(),
                 dto.repoUrl(),
                 dto.isPrivate(),
                 dto.accessToken(),
@@ -19,6 +20,7 @@ public class GithubMapper {
 
     public GitHub toDomain(GitHubEntity gitHubEntity) {
         return new GitHub(
+                gitHubEntity.getTeamEntity().getCode(),
                 gitHubEntity.getRepoUrl(),
                 gitHubEntity.isPrivate(),
                 gitHubEntity.getAccessToken(),

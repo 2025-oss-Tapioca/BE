@@ -25,9 +25,9 @@ public class GithubRegisterService implements GitHubUseCase {
     @Override
     public GitHubResponseDto registerGitHub(GitHubRequestDto gitHubRequestDto) {
 
-        TeamEntity teamEntity = teamRepository.findByTeamCode(gitHubRequestDto.teamCode());
-
         GitHub github = githubMapper.toDomain(gitHubRequestDto);
+
+        TeamEntity teamEntity = teamRepository.findByTeamCode(github.getTeamCode());
 
         GitHubEntity savedEntity = githubMapper.toEntity(github, teamEntity);
         githubRepository.save(savedEntity);
@@ -44,11 +44,13 @@ public class GithubRegisterService implements GitHubUseCase {
     @Override
     public GitHubResponseDto updateGitHub(GitHubRequestDto gitHubRequestDto) {
 
-        TeamEntity teamEntity = teamRepository.findByTeamCode(gitHubRequestDto.teamCode());
-
-        GitHubEntity existingEntity = githubRepository.findByTeamCode(gitHubRequestDto.teamCode());
-
+        // 수정된 내용
         GitHub updated = githubMapper.toDomain(gitHubRequestDto);
+
+        TeamEntity teamEntity = teamRepository.findByTeamCode(updated.getTeamCode());
+
+        // 수정할 내용
+        GitHubEntity existingEntity = githubRepository.findByTeamCode(teamEntity.getCode());
 
         GitHubEntity savedEntity = githubMapper.toEntity(updated, existingEntity, teamEntity);
         githubRepository.save(savedEntity);
