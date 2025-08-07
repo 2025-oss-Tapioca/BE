@@ -7,15 +7,17 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("/api")
 @RequiredArgsConstructor
 public class FrontController {
 
     private final FrontRegisterUseCase frontRegisterUseCase;
 
-    @PostMapping("/api/front")
+    @PostMapping("/front")
     public CommonResponseDto<?> frontRegister(
             @RequestBody RegisterRequestDto registerRequestDto
     ) {

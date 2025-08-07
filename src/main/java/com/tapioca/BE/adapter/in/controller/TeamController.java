@@ -14,28 +14,29 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/api/team")
 @RequiredArgsConstructor
 public class TeamController {
     private final TeamUseCase teamUseCase;
 
-    @GetMapping("/api/team")
+    @GetMapping("")
     public CommonResponseDto<?> getTeam(@AuthenticationPrincipal CustomUserDetails user) {
         return CommonResponseDto.ok(teamUseCase.getTeam(user.getUserId()));
     }
 
-    @GetMapping("/api/team/{teamCode}")
+    @GetMapping("/{teamCode}")
     public CommonResponseDto<?> getTeamInfo(
             @AuthenticationPrincipal CustomUserDetails user,
             @PathVariable String teamCode) {
         return CommonResponseDto.ok(teamUseCase.getTeamInfo(user.getUserId(),  teamCode));
     }
 
-    @PostMapping("/api/team/create")
+    @PostMapping("/create")
     public CommonResponseDto<?> createTeam(@AuthenticationPrincipal CustomUserDetails user, @RequestBody CreateTeamRequestDto requestDto) {
         return CommonResponseDto.ok(teamUseCase.createTeam(user.getUserId(), requestDto));
     }
 
-    @PostMapping("/api/team/join")
+    @PostMapping("/join")
     public CommonResponseDto<?> joinTeam(
             @AuthenticationPrincipal CustomUserDetails user,
             @Valid @RequestBody JoinTeamRequestDto request
@@ -47,7 +48,7 @@ public class TeamController {
         return CommonResponseDto.ok(response);
     }
 
-    @DeleteMapping("/api/team/{teamCode}/leave")
+    @DeleteMapping("/{teamCode}/leave")
     public CommonResponseDto<?> leaveTeam(
             @AuthenticationPrincipal CustomUserDetails user,
             @PathVariable String teamCode) {
