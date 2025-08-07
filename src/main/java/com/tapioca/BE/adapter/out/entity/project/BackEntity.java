@@ -29,7 +29,7 @@ public class BackEntity {
     @OneToOne
     private TeamEntity teamEntity;
 
-    @Column(name = "login_path")
+    @Column(name = "back_login_path")
     private String loginPath;
 
     @Column(name = "back_ec2_url")

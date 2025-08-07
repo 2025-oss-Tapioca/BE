@@ -91,10 +91,10 @@ public class GptResultPrompt {
 
         ### 💬 Input Parameters:
 
-        type: "${type}"  
+        type: "${type}"
         user_request: "${user_request}"
         login_path: "${login_path}"
-        ec2_url: "${ec2_url}"  
+        ec2_url: "${ec2_url}"
         erd: ${erd}
 
         🎯 Generate the final JSON response based on `type`, using only the relevant inputs above.
