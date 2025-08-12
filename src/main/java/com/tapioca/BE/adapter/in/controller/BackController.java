@@ -10,14 +10,14 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/back")
+@RequestMapping("/api/server/back")
 @RequiredArgsConstructor
 public class BackController {
     private final BackRegisterUseCase backRegisterUseCase;
     private final BackDeleteUseCase backDeleteUseCase;
 
     // Back server 등록
-    @PostMapping("/{teamCode}")
+    @PostMapping
     public CommonResponseDto<?> backRegister(
             @RequestBody RegisterRequestDto registerRequestDto,
             @PathVariable String teamCode
@@ -26,7 +26,7 @@ public class BackController {
         return CommonResponseDto.created(null);
     }
 
-    @DeleteMapping("/{teamCode}")
+    @DeleteMapping
     public CommonResponseDto<?> backDelete(
             @PathVariable String teamCode
     ) {
