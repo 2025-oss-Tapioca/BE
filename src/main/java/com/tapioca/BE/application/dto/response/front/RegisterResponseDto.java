@@ -5,6 +5,7 @@ import java.util.UUID;
 public record RegisterResponseDto(
         String teamCode,
         String ec2Host,
+        String authToken,
         String entryPoint,
         String os,
         String env,

@@ -3,8 +3,7 @@ package com.tapioca.BE.domain.model.project;
 import java.util.UUID;
 
 public class DB {
-    private final UUID id;
-    private final UUID teamId;
+    private final String teamCode;
     private final String dbAddress;
     private final String dbUser;
     private final String password;
@@ -12,19 +11,15 @@ public class DB {
     private final String dbPort;
     private final String rdsInstanceId;
     private final String awsRegion;
-    private final String awsAccessKey;
-    private final String awsSecretKey;
+    private final String roleArn;
 
 
     public DB(
-            UUID id, UUID teamId,
-            String dbAddress, String dbUser,
+            String teamCode, String dbAddress, String dbUser,
             String password, String dbName, String dbPort,
-            String rdsInstanceId, String awsRegion,
-            String awsAccessKey, String awsSecretKey
+            String rdsInstanceId, String awsRegion, String roleArn
     ){
-        this.id=id;
-        this.teamId=teamId;
+        this.teamCode = teamCode;
         this.dbAddress=dbAddress;
         this.dbUser=dbUser;
         this.password=password;
@@ -32,12 +27,10 @@ public class DB {
         this.dbPort=dbPort;
         this.rdsInstanceId=rdsInstanceId;
         this.awsRegion=awsRegion;
-        this.awsAccessKey=awsAccessKey;
-        this.awsSecretKey=awsSecretKey;
+        this.roleArn=roleArn;
     }
 
-    public UUID getId() { return id; }
-    public UUID getTeamId() { return teamId; }
+    public String getTeamCode() { return teamCode; }
     public String getDbAddress() { return dbAddress; }
     public String getDbUser() { return dbUser; }
     public String getPassword() { return password; }
@@ -45,8 +38,7 @@ public class DB {
     public String getDbPort() { return dbPort; }
     public String getRdsInstanceId() { return rdsInstanceId; }
     public String getAwsRegion() { return awsRegion; }
-    public String getAwsAccessKey() { return awsAccessKey; }
-    public String getAwsSecretKey() { return awsSecretKey; }
+    public String getRoleArn() { return roleArn; }
 
     // DB Service //
 }

@@ -10,8 +10,7 @@ import org.springframework.stereotype.Component;
 public class DbMapper {
     public DB toDomain(RegisterRequestDto registerRequestDto) {
         return new DB(
-                null,
-                registerRequestDto.teamId(),
+                registerRequestDto.teamCode(),
                 registerRequestDto.dbAddress(),
                 registerRequestDto.dbUser(),
                 registerRequestDto.password(),
@@ -19,14 +18,12 @@ public class DbMapper {
                 registerRequestDto.dbPort(),
                 registerRequestDto.rdsInstanceId(),
                 registerRequestDto.awsRegion(),
-                registerRequestDto.awsAccessKey(),
-                registerRequestDto.awsSecretKey()
+                registerRequestDto.roleArn()
         );
     }
 
     public DbEntity toEntity(DB db, TeamEntity teamEntity) {
         return DbEntity.builder()
-                .id(db.getId())
                 .teamEntity(teamEntity)
                 .address(db.getDbAddress())
                 .user(db.getDbUser())
@@ -35,8 +32,7 @@ public class DbMapper {
                 .port(db.getDbPort())
                 .rdsInstanceId(db.getRdsInstanceId())
                 .awsRegion(db.getAwsRegion())
-                .awsAccessKey(db.getAwsAccessKey())
-                .awsSecretKey(db.getAwsSecretKey())
+                .roleArn(db.getRoleArn())
                 .build();
     }
 }

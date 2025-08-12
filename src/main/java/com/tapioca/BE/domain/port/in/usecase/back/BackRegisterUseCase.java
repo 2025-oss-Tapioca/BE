@@ -6,5 +6,5 @@ import com.tapioca.BE.application.dto.response.back.RegisterResponseDto;
 import java.util.UUID;
 
 public interface BackRegisterUseCase {
-    public RegisterResponseDto register(RegisterRequestDto backRequestDto, String teamCode);
+    public RegisterResponseDto register(RegisterRequestDto backRequestDto);
 }

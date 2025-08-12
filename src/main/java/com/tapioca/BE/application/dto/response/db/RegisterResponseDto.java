@@ -3,8 +3,7 @@ package com.tapioca.BE.application.dto.response.db;
 import java.util.UUID;
 
 public record RegisterResponseDto(
-        // UUID id,
-        UUID teamId,
+        String teamId,
         String dbAddress,
         String dbUser,
         String password,
@@ -12,7 +11,6 @@ public record RegisterResponseDto(
         String dbPort,
         String rdsInstanceId,
         String awsRegion,
-        String awsAccessKey,
-        String awsSecretKey
+        String roleArn
 ) {
 }

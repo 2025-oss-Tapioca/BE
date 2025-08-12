@@ -10,19 +10,23 @@ import org.springframework.stereotype.Component;
 public class BackEndMapper {
     public BackEnd toDomain(BackEntity backEntity){
         return new BackEnd(
+                backEntity.getTeamEntity().getCode(),
                 backEntity.getLoginPath(),
+                backEntity.getEc2Url(),
+                backEntity.getAuthToken(),
                 backEntity.getOs(),
-                backEntity.getEnv(),
-                backEntity.getEc2Url()
+                backEntity.getEnv()
                 );
     }
 
     public BackEnd toDomain(RegisterRequestDto dto) {
         return new BackEnd(
+                dto.teamCode(),
                 dto.loginPath(),
+                dto.ec2Url(),
+                dto.authToken(),
                 dto.os(),
-                dto.env(),
-                dto.ec2Url()
+                dto.env()
         );
     }
 
@@ -30,6 +34,8 @@ public class BackEndMapper {
         return BackEntity.builder()
                 .teamEntity(teamEntity)
                 .loginPath(backEnd.getLoginPath())
+                .ec2Url(backEnd.getEc2Url())
+                .authToken(backEnd.getAuthToken())
                 .os(backEnd.getOs())
                 .env(backEnd.getEnv())
                 .build();
