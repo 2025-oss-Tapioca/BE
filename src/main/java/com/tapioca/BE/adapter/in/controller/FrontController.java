@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/server/front")
 @RequiredArgsConstructor
 public class FrontController {
 
     private final FrontRegisterUseCase frontRegisterUseCase;
 
-    @PostMapping("/front")
+    @PostMapping
     public CommonResponseDto<?> frontRegister(
             @RequestBody RegisterRequestDto registerRequestDto
     ) {
