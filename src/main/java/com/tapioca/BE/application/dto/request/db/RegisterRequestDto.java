@@ -1,9 +1,6 @@
 package com.tapioca.BE.application.dto.request.db;
 
-import java.util.UUID;
-
 public record RegisterRequestDto(
-        // UUID id,
         String teamCode,
         String dbAddress,
         String dbUser,
@@ -12,7 +9,6 @@ public record RegisterRequestDto(
         String dbPort,
         String rdsInstanceId,
         String awsRegion,
-        String awsAccessKey,
-        String awsSecretKey
+        String roleArn
 ) {
 }

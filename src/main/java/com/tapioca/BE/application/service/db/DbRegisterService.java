@@ -25,17 +25,17 @@ public class DbRegisterService implements DbRegisterUseCase {
     @Override
     public RegisterResponseDto register(RegisterRequestDto dbRequestDto) {
 
-        TeamEntity teamEntity = teamRepository.findByTeamCode(dbRequestDto.teamCode());
-
         // 4. 도메인으로 바꾸기
         DB db = dbMapper.toDomain(dbRequestDto);
+
+        TeamEntity teamEntity = teamRepository.findByTeamCode(db.getTeamCode());
 
         // 5. 엔티티로 변환해서 DB에 저장
         DbEntity dbEntity = dbMapper.toEntity(db, teamEntity);
         dbRepository.save(dbEntity);
 
         return new RegisterResponseDto(
-                dbEntity.getTeamEntity().getId(),
+                dbEntity.getTeamEntity().getCode(),
                 dbEntity.getAddress(),
                 dbEntity.getUser(),
                 dbEntity.getPassword(),
@@ -43,8 +43,7 @@ public class DbRegisterService implements DbRegisterUseCase {
                 dbEntity.getPort(),
                 dbEntity.getRdsInstanceId(),
                 dbEntity.getAwsRegion(),
-                dbEntity.getAwsAccessKey(),
-                dbEntity.getAwsSecretKey()
+                dbEntity.getRoleArn()
         );
     }
 }

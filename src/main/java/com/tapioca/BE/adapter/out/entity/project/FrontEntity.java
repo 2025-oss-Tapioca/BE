@@ -25,6 +25,9 @@ public class FrontEntity {
     @Column(name = "front_ec2_host")
     private String ec2Host;
 
+    @Column(name = "front_auth_token")
+    private String authToken;
+
     @Column(name = "front_entry_point")
     private String entryPoint;
 

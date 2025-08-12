@@ -19,10 +19,9 @@ public class BackController {
     // Back server 등록
     @PostMapping
     public CommonResponseDto<?> backRegister(
-            @RequestBody RegisterRequestDto registerRequestDto,
-            @PathVariable String teamCode
+            @RequestBody RegisterRequestDto registerRequestDto
     ) {
-        backRegisterUseCase.register(registerRequestDto, teamCode);
+        backRegisterUseCase.register(registerRequestDto);
         return CommonResponseDto.created(null);
     }
 

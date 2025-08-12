@@ -10,7 +10,9 @@ import org.springframework.stereotype.Component;
 public class FrontMapper {
     public Front toDomain(RegisterRequestDto registerRequestDto) {
         return new Front(
+                registerRequestDto.teamCode(),
                 registerRequestDto.ec2Host(),
+                registerRequestDto.authToken(),
                 registerRequestDto.entryPoint(),
                 registerRequestDto.os(),
                 registerRequestDto.env(),
@@ -22,6 +24,7 @@ public class FrontMapper {
         return FrontEntity.builder()
                 .teamEntity(teamEntity)
                 .ec2Host(front.getEc2Host())
+                .authToken(front.getAuthToken())
                 .entryPoint(front.getEntryPoint())
                 .os(front.getOs())
                 .env(front.getEnv())

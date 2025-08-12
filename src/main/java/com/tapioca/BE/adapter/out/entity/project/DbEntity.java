@@ -50,9 +50,6 @@ public class DbEntity {
     @Column(name = "db_aws_region")
     private String awsRegion;
 
-    @Column(name = "db_aws_access_key")
-    private String awsAccessKey;
-
-    @Column(name = "db_aws_secret_key")
-    private String awsSecretKey;
+    @Column(name = "db_role_arn")
+    private String roleArn;
 }
