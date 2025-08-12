@@ -12,12 +12,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/server/db")
 @RequiredArgsConstructor
 public class DbController {
     private final DbRegisterUseCase dbRegisterUseCase;
 
-    @PostMapping("/signup/deploy/db")
+    @PostMapping
     public CommonResponseDto<?> dbRegister(
             @RequestBody RegisterRequestDto registerRequestDto
     ) {

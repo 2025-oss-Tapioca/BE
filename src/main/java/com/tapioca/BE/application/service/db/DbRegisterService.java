@@ -25,7 +25,7 @@ public class DbRegisterService implements DbRegisterUseCase {
     @Override
     public RegisterResponseDto register(RegisterRequestDto dbRequestDto) {
 
-        TeamEntity teamEntity = teamRepository.findByTeamId(dbRequestDto.teamId());
+        TeamEntity teamEntity = teamRepository.findByTeamCode(dbRequestDto.teamCode());
 
         // 4. 도메인으로 바꾸기
         DB db = dbMapper.toDomain(dbRequestDto);
