@@ -8,6 +8,7 @@ import java.util.UUID;
 
 @Repository
 public interface BackJpaRepository extends JpaRepository<BackEntity, UUID> {
-    public BackEntity findByTeamEntity_id(UUID teamId);
+    public BackEntity findByTeamEntity_Id(UUID teamId);
+    public BackEntity findByTeamEntity_code(String teamCode);
     public BackEntity save(BackEntity backEntity);
 }
