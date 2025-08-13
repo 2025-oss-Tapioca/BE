@@ -14,65 +14,80 @@ jobs:
       contents: read
 
     steps:
-    - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-    - name: Set up JDK 17
-      uses: actions/setup-java@v4
-      with:
-        java-version: '17'
-        distribution: 'temurin'
-        cache: gradle
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: gradle
 
-    - name: Setup Gradle
-      uses: gradle/actions/setup-gradle@v3   # (불필요한 cache 입력 제거 권장)
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
 
-    - name: Grant execute permission to Gradle Wrapper
-      run: chmod +x ./gradlew
+      - name: Grant execute permission to Gradle Wrapper
+        run: chmod +x ./gradlew
 
-    # ✅ 테스트 포함 빌드 + DB 환경변수 주입 (여기가 핵심)
-    - name: Build (with tests using RDS)
-      env:
-        DB_HOST: ${{ secrets.DB_HOST }}
-        DB_PORT: ${{ secrets.DB_PORT }}
-        DB_NAME: ${{ secrets.DB_NAME }}
-        DB_USER: ${{ secrets.DB_USER }}
-        DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-      run: ./gradlew clean build --stacktrace --info
+      # (선택) 러너→RDS 네트워크 확인
+      - name: Sanity check RDS from runner
+        run: |
+          sudo apt-get update && sudo apt-get install -y postgresql-client
+          PGPASSWORD='${{ secrets.DB_PASSWORD }}' psql \
+            -h '${{ secrets.DB_HOST }}' -p '${{ secrets.DB_PORT }}' \
+            -U '${{ secrets.DB_USER }}' -d '${{ secrets.DB_NAME }}' \
+            -c 'select 1;'
 
-    - name: Log in to Docker Hub
-      uses: docker/login-action@v2
-      with:
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
+      # ✅ 테스트 포함 빌드 (application.yml 없이 환경변수로 DB 설정 주입)
+      - name: Build (tests use RDS)
+        env:
+          SPRING_DATASOURCE_URL: jdbc:postgresql://${{ secrets.DB_HOST }}:${{ secrets.DB_PORT }}/${{ secrets.DB_NAME }}?sslmode=require
+          SPRING_DATASOURCE_USERNAME: ${{ secrets.DB_USER }}
+          SPRING_DATASOURCE_PASSWORD: ${{ secrets.DB_PASSWORD }}
+        run: ./gradlew clean build --stacktrace --info
 
-    - name: Build and push Docker image
-      run: |
-        IMAGE=${{ secrets.DOCKER_USERNAME }}/docker-test:${{ github.sha }}
-        docker build -t $IMAGE .
-        docker push $IMAGE
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
-    - name: Docker image pull & Deploy to EC2
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.HOST }}
-        port: ${{ secrets.PORT }}
-        username: ubuntu
-        key: ${{ secrets.PRIVATE_KEY }}
-        script: |
+      - name: Build and push Docker image
+        run: |
           IMAGE=${{ secrets.DOCKER_USERNAME }}/docker-test:${{ github.sha }}
-          sudo docker pull $IMAGE
-          sudo docker stop web || true
-          sudo docker rm web || true
+          docker build -t $IMAGE .
+          docker push $IMAGE
 
-          # ✅ 런타임에도 DB env 주입
-          sudo docker run -d --name web \
-            -p 8080:8080 \
-            --restart unless-stopped \
-            -e DB_HOST='${{ secrets.DB_HOST }}' \
-            -e DB_PORT='${{ secrets.DB_PORT }}' \
-            -e DB_NAME='${{ secrets.DB_NAME }}' \
-            -e DB_USER='${{ secrets.DB_USER }}' \
-            -e DB_PASSWORD='${{ secrets.DB_PASSWORD }}' \
-            $IMAGE
+      - name: Docker image pull & Deploy to EC2
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.HOST }}
+          port: ${{ secrets.PORT }}
+          username: ubuntu
+          key: ${{ secrets.PRIVATE_KEY }}
+          script: |
+            set -e
+            IMAGE="${{ secrets.DOCKER_USERNAME }}/docker-test:${{ github.sha }}"
 
-          sudo docker image prune -a -f
+            sudo docker pull "$IMAGE"
+            sudo docker stop web || true
+            sudo docker rm web || true
+
+            # ✅ 런타임도 스프링 표준 키로 DB 설정 주입
+            sudo docker run -d --name web \
+              -p 8080:8080 \
+              --restart unless-stopped \
+              -e SPRING_DATASOURCE_URL='jdbc:postgresql://${{ secrets.DB_HOST }}:${{ secrets.DB_PORT }}/${{ secrets.DB_NAME }}?sslmode=require' \
+              -e SPRING_DATASOURCE_USERNAME='${{ secrets.DB_USER }}' \
+              -e SPRING_DATASOURCE_PASSWORD='${{ secrets.DB_PASSWORD }}' \
+              "$IMAGE"
+
+            sudo docker image prune -a -f
+
+      # (옵션) 실패해도 테스트 리포트 다운로드 가능하게 아티팩트 업로드
+      - name: Upload test report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-report-html
+          path: build/reports/tests/test
