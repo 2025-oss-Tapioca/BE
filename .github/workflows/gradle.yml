@@ -32,7 +32,7 @@ jobs:
       # ✅ 테스트 포함 빌드 (application.yml 없이 환경변수로 DB/JWT 주입)
       - name: Build (tests use RDS & JWT)
         env:
-          SPRING_DATASOURCE_URL: jdbc:postgresql://${{ secrets.DB_HOST }}:${{ secrets.DB_PORT }}/${{ secrets.DB_NAME }}?sslmode=require
+          SPRING_DATASOURCE_URL: jdbc:postgresql://${{ secrets.DB_HOST }}:${{ secrets.DB_PORT }}/${{ secrets.DB_NAME }}
           SPRING_DATASOURCE_USERNAME: ${{ secrets.DB_USER }}
           SPRING_DATASOURCE_PASSWORD: ${{ secrets.DB_PASSWORD }}
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
@@ -50,7 +50,7 @@ jobs:
           docker build -t $IMAGE .
           docker push $IMAGE
 
-      - name: Docker image pull & Deploy to EC2
+      - name: Deploy to EC2 (pull & run)
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.HOST }}
@@ -60,27 +60,15 @@ jobs:
           script: |
             set -e
             IMAGE="${{ secrets.DOCKER_USERNAME }}/docker-test:${{ github.sha }}"
-
             sudo docker pull "$IMAGE"
             sudo docker stop web || true
             sudo docker rm web || true
-
-            # ✅ 런타임에도 스프링 표준 키로 DB/JWT 주입
             sudo docker run -d --name web \
               -p 8080:8080 \
               --restart unless-stopped \
-              -e SPRING_DATASOURCE_URL='jdbc:postgresql://${{ secrets.DB_HOST }}:${{ secrets.DB_PORT }}/${{ secrets.DB_NAME }}?sslmode=require' \
+              -e SPRING_DATASOURCE_URL='jdbc:postgresql://${{ secrets.DB_HOST }}:${{ secrets.DB_PORT }}/${{ secrets.DB_NAME }}' \
               -e SPRING_DATASOURCE_USERNAME='${{ secrets.DB_USER }}' \
               -e SPRING_DATASOURCE_PASSWORD='${{ secrets.DB_PASSWORD }}' \
               -e JWT_SECRET='${{ secrets.JWT_SECRET }}' \
               "$IMAGE"
-
             sudo docker image prune -a -f
-
-      # (옵션) 실패해도 테스트 리포트 확인 가능하게 업로드
-      - name: Upload test report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: test-report-html
-          path: build/reports/tests/test
