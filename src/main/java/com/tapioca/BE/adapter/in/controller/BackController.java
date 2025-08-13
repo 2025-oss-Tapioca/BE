@@ -1,5 +1,6 @@
 package com.tapioca.BE.adapter.in.controller;
 
+import com.tapioca.BE.application.dto.request.back.DeleteRequestDto;
 import com.tapioca.BE.application.dto.request.back.RegisterRequestDto;
 import com.tapioca.BE.config.common.CommonResponseDto;
 import com.tapioca.BE.config.security.CustomUserDetails;
@@ -27,9 +28,9 @@ public class BackController {
 
     @DeleteMapping
     public CommonResponseDto<?> backDelete(
-            @PathVariable String teamCode
+            @RequestBody DeleteRequestDto deleteRequestDto
     ) {
-        backDeleteUseCase.delete(teamCode);
+        backDeleteUseCase.delete(deleteRequestDto);
         return CommonResponseDto.noContent();
     }
 }
