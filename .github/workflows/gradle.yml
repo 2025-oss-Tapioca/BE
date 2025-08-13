@@ -3,14 +3,14 @@ name: "🚀 Spring Boot Docker CI/CD"
 
 on:
   push:
-    branches: [ "Dev" ]  # main 브랜치에 푸시될 때마다 실행
+    branches: [ "Dev" ]  # Dev 브랜치에 푸시될 때마다 실행
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
     env:
-      IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/spring-app
+      IMAGE_NAME: ${{ secrets.DOCKER_USERNAME }}/spring-app
 
     steps:
       # 1) 코드 체크아웃
@@ -26,11 +26,11 @@ jobs:
 
       # 3) application.yml 생성 (시크릿 원문 → 그대로 저장)
       - name: Create application.yml from Secrets
+        env:
+          APPLICATION_YML: ${{ secrets.APPLICATION_YML }}   # 시크릿에 YAML 원문 그대로 저장
         run: |
           mkdir -p ./src/main/resources
-          cat > ./src/main/resources/application.yml <<'YAML'
-          ${{ secrets.APPLICATION_YML }}
-          YAML
+          printf '%s' "$APPLICATION_YML" > ./src/main/resources/application.yml
 
       # 4) Gradle 실행 권한 + 빌드 (테스트 제외)
       - name: Grant execute permission for gradlew
@@ -43,8 +43,8 @@ jobs:
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
       # 6) Docker 이미지 빌드 및 태그
       - name: Build Docker image
@@ -68,23 +68,24 @@ jobs:
       - name: Send env.dev to remote
         uses: appleboy/scp-action@master
         with:
-          host: ${{ secrets.DEPLOY_SERVER_IP }}
-          username: ${{ secrets.DEPLOY_SERVER_USER }}
-          key: ${{ secrets.DEPLOY_SERVER_KEY }}
-          source: |
-            env.dev
+          host: ${{ secrets.HOST }}
+          port: ${{ secrets.PORT }}
+          username: ubuntu
+          key: ${{ secrets.PRIVATE_KEY }}
+          source: env.dev
           target: ${{ secrets.DEPLOY_DIRECTORY }}
 
       # 10) 원격 서버에 접속하여 docker compose로 배포
       - name: Remote deploy to server
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.DEPLOY_SERVER_IP }}
-          username: ${{ secrets.DEPLOY_SERVER_USER }}
-          key: ${{ secrets.DEPLOY_SERVER_KEY }}
+          host: ${{ secrets.HOST }}
+          port: ${{ secrets.PORT }}
+          username: ubuntu
+          key: ${{ secrets.PRIVATE_KEY }}
           script: |
             set -e
             cd "${{ secrets.DEPLOY_DIRECTORY }}"
-            docker compose pull          # 최신 spring-app 이미지 받기 (compose 파일이 ${TAG}를 참고해야 함)
-            docker compose up -d         # 컨테이너 재시작/갱신
-            docker image prune -f        # 안 쓰는 이미지 정리(선택)
+            docker compose pull          # compose가 ${TAG}를 참조해야 최신 이미지 반영
+            docker compose up -d
+            docker image prune -f
