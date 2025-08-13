@@ -3,7 +3,7 @@ name: "🚀 Spring Boot Docker CI/CD (no compose)"
 
 on:
   push:
-    branches: [ "main" ]  # 필요하면 "Dev" 등으로 바꿔
+    branches: [ "Dev" ]  # 필요하면 "Dev" 등으로 바꿔
 
 jobs:
   build-and-deploy:
