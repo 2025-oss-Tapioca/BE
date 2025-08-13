@@ -29,21 +29,13 @@ jobs:
       - name: Grant execute permission to Gradle Wrapper
         run: chmod +x ./gradlew
 
-      # (선택) 러너→RDS 네트워크 확인
-      - name: Sanity check RDS from runner
-        run: |
-          sudo apt-get update && sudo apt-get install -y postgresql-client
-          PGPASSWORD='${{ secrets.DB_PASSWORD }}' psql \
-            -h '${{ secrets.DB_HOST }}' -p '${{ secrets.DB_PORT }}' \
-            -U '${{ secrets.DB_USER }}' -d '${{ secrets.DB_NAME }}' \
-            -c 'select 1;'
-
-      # ✅ 테스트 포함 빌드 (application.yml 없이 환경변수로 DB 설정 주입)
-      - name: Build (tests use RDS)
+      # ✅ 테스트 포함 빌드 (application.yml 없이 환경변수로 DB/JWT 주입)
+      - name: Build (tests use RDS & JWT)
         env:
           SPRING_DATASOURCE_URL: jdbc:postgresql://${{ secrets.DB_HOST }}:${{ secrets.DB_PORT }}/${{ secrets.DB_NAME }}?sslmode=require
           SPRING_DATASOURCE_USERNAME: ${{ secrets.DB_USER }}
           SPRING_DATASOURCE_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
         run: ./gradlew clean build --stacktrace --info
 
       - name: Log in to Docker Hub
@@ -73,18 +65,19 @@ jobs:
             sudo docker stop web || true
             sudo docker rm web || true
 
-            # ✅ 런타임도 스프링 표준 키로 DB 설정 주입
+            # ✅ 런타임에도 스프링 표준 키로 DB/JWT 주입
             sudo docker run -d --name web \
               -p 8080:8080 \
               --restart unless-stopped \
               -e SPRING_DATASOURCE_URL='jdbc:postgresql://${{ secrets.DB_HOST }}:${{ secrets.DB_PORT }}/${{ secrets.DB_NAME }}?sslmode=require' \
               -e SPRING_DATASOURCE_USERNAME='${{ secrets.DB_USER }}' \
               -e SPRING_DATASOURCE_PASSWORD='${{ secrets.DB_PASSWORD }}' \
+              -e JWT_SECRET='${{ secrets.JWT_SECRET }}' \
               "$IMAGE"
 
             sudo docker image prune -a -f
 
-      # (옵션) 실패해도 테스트 리포트 다운로드 가능하게 아티팩트 업로드
+      # (옵션) 실패해도 테스트 리포트 확인 가능하게 업로드
       - name: Upload test report
         if: always()
         uses: actions/upload-artifact@v4
