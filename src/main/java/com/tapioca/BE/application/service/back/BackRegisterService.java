@@ -9,6 +9,7 @@ import com.tapioca.BE.config.exception.CustomException;
 import com.tapioca.BE.config.exception.ErrorCode;
 import com.tapioca.BE.domain.model.project.BackEnd;
 import com.tapioca.BE.domain.port.in.usecase.back.BackRegisterUseCase;
+import com.tapioca.BE.domain.port.in.usecase.back.BackUpdateUseCase;
 import com.tapioca.BE.domain.port.out.repository.backend.BackRepository;
 import com.tapioca.BE.domain.port.out.repository.team.TeamRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,14 +24,26 @@ public class BackRegisterService implements BackRegisterUseCase {
     private final BackRepository backRepository;
     private final BackEndMapper backMapper;
     private final TeamRepository teamRepository;
+    private final BackUpdateUseCase backUpdateUseCase;
 
     @Override
     public RegisterResponseDto register(RegisterRequestDto dto) {
 
         BackEnd backend = backMapper.toDomain(dto);
 
+        // soft deleted 되지 않은 backEntity 있으면 중복 처리
         if (backRepository.existsByTeamCode(backend.getTeamCode())) {
             throw new CustomException(ErrorCode.CONFLICT_REGISTERED_BACK);
+        }
+
+        // soft deleted 된 backEntity 있으면 복구
+        if (backRepository.isSoftDeleted(backend.getTeamCode())) {
+            BackEntity backEntity =
+                    backRepository.findByTeamEntity_CodeAndDeletedAtIsNotNull(backend.getTeamCode())
+                            .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_BACK));
+
+            backEntity.restore();
+            return backUpdateUseCase.update(dto);
         }
 
         TeamEntity teamEntity = teamRepository.findByTeamCode(backend.getTeamCode());

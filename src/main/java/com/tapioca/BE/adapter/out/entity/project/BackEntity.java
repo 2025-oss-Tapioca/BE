@@ -19,7 +19,7 @@ public class BackEntity extends BaseEntity {
     @Column(name = "back_id")
     private UUID id;
 
-    @JoinColumn(name = "team_id", nullable = false, unique = true)
+    @JoinColumn(name = "team_id", nullable = false)
     @OneToOne(fetch = FetchType.LAZY)
     private TeamEntity teamEntity;
 

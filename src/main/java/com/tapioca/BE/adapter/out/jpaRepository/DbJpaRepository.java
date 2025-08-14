@@ -10,4 +10,6 @@ public interface DbJpaRepository extends JpaRepository<DbEntity, UUID> {
     public DbEntity save(DbEntity dbEntity);
     public Optional<DbEntity> findByTeamEntity_CodeAndDeletedAtIsNull(String teamCode);
     public boolean existsByTeamEntity_CodeAndDeletedAtIsNull(String teamCode);
+    public boolean existsByTeamEntity_CodeAndDeletedAtIsNotNull(String teamCode);
+    public Optional<DbEntity> findByTeamEntity_CodeAndDeletedAtIsNotNull(String teamCode);
 }

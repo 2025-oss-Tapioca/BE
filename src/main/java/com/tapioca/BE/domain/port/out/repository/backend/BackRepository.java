@@ -11,4 +11,6 @@ public interface BackRepository {
     public BackEntity save(BackEntity backEntity);
     public boolean existsByTeamCode(String teamCode);
     public void delete(BackEntity backEntity);
+    public boolean isSoftDeleted(String teamCode);
+    public Optional<BackEntity> findByTeamEntity_CodeAndDeletedAtIsNotNull(String teamCode);
 }
