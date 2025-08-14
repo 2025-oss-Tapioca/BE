@@ -3,6 +3,7 @@ package com.tapioca.BE.adapter.out.repositoryImpl;
 import com.tapioca.BE.adapter.out.entity.project.BackEntity;
 import com.tapioca.BE.adapter.out.jpaRepository.BackJpaRepository;
 import com.tapioca.BE.domain.port.out.repository.backend.BackRepository;
+import groovy.cli.OptionField;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -29,5 +30,11 @@ public class BackRepositoryImpl implements BackRepository {
 
     @Override
     public void delete(BackEntity backEntity) { backJpaRepository.delete(backEntity); }
+
+    @Override
+    public boolean isSoftDeleted(String teamCode) { return backJpaRepository.existsByTeamEntity_CodeAndDeletedAtIsNotNull(teamCode); }
+
+    @Override
+    public Optional<BackEntity> findByTeamEntity_CodeAndDeletedAtIsNotNull(String teamCode) { return backJpaRepository.findByTeamEntity_CodeAndDeletedAtIsNotNull(teamCode); }
 
 }

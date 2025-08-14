@@ -14,4 +14,6 @@ public interface BackJpaRepository extends JpaRepository<BackEntity, UUID> {
     public BackEntity save(BackEntity backEntity);
     public boolean existsByTeamEntity_CodeAndDeletedAtIsNull(String teamCode);
     public void delete(BackEntity backEntity);
+    public boolean existsByTeamEntity_CodeAndDeletedAtIsNotNull(String teamCode);
+    public Optional<BackEntity> findByTeamEntity_CodeAndDeletedAtIsNotNull(String teamCode);
 }
