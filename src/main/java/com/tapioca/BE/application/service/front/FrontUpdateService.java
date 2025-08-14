@@ -32,6 +32,11 @@ public class FrontUpdateService implements FrontUpdateUseCase {
         Front updated = frontMapper.toDomain(updateRequestDto);
 
         // 수정할 대상
+        // soft deleted 되었는지 확인
+        if (frontRepository.isSoftDeleted(updated.getTeamCode())) {
+            throw new CustomException(ErrorCode.NOT_FOUND_FRONT);
+        }
+
         FrontEntity existingEntity = frontRepository.findByCode(updated.getTeamCode())
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_FRONT));
 

@@ -32,6 +32,11 @@ public class BackUpdateService implements BackUpdateUseCase {
         BackEnd updated = backEndMapper.toDomain(updateRequestDto);
 
         // 수정 대상
+        // soft deleted 되었는지 확인
+        if (backRepository.isSoftDeleted(updated.getTeamCode())) {
+            throw new CustomException(ErrorCode.NOT_FOUND_BACK);
+        }
+
         BackEntity existingEntity = backRepository.findByTeamCode(updated.getTeamCode())
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_BACK));
 
