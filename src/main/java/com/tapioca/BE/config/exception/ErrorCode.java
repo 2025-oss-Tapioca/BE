@@ -44,6 +44,7 @@ public enum ErrorCode {
     ACCESS_DENIED_ERROR("40300", HttpStatus.FORBIDDEN, "액세스 권한이 없습니다."),
     EMPTY_AUTHENTICATION("40301", HttpStatus.FORBIDDEN, "인증 토큰이 비었습니다."),
     ACCESS_DENIED_LEADER("40301", HttpStatus.FORBIDDEN, "당신은 리더가 아닙니다."),
+    ACCESS_DENIED_MEMBER("40302", HttpStatus.FORBIDDEN, "해당 팀에 속해있지 않습니다."),
     INVALID_ROLE("40303", HttpStatus.FORBIDDEN, "권한이 맞지 않습니다."),
 
     /**
