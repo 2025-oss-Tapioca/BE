@@ -1,5 +1,6 @@
 package com.tapioca.BE.application.service.back;
 
+import com.tapioca.BE.application.dto.request.back.DeleteRequestDto;
 import com.tapioca.BE.domain.port.in.usecase.back.BackDeleteUseCase;
 import com.tapioca.BE.domain.port.out.repository.backend.BackRepository;
 import com.tapioca.BE.domain.port.out.repository.team.TeamRepository;
@@ -12,11 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class BackDeleteService implements BackDeleteUseCase {
 
-    private final BackRepository backRepository;
-    private final TeamRepository teamRepository;
-
     @Override
-    public void delete(String teamCode) {
+    public void delete(DeleteRequestDto deleteRequestDto) {
 
 
     }

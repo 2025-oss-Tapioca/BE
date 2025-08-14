@@ -46,6 +46,7 @@ public class BackEndMapper {
         return BackEntity.builder()
                 .id(existing.getId())
                 .teamEntity(teamEntity)
+                .loginPath(updated.getLoginPath())
                 .ec2Url(updated.getEc2Url())
                 .authToken(updated.getAuthToken())
                 .os(updated.getOs())

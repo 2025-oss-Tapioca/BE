@@ -5,6 +5,8 @@ import com.tapioca.BE.adapter.out.entity.user.TeamEntity;
 import com.tapioca.BE.adapter.out.mapper.FrontMapper;
 import com.tapioca.BE.application.dto.request.front.RegisterRequestDto;
 import com.tapioca.BE.application.dto.response.front.RegisterResponseDto;
+import com.tapioca.BE.config.exception.CustomException;
+import com.tapioca.BE.config.exception.ErrorCode;
 import com.tapioca.BE.domain.model.project.Front;
 import com.tapioca.BE.domain.port.in.usecase.front.FrontRegisterUseCase;
 import com.tapioca.BE.domain.port.in.usecase.front.FrontUpdateUseCase;
@@ -29,22 +31,26 @@ public class FrontUpdateService implements FrontUpdateUseCase {
         // 수정한 내용
         Front updated = frontMapper.toDomain(updateRequestDto);
 
-        TeamEntity teamEntity = teamRepository.findByTeamCode(updated.getTeamCode());
-
         // 수정할 대상
-        FrontEntity existingEntity = frontRepository.findByCode(teamEntity.getCode());
+        FrontEntity existingEntity = frontRepository.findByCode(updated.getTeamCode());
+
+        if (existingEntity == null) {
+            throw new CustomException(ErrorCode.NOT_FOUND_FRONT);
+        }
+
+        TeamEntity teamEntity = teamRepository.findByTeamCode(updated.getTeamCode());
 
         FrontEntity savedEntity = frontMapper.toEntity(updated, existingEntity, teamEntity);
         frontRepository.save(savedEntity);
 
         return new RegisterResponseDto(
-                savedEntity.getTeamEntity().getCode(),
-                savedEntity.getEc2Host(),
-                savedEntity.getAuthToken(),
-                savedEntity.getEntryPoint(),
-                savedEntity.getOs(),
-                savedEntity.getEnv(),
-                savedEntity.getProtocol()
+                updated.getTeamCode(),
+                updated.getEc2Host(),
+                updated.getAuthToken(),
+                updated.getEntryPoint(),
+                updated.getOs(),
+                updated.getEnv(),
+                updated.getProtocol()
         );
     }
 }

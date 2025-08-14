@@ -61,6 +61,10 @@ public enum ErrorCode {
     NOT_FOUND_TEAM("40409",HttpStatus.NOT_FOUND, "팀이 존재하지 않습니다."),
     NOT_FOUND_TYPE("40410",HttpStatus.NOT_FOUND, "TYPE이 존재하지 않습니다."),
     NOT_FOUND_RESULT("40411",HttpStatus.NOT_FOUND, "RESULT가 존재하지 않습니다."),
+    NOT_FOUND_BACK("40412",HttpStatus.NOT_FOUND, "팀에 해당하는 백엔드 서버 정보가 존재하지 않습니다."),
+    NOT_FOUND_FRONT("40413",HttpStatus.NOT_FOUND, "팀에 해당하는 프론트 서버 정보가 존재하지 않습니다."),
+    NOT_FOUND_DB("40414",HttpStatus.NOT_FOUND, "팀에 해당하는 데이터베이스 정보가 존재하지 않습니다."),
+    NOT_FOUND_GITHUB("40415",HttpStatus.NOT_FOUND, "팀에 해당하는 깃허브 정보가 존재하지 않습니다."),
 
     NOT_FOUND_ATTRIBUTE("40410", HttpStatus.NOT_FOUND, "존재하지 않는 속성"),
 
