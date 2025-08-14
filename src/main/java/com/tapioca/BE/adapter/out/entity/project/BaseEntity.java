@@ -17,14 +17,15 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @SuperBuilder
 public class BaseEntity {
-    @Column(updatable = false)
+    @Column(name = "created_at", updatable = false)
     @CreationTimestamp
     protected LocalDateTime createdAt;
 
+    @Column(name = "updated_at")
     @UpdateTimestamp
     protected LocalDateTime updatedAt;
 
-    @Column(nullable = true)
+    @Column(name = "deleted_at", nullable = true)
     protected LocalDateTime deletedAt;
 
     public void delete() {

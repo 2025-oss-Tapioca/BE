@@ -1,7 +1,9 @@
 package com.tapioca.BE.adapter.in.controller;
 
+import com.tapioca.BE.application.dto.request.common.DeleteServerRequestDto;
 import com.tapioca.BE.application.dto.request.front.RegisterRequestDto;
 import com.tapioca.BE.config.common.CommonResponseDto;
+import com.tapioca.BE.domain.port.in.usecase.front.FrontDeleteUseCase;
 import com.tapioca.BE.domain.port.in.usecase.front.FrontRegisterUseCase;
 import com.tapioca.BE.domain.port.in.usecase.front.FrontUpdateUseCase;
 import lombok.RequiredArgsConstructor;
@@ -14,12 +16,21 @@ public class FrontController {
 
     private final FrontRegisterUseCase frontRegisterUseCase;
     private final FrontUpdateUseCase frontUpdateUseCase;
+    private final FrontDeleteUseCase frontDeleteUseCase;
 
     @PostMapping
     public CommonResponseDto<?> frontRegister(
             @RequestBody RegisterRequestDto registerRequestDto
     ) {
         frontRegisterUseCase.register(registerRequestDto);
+        return CommonResponseDto.created(null);
+    }
+
+    @DeleteMapping
+    public CommonResponseDto<?> frontDelete(
+            @RequestBody DeleteServerRequestDto deleteServerRequestDto
+    ) {
+        frontDeleteUseCase.delete(deleteServerRequestDto);
         return CommonResponseDto.created(null);
     }
 

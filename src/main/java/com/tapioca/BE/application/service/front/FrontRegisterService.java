@@ -40,13 +40,13 @@ public class FrontRegisterService implements FrontRegisterUseCase {
         frontRepository.save(frontEntity);
 
         return new RegisterResponseDto(
-                frontEntity.getTeamEntity().getCode(),
-                frontEntity.getEc2Host(),
-                frontEntity.getAuthToken(),
-                frontEntity.getEntryPoint(),
-                frontEntity.getOs(),
-                frontEntity.getEnv(),
-                frontEntity.getProtocol()
+                front.getTeamCode(),
+                front.getEc2Host(),
+                front.getAuthToken(),
+                front.getEntryPoint(),
+                front.getOs(),
+                front.getEnv(),
+                front.getProtocol()
         );
     }
 }

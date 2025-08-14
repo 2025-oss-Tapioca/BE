@@ -6,6 +6,8 @@ import com.tapioca.BE.domain.port.out.repository.front.FrontRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 @RequiredArgsConstructor
 public class FrontRepositoryImpl implements FrontRepository {
@@ -16,8 +18,8 @@ public class FrontRepositoryImpl implements FrontRepository {
     public FrontEntity save(FrontEntity frontEntity) { return frontJpaRepository.save(frontEntity); }
 
     @Override
-    public FrontEntity findByCode(String teamCode) { return frontJpaRepository.findByTeamEntity_code(teamCode); }
+    public Optional<FrontEntity> findByCode(String teamCode) { return frontJpaRepository.findByTeamEntity_CodeAndDeletedAtIsNull(teamCode); }
 
     @Override
-    public boolean existsByCode(String teamCode) { return frontJpaRepository.existsByTeamEntity_code(teamCode); }
+    public boolean existsByCode(String teamCode) { return frontJpaRepository.existsByTeamEntity_CodeAndDeletedAtIsNull(teamCode); }
 }

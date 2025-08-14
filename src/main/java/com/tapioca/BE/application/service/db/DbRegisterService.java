@@ -41,15 +41,15 @@ public class DbRegisterService implements DbRegisterUseCase {
         dbRepository.save(dbEntity);
 
         return new RegisterResponseDto(
-                dbEntity.getTeamEntity().getCode(),
-                dbEntity.getAddress(),
-                dbEntity.getUser(),
-                dbEntity.getPassword(),
-                dbEntity.getName(),
-                dbEntity.getPort(),
-                dbEntity.getRdsInstanceId(),
-                dbEntity.getAwsRegion(),
-                dbEntity.getRoleArn()
+                db.getTeamCode(),
+                db.getDbAddress(),
+                db.getDbUser(),
+                db.getPassword(),
+                db.getDbName(),
+                db.getDbPort(),
+                db.getRdsInstanceId(),
+                db.getAwsRegion(),
+                db.getRoleArn()
         );
     }
 }

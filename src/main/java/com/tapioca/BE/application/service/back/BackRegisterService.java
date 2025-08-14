@@ -39,12 +39,12 @@ public class BackRegisterService implements BackRegisterUseCase {
         backRepository.save(savedEntity);
 
         return new RegisterResponseDto(
-                savedEntity.getTeamEntity().getCode(),
-                savedEntity.getLoginPath(),
-                savedEntity.getEc2Url(),
-                savedEntity.getAuthToken(),
-                savedEntity.getOs(),
-                savedEntity.getEnv()
+                backend.getTeamCode(),
+                backend.getLoginPath(),
+                backend.getEc2Url(),
+                backend.getAuthToken(),
+                backend.getOs(),
+                backend.getEnv()
         );
     }
 }
