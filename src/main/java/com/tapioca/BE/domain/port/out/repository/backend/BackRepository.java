@@ -6,5 +6,7 @@ import java.util.UUID;
 
 public interface BackRepository {
     public BackEntity findByTeamEntity_Id(UUID teamId);
+    public BackEntity findByTeamCode(String teamCode);
     public BackEntity save(BackEntity backEntity);
+    public boolean existsByTeamCode(String teamCode);
 }

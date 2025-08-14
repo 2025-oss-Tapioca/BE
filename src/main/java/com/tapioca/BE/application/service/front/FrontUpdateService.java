@@ -9,6 +9,7 @@ import com.tapioca.BE.config.exception.CustomException;
 import com.tapioca.BE.config.exception.ErrorCode;
 import com.tapioca.BE.domain.model.project.Front;
 import com.tapioca.BE.domain.port.in.usecase.front.FrontRegisterUseCase;
+import com.tapioca.BE.domain.port.in.usecase.front.FrontUpdateUseCase;
 import com.tapioca.BE.domain.port.out.repository.front.FrontRepository;
 import com.tapioca.BE.domain.port.out.repository.team.TeamRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,35 +19,38 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class FrontRegisterService implements FrontRegisterUseCase {
+public class FrontUpdateService implements FrontUpdateUseCase {
 
     private final FrontRepository frontRepository;
     private final FrontMapper frontMapper;
     private final TeamRepository teamRepository;
 
     @Override
-    public RegisterResponseDto register(RegisterRequestDto dto) {
+    public RegisterResponseDto update(RegisterRequestDto updateRequestDto) {
 
-        Front front = frontMapper.toDomain(dto);
+        // 수정한 내용
+        Front updated = frontMapper.toDomain(updateRequestDto);
 
-        // 중복 등록 체크
-        if (frontRepository.existsByCode(front.getTeamCode())) {
-            throw new CustomException(ErrorCode.CONFLICT_REGISTERED_FRONT);
+        // 수정할 대상
+        FrontEntity existingEntity = frontRepository.findByCode(updated.getTeamCode());
+
+        if (existingEntity == null) {
+            throw new CustomException(ErrorCode.NOT_FOUND_FRONT);
         }
 
-        TeamEntity teamEntity = teamRepository.findByTeamCode(front.getTeamCode());
+        TeamEntity teamEntity = teamRepository.findByTeamCode(updated.getTeamCode());
 
-        FrontEntity frontEntity = frontMapper.toEntity(front, teamEntity);
-        frontRepository.save(frontEntity);
+        FrontEntity savedEntity = frontMapper.toEntity(updated, existingEntity, teamEntity);
+        frontRepository.save(savedEntity);
 
         return new RegisterResponseDto(
-                frontEntity.getTeamEntity().getCode(),
-                frontEntity.getEc2Host(),
-                frontEntity.getAuthToken(),
-                frontEntity.getEntryPoint(),
-                frontEntity.getOs(),
-                frontEntity.getEnv(),
-                frontEntity.getProtocol()
+                updated.getTeamCode(),
+                updated.getEc2Host(),
+                updated.getAuthToken(),
+                updated.getEntryPoint(),
+                updated.getOs(),
+                updated.getEnv(),
+                updated.getProtocol()
         );
     }
 }

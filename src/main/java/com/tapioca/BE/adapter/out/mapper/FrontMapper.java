@@ -31,4 +31,18 @@ public class FrontMapper {
                 .protocol(front.getProtocol())
                 .build();
     }
+
+    // front update
+    public FrontEntity toEntity(Front front, FrontEntity existing, TeamEntity teamEntity) {
+        return FrontEntity.builder()
+                .id(existing.getId())
+                .teamEntity(teamEntity)
+                .ec2Host(front.getEc2Host())
+                .authToken(front.getAuthToken())
+                .entryPoint(front.getEntryPoint())
+                .os(front.getOs())
+                .env(front.getEnv())
+                .protocol(front.getProtocol())
+                .build();
+    }
 }

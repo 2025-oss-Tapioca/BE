@@ -8,8 +8,9 @@ import com.tapioca.BE.application.dto.response.back.RegisterResponseDto;
 import com.tapioca.BE.config.exception.CustomException;
 import com.tapioca.BE.config.exception.ErrorCode;
 import com.tapioca.BE.domain.model.project.BackEnd;
-import com.tapioca.BE.domain.port.in.usecase.back.BackRegisterUseCase;
+import com.tapioca.BE.domain.port.in.usecase.back.BackUpdateUseCase;
 import com.tapioca.BE.domain.port.out.repository.backend.BackRepository;
+import com.tapioca.BE.domain.port.out.repository.github.GithubRepository;
 import com.tapioca.BE.domain.port.out.repository.team.TeamRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,33 +19,38 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class BackRegisterService implements BackRegisterUseCase {
+public class BackUpdateService implements BackUpdateUseCase {
 
     private final BackRepository backRepository;
-    private final BackEndMapper backMapper;
+    private final BackEndMapper backEndMapper;
     private final TeamRepository teamRepository;
 
     @Override
-    public RegisterResponseDto register(RegisterRequestDto dto) {
+    public RegisterResponseDto update(RegisterRequestDto updateRequestDto) {
 
-        BackEnd backend = backMapper.toDomain(dto);
+        // 수정한 내용
+        BackEnd updated = backEndMapper.toDomain(updateRequestDto);
 
-        if (backRepository.existsByTeamCode(backend.getTeamCode())) {
-            throw new CustomException(ErrorCode.CONFLICT_REGISTERED_BACK);
+        // 수정 대상
+        BackEntity existingEntity = backRepository.findByTeamCode(updated.getTeamCode());
+
+        // 예외 처리
+        if (existingEntity == null) {
+            throw new CustomException(ErrorCode.NOT_FOUND_BACK);
         }
 
-        TeamEntity teamEntity = teamRepository.findByTeamCode(backend.getTeamCode());
+        TeamEntity teamEntity = teamRepository.findByTeamCode(updated.getTeamCode());
 
-        BackEntity savedEntity = backMapper.toEntity(backend, teamEntity);
+        BackEntity savedEntity = backEndMapper.toEntity(updated, existingEntity, teamEntity);
         backRepository.save(savedEntity);
 
         return new RegisterResponseDto(
-                savedEntity.getTeamEntity().getCode(),
-                savedEntity.getLoginPath(),
-                savedEntity.getEc2Url(),
-                savedEntity.getAuthToken(),
-                savedEntity.getOs(),
-                savedEntity.getEnv()
+                updated.getTeamCode(),
+                updated.getLoginPath(),
+                updated.getEc2Url(),
+                updated.getAuthToken(),
+                updated.getOs(),
+                updated.getEnv()
         );
     }
 }

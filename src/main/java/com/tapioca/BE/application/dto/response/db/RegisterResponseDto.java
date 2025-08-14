@@ -3,7 +3,7 @@ package com.tapioca.BE.application.dto.response.db;
 import java.util.UUID;
 
 public record RegisterResponseDto(
-        String teamId,
+        String teamCode,
         String dbAddress,
         String dbUser,
         String password,

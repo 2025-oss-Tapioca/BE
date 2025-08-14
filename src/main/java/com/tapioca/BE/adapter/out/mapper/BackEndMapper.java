@@ -40,4 +40,17 @@ public class BackEndMapper {
                 .env(backEnd.getEnv())
                 .build();
     }
+
+    // BackEnd update
+    public BackEntity toEntity(BackEnd updated, BackEntity existing, TeamEntity teamEntity) {
+        return BackEntity.builder()
+                .id(existing.getId())
+                .teamEntity(teamEntity)
+                .loginPath(updated.getLoginPath())
+                .ec2Url(updated.getEc2Url())
+                .authToken(updated.getAuthToken())
+                .os(updated.getOs())
+                .env(updated.getEnv())
+                .build();
+    }
 }
