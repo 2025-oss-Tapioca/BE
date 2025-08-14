@@ -8,7 +8,7 @@ import com.tapioca.BE.application.dto.response.db.RegisterResponseDto;
 import com.tapioca.BE.config.exception.CustomException;
 import com.tapioca.BE.config.exception.ErrorCode;
 import com.tapioca.BE.domain.model.project.DB;
-import com.tapioca.BE.domain.port.in.usecase.db.DbRegisterUseCase;
+import com.tapioca.BE.domain.port.in.usecase.db.DbUpdateUseCase;
 import com.tapioca.BE.domain.port.out.repository.db.DbRepository;
 import com.tapioca.BE.domain.port.out.repository.team.TeamRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,38 +18,40 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class DbRegisterService implements DbRegisterUseCase {
+public class DbUpdateService implements DbUpdateUseCase {
 
     private final DbRepository dbRepository;
     private final DbMapper dbMapper;
     private final TeamRepository teamRepository;
 
     @Override
-    public RegisterResponseDto register(RegisterRequestDto dbRequestDto) {
+    public RegisterResponseDto update(RegisterRequestDto registerRequestDto) {
 
-        // 도메인으로 바꾸기
-        DB db = dbMapper.toDomain(dbRequestDto);
+        // 수정한 내용
+        DB updated = dbMapper.toDomain(registerRequestDto);
 
-        if (dbRepository.existsByTeamCode(db.getTeamCode())) {
-            throw new CustomException(ErrorCode.CONFLICT_REGISTERED_DB);
+        // 수정 대상
+        DbEntity existingEntity = dbRepository.findByTeamCode(updated.getTeamCode());
+
+        if (existingEntity == null) {
+            throw new CustomException(ErrorCode.NOT_FOUND_DB);
         }
 
-        TeamEntity teamEntity = teamRepository.findByTeamCode(db.getTeamCode());
+        TeamEntity teamEntity = teamRepository.findByTeamCode(updated.getTeamCode());
 
-        // 엔티티로 변환해서 DB에 저장
-        DbEntity dbEntity = dbMapper.toEntity(db, teamEntity);
-        dbRepository.save(dbEntity);
+        DbEntity savedEntity = dbMapper.toEntity(updated, existingEntity, teamEntity);
+        dbRepository.save(savedEntity);
 
         return new RegisterResponseDto(
-                dbEntity.getTeamEntity().getCode(),
-                dbEntity.getAddress(),
-                dbEntity.getUser(),
-                dbEntity.getPassword(),
-                dbEntity.getName(),
-                dbEntity.getPort(),
-                dbEntity.getRdsInstanceId(),
-                dbEntity.getAwsRegion(),
-                dbEntity.getRoleArn()
+                updated.getTeamCode(),
+                updated.getDbAddress(),
+                updated.getDbUser(),
+                updated.getPassword(),
+                updated.getDbName(),
+                updated.getDbPort(),
+                updated.getRdsInstanceId(),
+                updated.getAwsRegion(),
+                updated.getRoleArn()
         );
     }
 }

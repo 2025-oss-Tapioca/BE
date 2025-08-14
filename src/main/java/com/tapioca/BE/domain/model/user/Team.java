@@ -1,27 +1,14 @@
 package com.tapioca.BE.domain.model.user;
 
-import java.util.UUID;
+import lombok.Getter;
 
+@Getter
 public class Team {
-    private final UUID id;
     private final String name;
-    private final String code;
+    private final String description;
 
-    public Team(UUID id, String name, String code) {
-        this.id   = id;
+    public Team(String name, String description) {
         this.name = name;
-        this.code = code;
-    }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getCode() {
-        return code;
+        this.description = description;
     }
 }

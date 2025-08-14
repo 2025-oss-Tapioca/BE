@@ -35,4 +35,20 @@ public class DbMapper {
                 .roleArn(db.getRoleArn())
                 .build();
     }
+
+    // DB update
+    public DbEntity toEntity(DB updated, DbEntity existing, TeamEntity teamEntity) {
+        return DbEntity.builder()
+                .id(existing.getId())
+                .teamEntity(teamEntity)
+                .address(updated.getDbAddress())
+                .user(updated.getDbUser())
+                .password(updated.getPassword())
+                .name(updated.getDbName())
+                .port(updated.getDbPort())
+                .rdsInstanceId(updated.getRdsInstanceId())
+                .awsRegion(updated.getAwsRegion())
+                .roleArn(updated.getRoleArn())
+                .build();
+    }
 }

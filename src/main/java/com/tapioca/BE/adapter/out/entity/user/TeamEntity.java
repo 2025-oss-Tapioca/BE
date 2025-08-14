@@ -1,16 +1,13 @@
 package com.tapioca.BE.adapter.out.entity.user;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.UUID;
 
 @Entity
 @Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -23,6 +20,9 @@ public class TeamEntity {
 
     @Column(name = "team_name")
     private String name;
+
+    @Column(name = "team_description")
+    private String description;
 
     @Column(name = "team_code")
     private String code;

@@ -44,6 +44,7 @@ public enum ErrorCode {
     ACCESS_DENIED_ERROR("40300", HttpStatus.FORBIDDEN, "액세스 권한이 없습니다."),
     EMPTY_AUTHENTICATION("40301", HttpStatus.FORBIDDEN, "인증 토큰이 비었습니다."),
     ACCESS_DENIED_LEADER("40301", HttpStatus.FORBIDDEN, "당신은 리더가 아닙니다."),
+    ACCESS_DENIED_MEMBER("40302", HttpStatus.FORBIDDEN, "해당 팀에 속해있지 않습니다."),
     INVALID_ROLE("40303", HttpStatus.FORBIDDEN, "권한이 맞지 않습니다."),
 
     /**
@@ -61,6 +62,10 @@ public enum ErrorCode {
     NOT_FOUND_TEAM("40409",HttpStatus.NOT_FOUND, "팀이 존재하지 않습니다."),
     NOT_FOUND_TYPE("40410",HttpStatus.NOT_FOUND, "TYPE이 존재하지 않습니다."),
     NOT_FOUND_RESULT("40411",HttpStatus.NOT_FOUND, "RESULT가 존재하지 않습니다."),
+    NOT_FOUND_BACK("40412",HttpStatus.NOT_FOUND, "팀에 해당하는 백엔드 서버 정보가 존재하지 않습니다."),
+    NOT_FOUND_FRONT("40413",HttpStatus.NOT_FOUND, "팀에 해당하는 프론트 서버 정보가 존재하지 않습니다."),
+    NOT_FOUND_DB("40414",HttpStatus.NOT_FOUND, "팀에 해당하는 데이터베이스 정보가 존재하지 않습니다."),
+    NOT_FOUND_GITHUB("40415",HttpStatus.NOT_FOUND, "팀에 해당하는 깃허브 정보가 존재하지 않습니다."),
 
     NOT_FOUND_ATTRIBUTE("40410", HttpStatus.NOT_FOUND, "존재하지 않는 속성"),
 
@@ -77,6 +82,10 @@ public enum ErrorCode {
     CONFLICT_TEAM_COUNT("40901", HttpStatus.CONFLICT, "팀 정원을 초과하였습니다."),
     CONFLICT_TEAM_BUILDING("40902", HttpStatus.CONFLICT, "이미 팀에 가입되어 있어 다른 팀을 생성하거나 가입할 수 없습니다.."),
     CONFLICT_ADMIN_ID("40903", HttpStatus.CONFLICT, "로그인 실패"),
+    CONFLICT_REGISTERED_FRONT("40904", HttpStatus.CONFLICT, "프론트 서버 등록은 팀 당 1번만 가능합니다."),
+    CONFLICT_REGISTERED_BACK("40905", HttpStatus.CONFLICT, "백엔드 서버 등록은 팀 당 1번만 가능합니다."),
+    CONFLICT_REGISTERED_DB("40906", HttpStatus.CONFLICT, "데이터베이스 등록은 팀 당 1번만 가능합니다."),
+    CONFLICT_REGISTERED_GITHUB("40907", HttpStatus.CONFLICT, "깃허브 등록은 팀 당 1번만 가능합니다."),
 
     /**
      * 500** Server Error

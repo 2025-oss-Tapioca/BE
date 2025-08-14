@@ -11,6 +11,7 @@ public interface TeamUseCase {
     List<TeamsDto> getTeam(UUID userId);
     TeamResponseDto getTeamInfo(UUID userId, String teamCode);
     TeamResponseDto createTeam(UUID userId, CreateTeamRequestDto createTeamRequestDto);
+    TeamResponseDto updateTeam(UUID userId, String teamCode, CreateTeamRequestDto createTeamRequestDto);
     TeamResponseDto joinTeam(UUID userId, String teamCode);
     void leaveTeam(UUID userId, String teamCode);
 }

@@ -4,4 +4,6 @@ import com.tapioca.BE.adapter.out.entity.project.FrontEntity;
 
 public interface FrontRepository {
     public FrontEntity save(FrontEntity frontEntity);
+    public FrontEntity findByCode(String teamCode);
+    public boolean existsByCode(String teamCode);
 }

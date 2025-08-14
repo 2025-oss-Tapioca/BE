@@ -36,6 +36,11 @@ public class TeamController {
         return CommonResponseDto.ok(teamUseCase.createTeam(user.getUserId(), requestDto));
     }
 
+    @PatchMapping("/update/{teamCode}")
+    public CommonResponseDto<?> updateTema(@AuthenticationPrincipal CustomUserDetails user, @PathVariable String teamCode, @RequestBody CreateTeamRequestDto requestDto) {
+        return CommonResponseDto.ok(teamUseCase.updateTeam(user.getUserId(), teamCode, requestDto));
+    }
+
     @PostMapping("/join")
     public CommonResponseDto<?> joinTeam(
             @AuthenticationPrincipal CustomUserDetails user,
