@@ -1,7 +1,5 @@
 package com.tapioca.BE.adapter.out.entity.erd;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
@@ -29,7 +27,6 @@ public class DiagramEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="erd_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonBackReference
     private ErdEntity erdEntity;
 
     @OneToMany(mappedBy = "diagram",
@@ -37,6 +34,10 @@ public class DiagramEntity {
             orphanRemoval = true,
             fetch = FetchType.LAZY)
     @Builder.Default
-    @JsonManagedReference
     private Set<AttributeEntity> attributes = new HashSet<>();
+
+    public void addAttribute(AttributeEntity attribute) {
+        this.attributes.add(attribute);
+        attribute.setDiagram(this);
+    }
 }

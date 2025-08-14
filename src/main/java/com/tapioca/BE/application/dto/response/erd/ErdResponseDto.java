@@ -11,7 +11,6 @@ import java.util.stream.Collectors;
 
 public record ErdResponseDto(
         UUID erdId,
-        String erdName,
         List<DiagramResponseDto> diagrams,
         List<AttributeLinkResponseDto> attributeLinks
 ) {
@@ -26,7 +25,6 @@ public record ErdResponseDto(
 
         return new ErdResponseDto(
                 erdEntity.getId(),
-                erdEntity.getName(),
                 diagramDtos,
                 linkDtos
         );

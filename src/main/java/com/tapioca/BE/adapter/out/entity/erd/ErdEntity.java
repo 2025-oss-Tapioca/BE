@@ -1,7 +1,5 @@
 package com.tapioca.BE.adapter.out.entity.erd;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.tapioca.BE.adapter.out.entity.user.TeamEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -25,13 +23,9 @@ public class ErdEntity {
     @Column(name = "erd_id")
     private UUID id;
 
-    @Column(name = "erd_name")
-    private String name;
-
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "team_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonBackReference
     private TeamEntity teamEntity;
 
     @OneToMany(mappedBy = "erdEntity",
@@ -39,7 +33,6 @@ public class ErdEntity {
             orphanRemoval = true,
             fetch = FetchType.LAZY)
     @Builder.Default
-    @JsonManagedReference
     private Set<DiagramEntity> diagrams = new HashSet<>();
 
     @OneToMany(mappedBy = "erdEntity",
@@ -47,6 +40,15 @@ public class ErdEntity {
             orphanRemoval = true,
             fetch = FetchType.LAZY)
     @Builder.Default
-    @JsonManagedReference
     private Set<AttributeLinkEntity> attributeLinks = new HashSet<>();
+
+    public void addDiagram(DiagramEntity diagram) {
+        this.diagrams.add(diagram);
+        diagram.setErdEntity(this);
+    }
+
+    public void addAttributeLink(AttributeLinkEntity attributeLink) {
+        this.attributeLinks.add(attributeLink);
+        attributeLink.setErdEntity(this);
+    }
 }
