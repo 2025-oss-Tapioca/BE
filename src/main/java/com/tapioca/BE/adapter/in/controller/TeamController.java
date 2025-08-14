@@ -1,7 +1,7 @@
 package com.tapioca.BE.adapter.in.controller;
 
 import com.tapioca.BE.application.dto.request.team.CreateTeamRequestDto;
-import com.tapioca.BE.application.dto.request.team.JoinTeamRequestDto;
+import com.tapioca.BE.application.dto.request.team.TeamRequestDto;
 import com.tapioca.BE.application.dto.response.team.TeamResponseDto;
 import com.tapioca.BE.config.common.CommonResponseDto;
 import com.tapioca.BE.config.exception.CustomException;
@@ -44,7 +44,7 @@ public class TeamController {
     @PostMapping("/join")
     public CommonResponseDto<?> joinTeam(
             @AuthenticationPrincipal CustomUserDetails user,
-            @Valid @RequestBody JoinTeamRequestDto request
+            @Valid @RequestBody TeamRequestDto request
     ) {
         TeamResponseDto response = teamUseCase.joinTeam(user.getUserId(), request.teamCode());
         if (response == null) {
@@ -53,11 +53,11 @@ public class TeamController {
         return CommonResponseDto.ok(response);
     }
 
-    @DeleteMapping("/{teamCode}/leave")
+    @DeleteMapping("/leave")
     public CommonResponseDto<?> leaveTeam(
             @AuthenticationPrincipal CustomUserDetails user,
-            @PathVariable String teamCode) {
-        teamUseCase.leaveTeam(user.getUserId(), teamCode);
+            @RequestBody TeamRequestDto request) {
+        teamUseCase.leaveTeam(user.getUserId(), request.teamCode());
         return CommonResponseDto.ok(null);
     }
 }

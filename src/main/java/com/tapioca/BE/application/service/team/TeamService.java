@@ -166,8 +166,18 @@ public class TeamService implements TeamUseCase {
     @Override
     public void leaveTeam(UUID userId,  String teamCode) {
         MemberEntity member = memberJpaRepository.findByUserEntity_IdAndTeamEntity_Code(userId, teamCode)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MEMBER));
+
+        TeamEntity teamToDelete = member.getTeamEntity();
 
         memberJpaRepository.delete(member);
+
+        memberJpaRepository.flush();
+
+        long remainingMembers = memberJpaRepository.countByTeamEntity_Id(teamToDelete.getId());
+
+        if (remainingMembers == 0) {
+            teamJpaRepository.delete(teamToDelete);
+        }
     }
 }
