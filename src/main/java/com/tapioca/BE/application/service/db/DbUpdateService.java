@@ -31,11 +31,8 @@ public class DbUpdateService implements DbUpdateUseCase {
         DB updated = dbMapper.toDomain(registerRequestDto);
 
         // 수정 대상
-        DbEntity existingEntity = dbRepository.findByTeamCode(updated.getTeamCode());
-
-        if (existingEntity == null) {
-            throw new CustomException(ErrorCode.NOT_FOUND_DB);
-        }
+        DbEntity existingEntity = dbRepository.findByTeamCode(updated.getTeamCode())
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_DB));
 
         TeamEntity teamEntity = teamRepository.findByTeamCode(updated.getTeamCode());
 

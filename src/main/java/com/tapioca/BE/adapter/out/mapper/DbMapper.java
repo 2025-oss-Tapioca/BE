@@ -2,7 +2,9 @@ package com.tapioca.BE.adapter.out.mapper;
 
 import com.tapioca.BE.adapter.out.entity.project.DbEntity;
 import com.tapioca.BE.adapter.out.entity.user.TeamEntity;
+import com.tapioca.BE.application.dto.request.common.DeleteServerRequestDto;
 import com.tapioca.BE.application.dto.request.db.RegisterRequestDto;
+import com.tapioca.BE.domain.model.project.BackEnd;
 import com.tapioca.BE.domain.model.project.DB;
 import org.springframework.stereotype.Component;
 
@@ -19,6 +21,20 @@ public class DbMapper {
                 registerRequestDto.rdsInstanceId(),
                 registerRequestDto.awsRegion(),
                 registerRequestDto.roleArn()
+        );
+    }
+
+    public DB toDomain(DeleteServerRequestDto dto) {
+        return new DB(
+                dto.teamCode(),
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
         );
     }
 

@@ -6,6 +6,8 @@ import com.tapioca.BE.domain.port.out.repository.db.DbRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 @RequiredArgsConstructor
 public class DbRepositoryImpl implements DbRepository {
@@ -16,9 +18,9 @@ public class DbRepositoryImpl implements DbRepository {
     public DbEntity save(DbEntity dbEntity) { return jpaRepository.save(dbEntity); }
 
     @Override
-    public DbEntity findByTeamCode(String teamCode) { return jpaRepository.findByTeamEntity_code(teamCode); }
+    public Optional<DbEntity> findByTeamCode(String teamCode) { return jpaRepository.findByTeamEntity_CodeAndDeletedAtIsNull(teamCode); }
 
     @Override
-    public boolean existsByTeamCode(String teamCode) { return jpaRepository.existsByTeamEntity_code(teamCode); }
+    public boolean existsByTeamCode(String teamCode) { return jpaRepository.existsByTeamEntity_CodeAndDeletedAtIsNull(teamCode); }
 
 }
