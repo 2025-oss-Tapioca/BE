@@ -31,6 +31,11 @@ public class DbUpdateService implements DbUpdateUseCase {
         DB updated = dbMapper.toDomain(registerRequestDto);
 
         // 수정 대상
+        // soft deleted 되었는지 확인
+        if (dbRepository.isSoftDeleted(updated.getTeamCode())) {
+            throw new CustomException(ErrorCode.NOT_FOUND_DB);
+        }
+
         DbEntity existingEntity = dbRepository.findByTeamCode(updated.getTeamCode())
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_DB));
 
