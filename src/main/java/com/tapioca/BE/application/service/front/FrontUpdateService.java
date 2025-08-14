@@ -5,10 +5,9 @@ import com.tapioca.BE.adapter.out.entity.user.TeamEntity;
 import com.tapioca.BE.adapter.out.mapper.FrontMapper;
 import com.tapioca.BE.application.dto.request.front.RegisterRequestDto;
 import com.tapioca.BE.application.dto.response.front.RegisterResponseDto;
-import com.tapioca.BE.config.exception.CustomException;
-import com.tapioca.BE.config.exception.ErrorCode;
 import com.tapioca.BE.domain.model.project.Front;
 import com.tapioca.BE.domain.port.in.usecase.front.FrontRegisterUseCase;
+import com.tapioca.BE.domain.port.in.usecase.front.FrontUpdateUseCase;
 import com.tapioca.BE.domain.port.out.repository.front.FrontRepository;
 import com.tapioca.BE.domain.port.out.repository.team.TeamRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,35 +17,34 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class FrontRegisterService implements FrontRegisterUseCase {
+public class FrontUpdateService implements FrontUpdateUseCase {
 
     private final FrontRepository frontRepository;
     private final FrontMapper frontMapper;
     private final TeamRepository teamRepository;
 
     @Override
-    public RegisterResponseDto register(RegisterRequestDto dto) {
+    public RegisterResponseDto update(RegisterRequestDto updateRequestDto) {
 
-        Front front = frontMapper.toDomain(dto);
+        // 수정한 내용
+        Front updated = frontMapper.toDomain(updateRequestDto);
 
-        // 중복 등록 체크
-        if (frontRepository.existsByCode(front.getTeamCode())) {
-            throw new CustomException(ErrorCode.CONFLICT_REGISTERED_FRONT);
-        }
+        TeamEntity teamEntity = teamRepository.findByTeamCode(updated.getTeamCode());
 
-        TeamEntity teamEntity = teamRepository.findByTeamCode(front.getTeamCode());
+        // 수정할 대상
+        FrontEntity existingEntity = frontRepository.findByCode(teamEntity.getCode());
 
-        FrontEntity frontEntity = frontMapper.toEntity(front, teamEntity);
-        frontRepository.save(frontEntity);
+        FrontEntity savedEntity = frontMapper.toEntity(updated, existingEntity, teamEntity);
+        frontRepository.save(savedEntity);
 
         return new RegisterResponseDto(
-                frontEntity.getTeamEntity().getCode(),
-                frontEntity.getEc2Host(),
-                frontEntity.getAuthToken(),
-                frontEntity.getEntryPoint(),
-                frontEntity.getOs(),
-                frontEntity.getEnv(),
-                frontEntity.getProtocol()
+                savedEntity.getTeamEntity().getCode(),
+                savedEntity.getEc2Host(),
+                savedEntity.getAuthToken(),
+                savedEntity.getEntryPoint(),
+                savedEntity.getOs(),
+                savedEntity.getEnv(),
+                savedEntity.getProtocol()
         );
     }
 }

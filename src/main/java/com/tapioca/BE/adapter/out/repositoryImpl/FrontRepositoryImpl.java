@@ -14,4 +14,10 @@ public class FrontRepositoryImpl implements FrontRepository {
 
     @Override
     public FrontEntity save(FrontEntity frontEntity) { return frontJpaRepository.save(frontEntity); }
+
+    @Override
+    public FrontEntity findByCode(String teamCode) { return frontJpaRepository.findByTeamEntity_code(teamCode); }
+
+    @Override
+    public boolean existsByCode(String teamCode) { return frontJpaRepository.existsByTeamEntity_code(teamCode); }
 }

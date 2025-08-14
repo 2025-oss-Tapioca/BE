@@ -24,10 +24,10 @@ public class BackUpdateService implements BackUpdateUseCase {
     private final TeamRepository teamRepository;
 
     @Override
-    public RegisterResponseDto update(RegisterRequestDto registerRequestDto) {
+    public RegisterResponseDto update(RegisterRequestDto updateRequestDto) {
 
         // 수정한 내용
-        BackEnd updated = backEndMapper.toDomain(registerRequestDto);
+        BackEnd updated = backEndMapper.toDomain(updateRequestDto);
 
         TeamEntity teamEntity = teamRepository.findByTeamCode(updated.getTeamCode());
 

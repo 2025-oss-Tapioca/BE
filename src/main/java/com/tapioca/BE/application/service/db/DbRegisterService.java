@@ -5,6 +5,8 @@ import com.tapioca.BE.adapter.out.entity.user.TeamEntity;
 import com.tapioca.BE.adapter.out.mapper.DbMapper;
 import com.tapioca.BE.application.dto.request.db.RegisterRequestDto;
 import com.tapioca.BE.application.dto.response.db.RegisterResponseDto;
+import com.tapioca.BE.config.exception.CustomException;
+import com.tapioca.BE.config.exception.ErrorCode;
 import com.tapioca.BE.domain.model.project.DB;
 import com.tapioca.BE.domain.port.in.usecase.db.DbRegisterUseCase;
 import com.tapioca.BE.domain.port.out.repository.db.DbRepository;
@@ -25,12 +27,16 @@ public class DbRegisterService implements DbRegisterUseCase {
     @Override
     public RegisterResponseDto register(RegisterRequestDto dbRequestDto) {
 
-        // 4. 도메인으로 바꾸기
+        // 도메인으로 바꾸기
         DB db = dbMapper.toDomain(dbRequestDto);
+
+        if (dbRepository.existsByTeamCode(db.getTeamCode())) {
+            throw new CustomException(ErrorCode.CONFLICT_REGISTERED_DB);
+        }
 
         TeamEntity teamEntity = teamRepository.findByTeamCode(db.getTeamCode());
 
-        // 5. 엔티티로 변환해서 DB에 저장
+        // 엔티티로 변환해서 DB에 저장
         DbEntity dbEntity = dbMapper.toEntity(db, teamEntity);
         dbRepository.save(dbEntity);
 

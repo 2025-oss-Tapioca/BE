@@ -23,4 +23,7 @@ public class BackRepositoryImpl implements BackRepository {
     @Override
     public BackEntity save(BackEntity backEntity) { return backJpaRepository.save(backEntity); }
 
+    @Override
+    public boolean existsByTeamCode(String teamCode) { return backJpaRepository.existsByTeamEntity_code(teamCode); }
+
 }
