@@ -31,10 +31,10 @@ public class ErdService implements ErdUseCase {
     private final ObjectMapper objectMapper;
 
     @Override
-    public ErdResponseDto getErd(UUID userId) {
-        MemberEntity member = memberJpaRepository.findByUserEntity_Id(userId)
+    public ErdResponseDto getErd(UUID userId, String teamCode) {
+        MemberEntity member = memberJpaRepository.findByUserEntity_IdAndTeamEntity_Code(userId, teamCode)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MEMBER));
-        UUID teamId =member.getTeamEntity().getId();
+        UUID teamId = member.getTeamEntity().getId();
 
         ErdEntity erd = erdJpaRepository.findWithAllByTeamEntity_Id(teamId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ERD));
@@ -44,8 +44,8 @@ public class ErdService implements ErdUseCase {
 
     @Override
     @Transactional
-    public ErdResponseDto updateErd(UUID userId, UpdateErdRequestDto request) {
-        UUID teamId = memberJpaRepository.findByUserEntity_Id(userId)
+    public ErdResponseDto updateErd(UUID userId, String teamCode, UpdateErdRequestDto request) {
+        UUID teamId = memberJpaRepository.findByUserEntity_IdAndTeamEntity_Code(userId, teamCode)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MEMBER))
                 .getTeamEntity().getId();
 

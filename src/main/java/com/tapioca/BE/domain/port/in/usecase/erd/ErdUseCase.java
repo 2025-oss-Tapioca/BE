@@ -6,6 +6,6 @@ import com.tapioca.BE.application.dto.response.erd.ErdResponseDto;
 import java.util.UUID;
 
 public interface ErdUseCase {
-    ErdResponseDto getErd(UUID userId);
-    ErdResponseDto updateErd(UUID userId, UpdateErdRequestDto updateErdRequestDto);
+    ErdResponseDto getErd(UUID userId, String teamCode);
+    ErdResponseDto updateErd(UUID userId, String teamCode, UpdateErdRequestDto updateErdRequestDto);
 }

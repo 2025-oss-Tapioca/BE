@@ -14,16 +14,17 @@ import org.springframework.web.bind.annotation.*;
 public class ErdController {
     private final ErdUseCase erdUseCase;
 
-    @GetMapping("")
-    public CommonResponseDto<?> getErd(@AuthenticationPrincipal CustomUserDetails user) {
-        return CommonResponseDto.ok(erdUseCase.getErd(user.getUserId()));
+    @GetMapping("/{teamCode}")
+    public CommonResponseDto<?> getErd(@AuthenticationPrincipal CustomUserDetails user, @PathVariable String teamCode) {
+        return CommonResponseDto.ok(erdUseCase.getErd(user.getUserId(), teamCode));
     }
 
-    @PostMapping("/update")
+    @PostMapping("/update/{teamCode}")
     public CommonResponseDto<?> updateDigrams(
             @AuthenticationPrincipal CustomUserDetails user,
+            @PathVariable String teamCode,
             @RequestBody UpdateErdRequestDto updateDiagramsRequestDto)
     {
-        return CommonResponseDto.ok(erdUseCase.updateErd(user.getUserId(), updateDiagramsRequestDto));
+        return CommonResponseDto.ok(erdUseCase.updateErd(user.getUserId(), teamCode, updateDiagramsRequestDto));
     }
 }
