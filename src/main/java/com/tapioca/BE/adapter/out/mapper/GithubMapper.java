@@ -2,6 +2,7 @@ package com.tapioca.BE.adapter.out.mapper;
 
 import com.tapioca.BE.adapter.out.entity.project.GitHubEntity;
 import com.tapioca.BE.adapter.out.entity.user.TeamEntity;
+import com.tapioca.BE.application.dto.request.common.DeleteServerRequestDto;
 import com.tapioca.BE.application.dto.request.team.GitHubRequestDto;
 import com.tapioca.BE.domain.model.project.GitHub;
 import org.springframework.stereotype.Component;
@@ -25,6 +26,16 @@ public class GithubMapper {
                 gitHubEntity.isPrivate(),
                 gitHubEntity.getAccessToken(),
                 gitHubEntity.getDefaultBranch()
+        );
+    }
+
+    public GitHub toDomain(DeleteServerRequestDto dto) {
+        return new GitHub(
+                dto.teamCode(),
+                null,
+                false,
+                null,
+                null
         );
     }
 

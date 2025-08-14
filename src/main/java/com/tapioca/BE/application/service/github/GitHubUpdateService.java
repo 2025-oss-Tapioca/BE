@@ -8,47 +8,41 @@ import com.tapioca.BE.application.dto.response.team.GitHubResponseDto;
 import com.tapioca.BE.config.exception.CustomException;
 import com.tapioca.BE.config.exception.ErrorCode;
 import com.tapioca.BE.domain.model.project.GitHub;
-import com.tapioca.BE.domain.port.in.usecase.github.GitHubRegisterUseCase;
 import com.tapioca.BE.domain.port.in.usecase.github.GitHubUpdateUseCase;
 import com.tapioca.BE.domain.port.out.repository.github.GithubRepository;
 import com.tapioca.BE.domain.port.out.repository.team.TeamRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class GithubRegisterService implements GitHubRegisterUseCase {
+public class GitHubUpdateService implements GitHubUpdateUseCase {
 
     private final GithubRepository githubRepository;
     private final GithubMapper githubMapper;
     private final TeamRepository teamRepository;
-    private final GitHubUpdateUseCase gitHubUpdateUseCase;
 
     @Override
-    public GitHubResponseDto registerGitHub(GitHubRequestDto gitHubRequestDto) {
+    public GitHubResponseDto update(GitHubRequestDto gitHubRequestDto) {
 
-        GitHub github = githubMapper.toDomain(gitHubRequestDto);
+        // 수정된 내용
+        GitHub updated = githubMapper.toDomain(gitHubRequestDto);
 
-        // soft deleted 되지 않은 githubEntity 있으면 중복 처리
-        if (githubRepository.existsByTeamCode(github.getTeamCode())) {
-            throw new CustomException(ErrorCode.CONFLICT_REGISTERED_GITHUB);
+        // soft deleted 되지 않은 gitHubEntity 있으면 중복 처리
+        if (githubRepository.isSoftDeleted(updated.getTeamCode())) {
+            throw new CustomException(ErrorCode.NOT_FOUND_GITHUB);
         }
 
-        // soft deleted 된 githubEntity 있으면 복구
-        if (githubRepository.isSoftDeleted(github.getTeamCode())) {
-            GitHubEntity githubEntity =
-                    githubRepository.findByTeamEntity_CodeAndDeletedAtIsNotNull(github.getTeamCode())
-                            .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_GITHUB));
+        // 수정할 내용
+        GitHubEntity existingEntity = githubRepository.findByTeamCode(updated.getTeamCode())
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_GITHUB));
 
-            githubEntity.restore();
-            return gitHubUpdateUseCase.update(gitHubRequestDto);
-        }
+        TeamEntity teamEntity = teamRepository.findByTeamCode(updated.getTeamCode());
 
-        TeamEntity teamEntity = teamRepository.findByTeamCode(github.getTeamCode());
-
-        GitHubEntity savedEntity = githubMapper.toEntity(github, teamEntity);
+        GitHubEntity savedEntity = githubMapper.toEntity(updated, existingEntity, teamEntity);
         githubRepository.save(savedEntity);
 
         return new GitHubResponseDto(
