@@ -9,7 +9,7 @@ import java.util.UUID;
 
 @Repository
 public interface BackJpaRepository extends JpaRepository<BackEntity, UUID> {
-    public BackEntity findByTeamEntity_Id(UUID teamId);
+    public BackEntity findByTeamEntity_IdAndDeletedAtIsNull(UUID teamId);
     public Optional<BackEntity> findByTeamEntity_CodeAndDeletedAtIsNull(String teamCode);
     public BackEntity save(BackEntity backEntity);
     public boolean existsByTeamEntity_CodeAndDeletedAtIsNull(String teamCode);

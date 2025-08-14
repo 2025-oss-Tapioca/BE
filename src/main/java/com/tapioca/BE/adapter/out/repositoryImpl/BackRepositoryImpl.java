@@ -16,7 +16,7 @@ public class BackRepositoryImpl implements BackRepository {
     private final BackJpaRepository backJpaRepository;
 
     @Override
-    public BackEntity findByTeamEntity_Id(UUID teamId) { return backJpaRepository.findByTeamEntity_Id(teamId); }
+    public BackEntity findByTeamEntity_Id(UUID teamId) { return backJpaRepository.findByTeamEntity_IdAndDeletedAtIsNull(teamId); }
 
     @Override
     public Optional<BackEntity> findByTeamCode(String teamCode){ return backJpaRepository.findByTeamEntity_CodeAndDeletedAtIsNull(teamCode); }
