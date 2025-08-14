@@ -8,6 +8,7 @@ import com.tapioca.BE.adapter.out.jpaRepository.MemberJpaRepository;
 import com.tapioca.BE.adapter.out.jpaRepository.TeamJpaRepository;
 import com.tapioca.BE.adapter.out.jpaRepository.UserJpaRepository;
 import com.tapioca.BE.adapter.out.mapper.MemberMapper;
+import com.tapioca.BE.adapter.out.mapper.TeamMapper;
 import com.tapioca.BE.application.dto.request.team.CreateTeamRequestDto;
 import com.tapioca.BE.application.dto.response.team.TeamsDto;
 import com.tapioca.BE.application.dto.response.team.TeamResponseDto;
@@ -15,6 +16,7 @@ import com.tapioca.BE.config.exception.CustomException;
 import com.tapioca.BE.config.exception.ErrorCode;
 import com.tapioca.BE.domain.model.user.Member;
 import com.tapioca.BE.domain.model.enumType.MemberRole;
+import com.tapioca.BE.domain.model.user.Team;
 import com.tapioca.BE.domain.port.in.usecase.team.TeamUseCase;
 import com.tapioca.BE.domain.port.out.repository.erd.ErdRepository;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +35,6 @@ public class TeamService implements TeamUseCase {
     private final ErdRepository erdRepository;
     private final UserJpaRepository userJpaRepository;
     private final MemberJpaRepository memberJpaRepository;
-
     @Override
     public List<TeamsDto> getTeam(UUID userId) {
         List<MemberEntity> memberList = memberJpaRepository.findAllByUserEntity_Id(userId);
@@ -56,7 +57,7 @@ public class TeamService implements TeamUseCase {
         MemberEntity memberEntity = memberJpaRepository.findByUserEntity_IdAndTeamEntity_Code(userId, teamCode).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_TEAM));
 
         if (memberEntity == null) {
-            return new TeamResponseDto(null, null, List.of());
+            return new TeamResponseDto(null, null, null, List.of());
         }
 
         Member member = MemberMapper.toDomain(memberEntity);
@@ -72,7 +73,7 @@ public class TeamService implements TeamUseCase {
             return MemberMapper.toDto(me);
         }).toList();
 
-        return new TeamResponseDto(teamEntity.getName(), teamEntity.getCode(), memberDtoList);
+        return new TeamResponseDto(teamEntity.getName(), teamEntity.getDescription(), teamEntity.getCode(), memberDtoList);
     }
 
     @Override
@@ -83,6 +84,7 @@ public class TeamService implements TeamUseCase {
 
         TeamEntity teamEntity = TeamEntity.builder()
                 .name(createTeamRequestDto.teamName())
+                .description(createTeamRequestDto.teamDescription())
                 .code(UUID.randomUUID().toString().substring(0, 8))
                 .build();
         TeamEntity savedTeam = teamJpaRepository.save(teamEntity);
@@ -105,6 +107,32 @@ public class TeamService implements TeamUseCase {
 
         return new TeamResponseDto(
                 savedTeam.getName(),
+                savedTeam.getDescription(),
+                savedTeam.getCode(),
+                memberList
+        );
+    }
+
+    @Override
+    @Transactional
+    public TeamResponseDto updateTeam(UUID userId,  String teamCode, CreateTeamRequestDto createTeamRequestDto) {
+        Team team = TeamMapper.toDomain(createTeamRequestDto);
+        TeamEntity teamEntity = teamJpaRepository.findByCode(teamCode).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_TEAM));
+        memberJpaRepository.findByUserEntity_IdAndTeamEntity_Code(userId, teamCode).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MEMBER));
+
+        teamEntity.setName(team.getName());
+        teamEntity.setDescription(team.getDescription());
+
+        TeamEntity savedTeam = teamJpaRepository.save(teamEntity);
+        List<TeamResponseDto.MemberDto> memberList = memberJpaRepository
+                .findAllByTeamEntity_Id(savedTeam.getId())
+                .stream()
+                .map(MemberMapper::toDto)
+                .toList();
+
+        return new TeamResponseDto(
+                savedTeam.getName(),
+                savedTeam.getDescription(),
                 savedTeam.getCode(),
                 memberList
         );
@@ -133,7 +161,7 @@ public class TeamService implements TeamUseCase {
                 .map(MemberMapper::toDto)
                 .toList();
 
-        return new TeamResponseDto(teamEntity.getName(), teamCode, memberDtos);
+        return new TeamResponseDto(teamEntity.getName(), teamEntity.getDescription(), teamEntity.getCode(), memberDtos);
     }
 
     @Override

@@ -6,6 +6,7 @@ import java.util.List;
 
 public record TeamResponseDto(
         String teamName,
+        String teamDescription,
         String teamCode,
         List<MemberDto> member
 ) {
