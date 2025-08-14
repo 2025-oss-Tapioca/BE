@@ -7,4 +7,5 @@ import java.util.UUID;
 
 public interface DbJpaRepository extends JpaRepository<DbEntity, UUID> {
     public DbEntity save(DbEntity dbEntity);
+    public DbEntity findByTeamEntity_code(String teamCode);
 }

@@ -15,4 +15,7 @@ public class DbRepositoryImpl implements DbRepository {
     @Override
     public DbEntity save(DbEntity dbEntity) { return jpaRepository.save(dbEntity); }
 
+    @Override
+    public DbEntity findByTeamCode(String teamCode) {}
+
 }
