@@ -9,6 +9,7 @@ import com.tapioca.BE.config.exception.CustomException;
 import com.tapioca.BE.config.exception.ErrorCode;
 import com.tapioca.BE.domain.model.project.DB;
 import com.tapioca.BE.domain.port.in.usecase.db.DbRegisterUseCase;
+import com.tapioca.BE.domain.port.in.usecase.db.DbUpdateUseCase;
 import com.tapioca.BE.domain.port.out.repository.db.DbRepository;
 import com.tapioca.BE.domain.port.out.repository.team.TeamRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,7 @@ public class DbRegisterService implements DbRegisterUseCase {
     private final DbRepository dbRepository;
     private final DbMapper dbMapper;
     private final TeamRepository teamRepository;
+    private final DbUpdateUseCase dbUpdateUseCase;
 
     @Override
     public RegisterResponseDto register(RegisterRequestDto dbRequestDto) {
@@ -30,8 +32,19 @@ public class DbRegisterService implements DbRegisterUseCase {
         // 도메인으로 바꾸기
         DB db = dbMapper.toDomain(dbRequestDto);
 
+        // soft deleted 되지 않은 dbEntity 있으면 중복 처리
         if (dbRepository.existsByTeamCode(db.getTeamCode())) {
             throw new CustomException(ErrorCode.CONFLICT_REGISTERED_DB);
+        }
+
+        // soft deleted 된 dbEntity 있으면 복구
+        if (dbRepository.isSoftDeleted(db.getTeamCode())) {
+            DbEntity dbEntity =
+                    dbRepository.findByTeamEntity_CodeAndDeletedAtIsNotNull(db.getTeamCode())
+                            .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_DB));
+
+            dbEntity.restore();
+            return dbUpdateUseCase.update(dbRequestDto);
         }
 
         TeamEntity teamEntity = teamRepository.findByTeamCode(db.getTeamCode());

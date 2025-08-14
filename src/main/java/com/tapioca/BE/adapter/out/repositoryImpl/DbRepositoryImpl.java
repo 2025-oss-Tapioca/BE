@@ -23,4 +23,9 @@ public class DbRepositoryImpl implements DbRepository {
     @Override
     public boolean existsByTeamCode(String teamCode) { return jpaRepository.existsByTeamEntity_CodeAndDeletedAtIsNull(teamCode); }
 
+    @Override
+    public boolean isSoftDeleted(String teamCode) { return jpaRepository.existsByTeamEntity_CodeAndDeletedAtIsNotNull(teamCode); }
+
+    @Override
+    public Optional<DbEntity> findByTeamEntity_CodeAndDeletedAtIsNotNull(String teamCode) { return jpaRepository.findByTeamEntity_CodeAndDeletedAtIsNotNull(teamCode); }
 }
