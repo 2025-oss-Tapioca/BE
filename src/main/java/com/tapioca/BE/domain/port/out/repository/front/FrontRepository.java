@@ -8,4 +8,6 @@ public interface FrontRepository {
     public FrontEntity save(FrontEntity frontEntity);
     public Optional<FrontEntity> findByCode(String teamCode);
     public boolean existsByCode(String teamCode);
+    public boolean isSoftDeleted(String teamCode);
+    public Optional<FrontEntity> findByCodeAndDeletedAtIsNotNull(String teamCode);
 }

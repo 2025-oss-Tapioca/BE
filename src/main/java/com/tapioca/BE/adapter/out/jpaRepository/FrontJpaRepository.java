@@ -10,4 +10,6 @@ public interface FrontJpaRepository extends JpaRepository<FrontEntity, UUID> {
     public FrontEntity save(FrontEntity frontEntity);
     public Optional<FrontEntity> findByTeamEntity_CodeAndDeletedAtIsNull(String teamCode);
     public boolean existsByTeamEntity_CodeAndDeletedAtIsNull(String teamCode);
+    public boolean existsByTeamEntity_CodeAndDeletedAtIsNotNull(String teamCode);
+    public Optional<FrontEntity> findByTeamEntity_CodeAndDeletedAtIsNotNull(String teamCode);
 }

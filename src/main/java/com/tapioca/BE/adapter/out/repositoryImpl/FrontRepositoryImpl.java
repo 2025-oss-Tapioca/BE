@@ -22,4 +22,10 @@ public class FrontRepositoryImpl implements FrontRepository {
 
     @Override
     public boolean existsByCode(String teamCode) { return frontJpaRepository.existsByTeamEntity_CodeAndDeletedAtIsNull(teamCode); }
+
+    @Override
+    public boolean isSoftDeleted(String teamCode) {return frontJpaRepository.existsByTeamEntity_CodeAndDeletedAtIsNotNull(teamCode); }
+
+    @Override
+    public Optional<FrontEntity> findByCodeAndDeletedAtIsNotNull(String teamCode) { return frontJpaRepository.findByTeamEntity_CodeAndDeletedAtIsNotNull(teamCode); }
 }
