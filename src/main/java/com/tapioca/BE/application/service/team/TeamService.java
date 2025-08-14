@@ -90,7 +90,6 @@ public class TeamService implements TeamUseCase {
         TeamEntity savedTeam = teamJpaRepository.save(teamEntity);
 
         ErdEntity erdEntity = ErdEntity.builder()
-                .name(createTeamRequestDto.teamName() + "'s ERD")
                 .build();
         erdEntity.setTeamEntity(savedTeam);
         erdRepository.save(erdEntity);

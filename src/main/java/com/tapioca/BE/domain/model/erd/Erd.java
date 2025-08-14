@@ -7,11 +7,9 @@ import java.util.UUID;
 public class Erd {
     private final UUID id;
     private final UUID teamId;
-    private final String name;
 
-    public Erd(UUID id, UUID teamId, String name) {
+    public Erd(UUID id, UUID teamId) {
         this.id = id;
         this.teamId = teamId;
-        this.name = name;
     }
 }

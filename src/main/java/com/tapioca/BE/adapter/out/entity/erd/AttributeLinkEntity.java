@@ -1,6 +1,5 @@
 package com.tapioca.BE.adapter.out.entity.erd;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.tapioca.BE.domain.model.enumType.LinkType;
 import jakarta.persistence.*;
 import lombok.*;
@@ -40,6 +39,5 @@ public class AttributeLinkEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="erd_id", nullable=false)
-    @JsonBackReference
     private ErdEntity erdEntity;
 }

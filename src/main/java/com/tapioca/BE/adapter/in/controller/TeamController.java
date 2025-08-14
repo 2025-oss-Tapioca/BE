@@ -37,7 +37,7 @@ public class TeamController {
     }
 
     @PatchMapping("/update/{teamCode}")
-    public CommonResponseDto<?> updateTema(@AuthenticationPrincipal CustomUserDetails user, @PathVariable String teamCode, @RequestBody CreateTeamRequestDto requestDto) {
+    public CommonResponseDto<?> updateTeam(@AuthenticationPrincipal CustomUserDetails user, @PathVariable String teamCode, @RequestBody CreateTeamRequestDto requestDto) {
         return CommonResponseDto.ok(teamUseCase.updateTeam(user.getUserId(), teamCode, requestDto));
     }
 
