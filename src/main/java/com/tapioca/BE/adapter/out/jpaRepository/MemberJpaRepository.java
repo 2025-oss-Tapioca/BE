@@ -12,4 +12,5 @@ public interface MemberJpaRepository extends JpaRepository<MemberEntity, UUID> {
     Optional<MemberEntity> findByUserEntity_IdAndTeamEntity_Code(UUID userId, String teamCode);
     List<MemberEntity> findAllByTeamEntity_Id(UUID teamId);
     List<MemberEntity> findAllByUserEntity_Id(UUID userId);
+    long countByTeamEntity_Id(UUID teamId);
 }
