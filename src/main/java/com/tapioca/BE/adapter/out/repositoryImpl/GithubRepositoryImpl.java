@@ -8,6 +8,8 @@ import com.tapioca.BE.domain.port.out.repository.github.GithubRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 @RequiredArgsConstructor
 public class GithubRepositoryImpl implements GithubRepository {
@@ -15,11 +17,27 @@ public class GithubRepositoryImpl implements GithubRepository {
     private final GithubJpaRepository githubJpaRepository;
 
     @Override
-    public GitHubEntity save(GitHubEntity gitHubEntity) { return githubJpaRepository.save(gitHubEntity); }
+    public GitHubEntity save(GitHubEntity gitHubEntity) {
+        return githubJpaRepository.save(gitHubEntity);
+    }
 
     @Override
-    public GitHubEntity findByTeamCode(String teamCode) {
-        return githubJpaRepository.findByTeamEntity_Code(teamCode)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_TEAM));
+    public Optional<GitHubEntity> findByTeamCode(String teamCode) {
+        return githubJpaRepository.findByTeamEntity_CodeAndDeletedAtIsNull(teamCode);
+    }
+
+    @Override
+    public boolean existsByTeamCode(String teamCode) {
+        return githubJpaRepository.existsByTeamEntity_CodeAndDeletedAtIsNull(teamCode);
+    }
+
+    @Override
+    public boolean isSoftDeleted(String teamCode) {
+        return githubJpaRepository.existsByTeamEntity_CodeAndDeletedAtIsNotNull(teamCode);
+    }
+
+    @Override
+    public Optional<GitHubEntity> findByTeamEntity_CodeAndDeletedAtIsNotNull(String teamCode) {
+        return githubJpaRepository.findByTeamEntity_CodeAndDeletedAtIsNotNull(teamCode);
     }
 }

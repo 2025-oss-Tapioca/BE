@@ -8,5 +8,8 @@ import java.util.UUID;
 
 public interface GithubJpaRepository extends JpaRepository<GitHubEntity, UUID> {
     public GitHubEntity save(GitHubEntity gitHubEntity);
-    Optional<GitHubEntity> findByTeamEntity_Code(String code);
+    public Optional<GitHubEntity> findByTeamEntity_CodeAndDeletedAtIsNull(String code);
+    public boolean existsByTeamEntity_CodeAndDeletedAtIsNull(String code);
+    public boolean existsByTeamEntity_CodeAndDeletedAtIsNotNull(String code);
+    public Optional<GitHubEntity> findByTeamEntity_CodeAndDeletedAtIsNotNull(String code);
 }
