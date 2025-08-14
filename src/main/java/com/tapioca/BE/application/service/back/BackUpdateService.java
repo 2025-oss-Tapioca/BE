@@ -32,12 +32,8 @@ public class BackUpdateService implements BackUpdateUseCase {
         BackEnd updated = backEndMapper.toDomain(updateRequestDto);
 
         // 수정 대상
-        BackEntity existingEntity = backRepository.findByTeamCode(updated.getTeamCode());
-
-        // 예외 처리
-        if (existingEntity == null) {
-            throw new CustomException(ErrorCode.NOT_FOUND_BACK);
-        }
+        BackEntity existingEntity = backRepository.findByTeamCode(updated.getTeamCode())
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_BACK));
 
         TeamEntity teamEntity = teamRepository.findByTeamCode(updated.getTeamCode());
 

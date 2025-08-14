@@ -1,7 +1,7 @@
-package com.tapioca.BE.domain.port.in.usecase.back;
+package com.tapioca.BE.domain.port.in.usecase.front;
 
 import com.tapioca.BE.application.dto.request.common.DeleteServerRequestDto;
 
-public interface BackDeleteUseCase {
+public interface FrontDeleteUseCase {
     public void delete(DeleteServerRequestDto deleteServerRequestDto);
 }

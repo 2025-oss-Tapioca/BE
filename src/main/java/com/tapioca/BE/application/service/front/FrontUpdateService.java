@@ -32,11 +32,8 @@ public class FrontUpdateService implements FrontUpdateUseCase {
         Front updated = frontMapper.toDomain(updateRequestDto);
 
         // 수정할 대상
-        FrontEntity existingEntity = frontRepository.findByCode(updated.getTeamCode());
-
-        if (existingEntity == null) {
-            throw new CustomException(ErrorCode.NOT_FOUND_FRONT);
-        }
+        FrontEntity existingEntity = frontRepository.findByCode(updated.getTeamCode())
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_FRONT));
 
         TeamEntity teamEntity = teamRepository.findByTeamCode(updated.getTeamCode());
 
