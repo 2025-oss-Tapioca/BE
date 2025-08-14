@@ -3,6 +3,7 @@ package com.tapioca.BE.adapter.out.entity.project;
 import com.tapioca.BE.adapter.out.entity.user.TeamEntity;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -13,7 +14,7 @@ import java.util.UUID;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@SuperBuilder
 public class GitHubEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
