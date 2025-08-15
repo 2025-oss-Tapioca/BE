@@ -61,6 +61,8 @@ public class ErdService implements ErdUseCase {
         for (UpdateErdRequestDto.DiagramRequestDto diagDto : request.diagrams()) {
             DiagramEntity newDiag = DiagramEntity.builder()
                     .name(diagDto.diagramName())
+                    .posX(diagDto.diagramPosX())
+                    .posY(diagDto.diagramPosY())
                     .build();
 
             for (UpdateErdRequestDto.AttributeRequestDto attrDto : diagDto.attributes()) {
