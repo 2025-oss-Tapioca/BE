@@ -8,6 +8,7 @@ import com.tapioca.BE.domain.port.out.repository.github.GithubRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -39,5 +40,10 @@ public class GithubRepositoryImpl implements GithubRepository {
     @Override
     public Optional<GitHubEntity> findByTeamEntity_CodeAndDeletedAtIsNotNull(String teamCode) {
         return githubJpaRepository.findByTeamEntity_CodeAndDeletedAtIsNotNull(teamCode);
+    }
+
+    @Override
+    public List<GitHubEntity> findAllByTeamCode(String teamCode) {
+        return githubJpaRepository.findAllByTeamEntity_CodeAndDeletedAtIsNull(teamCode);
     }
 }

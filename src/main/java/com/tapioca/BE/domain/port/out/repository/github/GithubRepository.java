@@ -2,6 +2,7 @@ package com.tapioca.BE.domain.port.out.repository.github;
 
 import com.tapioca.BE.adapter.out.entity.project.GitHubEntity;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface GithubRepository {
@@ -10,4 +11,5 @@ public interface GithubRepository {
     public boolean existsByTeamCode(String teamCode);
     public boolean isSoftDeleted(String teamCode);
     public Optional<GitHubEntity> findByTeamEntity_CodeAndDeletedAtIsNotNull(String teamCode);
+    public List<GitHubEntity> findAllByTeamCode(String teamCode);
 }
