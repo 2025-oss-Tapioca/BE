@@ -1,6 +1,6 @@
 package com.tapioca.BE.application.dto.request.common;
 
-public record DeleteServerRequestDto(
+public record ReadServerRequestDto(
         String teamCode
 ) {
 }

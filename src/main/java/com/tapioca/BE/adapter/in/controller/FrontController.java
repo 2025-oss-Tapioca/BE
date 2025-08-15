@@ -1,6 +1,6 @@
 package com.tapioca.BE.adapter.in.controller;
 
-import com.tapioca.BE.application.dto.request.common.DeleteServerRequestDto;
+import com.tapioca.BE.application.dto.request.common.ReadServerRequestDto;
 import com.tapioca.BE.application.dto.request.front.RegisterRequestDto;
 import com.tapioca.BE.config.common.CommonResponseDto;
 import com.tapioca.BE.domain.port.in.usecase.front.FrontDeleteUseCase;
@@ -22,15 +22,14 @@ public class FrontController {
     public CommonResponseDto<?> frontRegister(
             @RequestBody RegisterRequestDto registerRequestDto
     ) {
-        frontRegisterUseCase.register(registerRequestDto);
-        return CommonResponseDto.created(null);
+        return CommonResponseDto.created(frontRegisterUseCase.register(registerRequestDto));
     }
 
     @DeleteMapping
     public CommonResponseDto<?> frontDelete(
-            @RequestBody DeleteServerRequestDto deleteServerRequestDto
+            @RequestBody ReadServerRequestDto readServerRequestDto
     ) {
-        frontDeleteUseCase.delete(deleteServerRequestDto);
+        frontDeleteUseCase.delete(readServerRequestDto);
         return CommonResponseDto.created(null);
     }
 

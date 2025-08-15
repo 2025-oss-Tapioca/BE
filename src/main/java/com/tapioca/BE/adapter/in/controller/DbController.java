@@ -1,14 +1,12 @@
 package com.tapioca.BE.adapter.in.controller;
 
-import com.tapioca.BE.application.dto.request.common.DeleteServerRequestDto;
+import com.tapioca.BE.application.dto.request.common.ReadServerRequestDto;
 import com.tapioca.BE.application.dto.request.db.RegisterRequestDto;
 import com.tapioca.BE.config.common.CommonResponseDto;
-import com.tapioca.BE.config.security.CustomUserDetails;
 import com.tapioca.BE.domain.port.in.usecase.db.DbDeleteUseCase;
 import com.tapioca.BE.domain.port.in.usecase.db.DbRegisterUseCase;
 import com.tapioca.BE.domain.port.in.usecase.db.DbUpdateUseCase;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -29,9 +27,9 @@ public class DbController {
 
     @DeleteMapping
     public CommonResponseDto<?> dbDelete(
-            @RequestBody DeleteServerRequestDto deleteServerRequestDto
+            @RequestBody ReadServerRequestDto readServerRequestDto
     ) {
-        dbDeleteUseCase.delete(deleteServerRequestDto);
+        dbDeleteUseCase.delete(readServerRequestDto);
         return CommonResponseDto.noContent();
     }
 

@@ -1,6 +1,6 @@
 package com.tapioca.BE.adapter.in.controller;
 
-import com.tapioca.BE.application.dto.request.common.DeleteServerRequestDto;
+import com.tapioca.BE.application.dto.request.common.ReadServerRequestDto;
 import com.tapioca.BE.application.dto.request.team.GitHubRequestDto;
 import com.tapioca.BE.config.common.CommonResponseDto;
 import com.tapioca.BE.domain.port.in.usecase.github.GitHubDeleteUseCase;
@@ -28,9 +28,9 @@ public class GitHubController {
 
     @DeleteMapping
     public CommonResponseDto<?> deleteGithub(
-            @RequestBody DeleteServerRequestDto deleteServerRequestDto
+            @RequestBody ReadServerRequestDto readServerRequestDto
     ) {
-        gitHubDeleteUseCase.delete(deleteServerRequestDto);
+        gitHubDeleteUseCase.delete(readServerRequestDto);
         return CommonResponseDto.noContent();
     }
 
