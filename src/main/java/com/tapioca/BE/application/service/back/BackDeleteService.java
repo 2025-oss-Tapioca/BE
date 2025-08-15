@@ -2,7 +2,7 @@ package com.tapioca.BE.application.service.back;
 
 import com.tapioca.BE.adapter.out.entity.project.BackEntity;
 import com.tapioca.BE.adapter.out.mapper.BackEndMapper;
-import com.tapioca.BE.application.dto.request.common.DeleteServerRequestDto;
+import com.tapioca.BE.application.dto.request.common.ReadServerRequestDto;
 import com.tapioca.BE.config.exception.CustomException;
 import com.tapioca.BE.config.exception.ErrorCode;
 import com.tapioca.BE.domain.model.project.BackEnd;
@@ -21,9 +21,9 @@ public class BackDeleteService implements BackDeleteUseCase {
     private final BackEndMapper backEndMapper;
 
     @Override
-    public void delete(DeleteServerRequestDto deleteServerRequestDto) {
+    public void delete(ReadServerRequestDto readServerRequestDto) {
 
-        BackEnd backEnd = backEndMapper.toDomain(deleteServerRequestDto);
+        BackEnd backEnd = backEndMapper.toDomain(readServerRequestDto);
 
         BackEntity targetEntity = backRepository.findByTeamCode(backEnd.getTeamCode())
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_BACK));

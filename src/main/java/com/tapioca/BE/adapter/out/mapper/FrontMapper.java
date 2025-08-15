@@ -2,7 +2,7 @@ package com.tapioca.BE.adapter.out.mapper;
 
 import com.tapioca.BE.adapter.out.entity.project.FrontEntity;
 import com.tapioca.BE.adapter.out.entity.user.TeamEntity;
-import com.tapioca.BE.application.dto.request.common.DeleteServerRequestDto;
+import com.tapioca.BE.application.dto.request.common.ReadServerRequestDto;
 import com.tapioca.BE.application.dto.request.front.RegisterRequestDto;
 import com.tapioca.BE.domain.model.project.Front;
 import org.springframework.stereotype.Component;
@@ -21,7 +21,7 @@ public class FrontMapper {
         );
     }
 
-    public Front toDomain(DeleteServerRequestDto dto) {
+    public Front toDomain(ReadServerRequestDto dto) {
         return new Front(
                 dto.teamCode(),
                 null,
@@ -30,6 +30,18 @@ public class FrontMapper {
                 null,
                 null,
                 null
+        );
+    }
+
+    public Front toDomain(FrontEntity frontEntity) {
+        return new Front(
+                frontEntity.getTeamEntity().getCode(),
+                frontEntity.getEc2Host(),
+                frontEntity.getAuthToken(),
+                frontEntity.getEntryPoint(),
+                frontEntity.getOs(),
+                frontEntity.getEnv(),
+                frontEntity.getProtocol()
         );
     }
 

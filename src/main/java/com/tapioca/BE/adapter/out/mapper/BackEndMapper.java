@@ -2,7 +2,7 @@ package com.tapioca.BE.adapter.out.mapper;
 
 import com.tapioca.BE.adapter.out.entity.project.BackEntity;
 import com.tapioca.BE.adapter.out.entity.user.TeamEntity;
-import com.tapioca.BE.application.dto.request.common.DeleteServerRequestDto;
+import com.tapioca.BE.application.dto.request.common.ReadServerRequestDto;
 import com.tapioca.BE.application.dto.request.back.RegisterRequestDto;
 import com.tapioca.BE.domain.model.project.BackEnd;
 import org.springframework.stereotype.Component;
@@ -31,7 +31,7 @@ public class BackEndMapper {
         );
     }
 
-    public BackEnd toDomain(DeleteServerRequestDto dto) {
+    public BackEnd toDomain(ReadServerRequestDto dto) {
         return new BackEnd(
                 dto.teamCode(),
                 null,

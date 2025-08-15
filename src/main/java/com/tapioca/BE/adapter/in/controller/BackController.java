@@ -1,6 +1,6 @@
 package com.tapioca.BE.adapter.in.controller;
 
-import com.tapioca.BE.application.dto.request.common.DeleteServerRequestDto;
+import com.tapioca.BE.application.dto.request.common.ReadServerRequestDto;
 import com.tapioca.BE.application.dto.request.back.RegisterRequestDto;
 import com.tapioca.BE.config.common.CommonResponseDto;
 import com.tapioca.BE.domain.port.in.usecase.back.BackDeleteUseCase;
@@ -27,9 +27,9 @@ public class BackController {
 
     @DeleteMapping
     public CommonResponseDto<?> backDelete(
-            @RequestBody DeleteServerRequestDto deleteServerRequestDto
+            @RequestBody ReadServerRequestDto readServerRequestDto
     ) {
-        backDeleteUseCase.delete(deleteServerRequestDto);
+        backDeleteUseCase.delete(readServerRequestDto);
         return CommonResponseDto.noContent();
     }
 

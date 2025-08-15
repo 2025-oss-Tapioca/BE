@@ -2,7 +2,7 @@ package com.tapioca.BE.application.service.github;
 
 import com.tapioca.BE.adapter.out.entity.project.GitHubEntity;
 import com.tapioca.BE.adapter.out.mapper.GithubMapper;
-import com.tapioca.BE.application.dto.request.common.DeleteServerRequestDto;
+import com.tapioca.BE.application.dto.request.common.ReadServerRequestDto;
 import com.tapioca.BE.config.exception.CustomException;
 import com.tapioca.BE.config.exception.ErrorCode;
 import com.tapioca.BE.domain.model.project.GitHub;
@@ -21,9 +21,9 @@ public class GitHubDeleteService implements GitHubDeleteUseCase {
     private final GithubMapper githubMapper;
 
     @Override
-    public void delete(DeleteServerRequestDto deleteServerRequestDto) {
+    public void delete(ReadServerRequestDto readServerRequestDto) {
 
-        GitHub gitHub = githubMapper.toDomain(deleteServerRequestDto);
+        GitHub gitHub = githubMapper.toDomain(readServerRequestDto);
 
         GitHubEntity gitHubEntity = githubRepository.findByTeamCode(gitHub.getTeamCode())
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_GITHUB));
