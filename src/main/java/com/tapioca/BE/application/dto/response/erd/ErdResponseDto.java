@@ -33,13 +33,20 @@ public record ErdResponseDto(
     public record DiagramResponseDto(
             UUID diagramId,
             String diagramName,
+            int diagramPosX,
+            int diagramPosY,
             List<AttributeResponseDto> attributes
     ) {
         public static DiagramResponseDto from(DiagramEntity diagramEntity) {
             List<AttributeResponseDto> attributes = diagramEntity.getAttributes().stream()
                     .map(AttributeResponseDto::from)
                     .collect(Collectors.toList());
-            return new DiagramResponseDto(diagramEntity.getId(), diagramEntity.getName(), attributes);
+            return new DiagramResponseDto(
+                    diagramEntity.getId(),
+                    diagramEntity.getName(),
+                    diagramEntity.getPosX(),
+                    diagramEntity.getPosY(),
+                    attributes);
         }
     }
 

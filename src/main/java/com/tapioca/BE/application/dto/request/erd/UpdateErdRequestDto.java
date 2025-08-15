@@ -9,6 +9,8 @@ public record UpdateErdRequestDto(
     public record DiagramRequestDto(
             String diagramId,
             String diagramName,
+            int diagramPosX,
+            int diagramPosY,
             List<AttributeRequestDto> attributes
     ) {}
 
