@@ -4,5 +4,5 @@ import com.tapioca.BE.application.dto.request.common.ReadServerRequestDto;
 import com.tapioca.BE.application.dto.response.server.ReadServerResponseDto;
 
 public interface ServerReadUseCase {
-    public ReadServerResponseDto read(ReadServerRequestDto readServerRequestDto);
+    public ReadServerResponseDto read(String teamCode);
 }

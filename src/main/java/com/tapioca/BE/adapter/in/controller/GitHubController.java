@@ -4,6 +4,7 @@ import com.tapioca.BE.application.dto.request.common.ReadServerRequestDto;
 import com.tapioca.BE.application.dto.request.team.GitHubRequestDto;
 import com.tapioca.BE.config.common.CommonResponseDto;
 import com.tapioca.BE.domain.port.in.usecase.github.GitHubDeleteUseCase;
+import com.tapioca.BE.domain.port.in.usecase.github.GitHubReadUseCase;
 import com.tapioca.BE.domain.port.in.usecase.github.GitHubRegisterUseCase;
 import com.tapioca.BE.domain.port.in.usecase.github.GitHubUpdateUseCase;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,7 @@ public class GitHubController {
     private final GitHubRegisterUseCase gitHubRegisterUseCase;
     private final GitHubDeleteUseCase gitHubDeleteUseCase;
     private final GitHubUpdateUseCase gitHubUpdateUseCase;
+    private final GitHubReadUseCase gitHubReadUseCase;
 
     @PostMapping
     public CommonResponseDto<?> registerGithub(
@@ -39,5 +41,12 @@ public class GitHubController {
             @RequestBody GitHubRequestDto gitHubRequestDto
     ) {
         return CommonResponseDto.ok(gitHubUpdateUseCase.update(gitHubRequestDto));
+    }
+
+    @GetMapping("/{teamCode}")
+    public CommonResponseDto<?> readGithub(
+           @PathVariable String teamCode
+    ) {
+        return CommonResponseDto.ok(gitHubReadUseCase.read(teamCode));
     }
 }

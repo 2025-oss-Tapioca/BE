@@ -36,15 +36,12 @@ public class ServerReadService implements ServerReadUseCase {
     private final ServerMapper serverMapper;
 
     @Override
-    public ReadServerResponseDto read(ReadServerRequestDto dto) {
-
-        // teamCode 얻기 위한 임시 도메인 모델
-        BackEnd temp = backEndMapper.toDomain(dto);
+    public ReadServerResponseDto read(String teamCode) {
 
         // Entity 조회
-        FrontEntity fe = frontRepository.findByCode(temp.getTeamCode()).orElse(null);
-        BackEntity be = backRepository.findByTeamCode(temp.getTeamCode()).orElse(null);
-        DbEntity de = dbRepository.findByTeamCode(temp.getTeamCode()).orElse(null);
+        FrontEntity fe = frontRepository.findByCode(teamCode).orElse(null);
+        BackEntity be = backRepository.findByTeamCode(teamCode).orElse(null);
+        DbEntity de = dbRepository.findByTeamCode(teamCode).orElse(null);
 
         // domain 변환
         Front f = fe != null ? frontMapper.toDomain(fe) : null;
@@ -52,7 +49,7 @@ public class ServerReadService implements ServerReadUseCase {
         DB d = de != null ? dbMapper.toDomain(de) : null;
 
         return new ReadServerResponseDto(
-                temp.getTeamCode(),
+                teamCode,
                 serverMapper.toFrontResponse(f),
                 serverMapper.toBackResponse(b),
                 serverMapper.toDbResponse(d)

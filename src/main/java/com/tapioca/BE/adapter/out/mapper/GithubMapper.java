@@ -31,11 +31,7 @@ public class GithubMapper {
 
     public GitHub toDomain(ReadServerRequestDto dto) {
         return new GitHub(
-                dto.teamCode(),
-                null,
-                false,
-                null,
-                null
+                dto.teamCode(),null,false,null,null
         );
     }
 
