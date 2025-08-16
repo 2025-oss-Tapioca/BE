@@ -2,12 +2,14 @@ package com.tapioca.BE.adapter.out.entity.erd;
 
 import com.tapioca.BE.adapter.out.entity.user.TeamEntity;
 import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Table;
 import lombok.*;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.annotations.*;
 
 import java.util.*;
 
+import static jakarta.persistence.CascadeType.ALL;
 import static jakarta.persistence.FetchType.LAZY;
 
 @Entity
@@ -28,17 +30,13 @@ public class ErdEntity {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private TeamEntity teamEntity;
 
-    @OneToMany(mappedBy = "erdEntity",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true,
-            fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "erdEntity", cascade = ALL, orphanRemoval = true)
+    @OrderColumn(name = "diagram_order")
     @Builder.Default
     private List<DiagramEntity> diagrams = new ArrayList<>();
 
-    @OneToMany(mappedBy = "erdEntity",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true,
-            fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "erdEntity", cascade = ALL, orphanRemoval = true)
+    @OrderColumn(name = "attr_link_order")
     @Builder.Default
     private List<AttributeLinkEntity> attributeLinks = new ArrayList<>();
 
