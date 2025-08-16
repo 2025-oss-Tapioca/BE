@@ -20,4 +20,9 @@ public class MemberRepositoryImpl implements MemberRepository {
         Object CustomException;
         return memberJpaRepository.findByUserEntity_Id(userId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MEMBER));
     }
+
+    @Override
+    public boolean existsByUserIdAndTeamCode(UUID userId, String teamCode) {
+        return memberJpaRepository.existsByUserEntity_IdAndTeamEntity_Code(userId, teamCode);
+    }
 }

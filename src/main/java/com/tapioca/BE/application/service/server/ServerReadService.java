@@ -9,6 +9,8 @@ import com.tapioca.BE.adapter.out.mapper.FrontMapper;
 import com.tapioca.BE.adapter.out.mapper.ServerMapper;
 import com.tapioca.BE.application.dto.request.common.ReadServerRequestDto;
 import com.tapioca.BE.application.dto.response.server.ReadServerResponseDto;
+import com.tapioca.BE.config.exception.CustomException;
+import com.tapioca.BE.config.exception.ErrorCode;
 import com.tapioca.BE.domain.model.project.BackEnd;
 import com.tapioca.BE.domain.model.project.DB;
 import com.tapioca.BE.domain.model.project.Front;
@@ -16,9 +18,13 @@ import com.tapioca.BE.domain.port.in.usecase.server.ServerReadUseCase;
 import com.tapioca.BE.domain.port.out.repository.backend.BackRepository;
 import com.tapioca.BE.domain.port.out.repository.db.DbRepository;
 import com.tapioca.BE.domain.port.out.repository.front.FrontRepository;
+import com.tapioca.BE.domain.port.out.repository.team.TeamRepository;
+import com.tapioca.BE.domain.port.out.repository.user.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.UUID;
 
 @Service
 @Transactional
@@ -28,6 +34,8 @@ public class ServerReadService implements ServerReadUseCase {
     private final FrontRepository frontRepository;
     private final BackRepository backRepository;
     private final DbRepository dbRepository;
+    private final TeamRepository teamRepository;
+    private final MemberRepository memberRepository;
 
     private final FrontMapper frontMapper;
     private final BackEndMapper backEndMapper;
@@ -36,7 +44,15 @@ public class ServerReadService implements ServerReadUseCase {
     private final ServerMapper serverMapper;
 
     @Override
-    public ReadServerResponseDto read(String teamCode) {
+    public ReadServerResponseDto read(UUID userId, String teamCode) {
+
+        // 존재하는 팀인지 확인
+        teamRepository.findByTeamCode(teamCode);
+
+        // user가 해당 팀의 멤버인지 확인
+        if (!memberRepository.existsByUserIdAndTeamCode(userId, teamCode)) {
+            throw new CustomException(ErrorCode.ACCESS_DENIED_MEMBER);
+        }
 
         // Entity 조회
         FrontEntity fe = frontRepository.findByCode(teamCode).orElse(null);

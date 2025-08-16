@@ -6,4 +6,5 @@ import java.util.UUID;
 
 public interface MemberRepository {
     MemberEntity findByUserId(UUID userId);
+    boolean existsByUserIdAndTeamCode(UUID userId, String teamCode);
 }

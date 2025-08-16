@@ -3,11 +3,13 @@ package com.tapioca.BE.adapter.in.controller;
 import com.tapioca.BE.application.dto.request.common.ReadServerRequestDto;
 import com.tapioca.BE.application.dto.request.team.GitHubRequestDto;
 import com.tapioca.BE.config.common.CommonResponseDto;
+import com.tapioca.BE.config.security.CustomUserDetails;
 import com.tapioca.BE.domain.port.in.usecase.github.GitHubDeleteUseCase;
 import com.tapioca.BE.domain.port.in.usecase.github.GitHubReadUseCase;
 import com.tapioca.BE.domain.port.in.usecase.github.GitHubRegisterUseCase;
 import com.tapioca.BE.domain.port.in.usecase.github.GitHubUpdateUseCase;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -45,8 +47,9 @@ public class GitHubController {
 
     @GetMapping("/{teamCode}")
     public CommonResponseDto<?> readGithub(
-           @PathVariable String teamCode
+            @AuthenticationPrincipal CustomUserDetails user,
+            @PathVariable String teamCode
     ) {
-        return CommonResponseDto.ok(gitHubReadUseCase.read(teamCode));
+        return CommonResponseDto.ok(gitHubReadUseCase.read(user.getUserId(), teamCode));
     }
 }
