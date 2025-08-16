@@ -5,7 +5,8 @@ import com.tapioca.BE.application.dto.request.team.GitHubRequestDto;
 import com.tapioca.BE.application.dto.response.team.GitHubResponseDto;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface GitHubReadUseCase {
-    public GitHubResponseDto read(String teamCode);
+    public GitHubResponseDto read(UUID userId, String teamCode);
 }
