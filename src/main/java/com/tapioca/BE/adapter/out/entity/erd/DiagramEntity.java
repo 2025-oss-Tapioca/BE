@@ -7,6 +7,8 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.*;
 
+import static jakarta.persistence.CascadeType.ALL;
+
 
 @Entity
 @Getter
@@ -35,10 +37,8 @@ public class DiagramEntity {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private ErdEntity erdEntity;
 
-    @OneToMany(mappedBy = "diagram",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true,
-            fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "diagram", cascade = ALL, orphanRemoval = true)
+    @OrderColumn(name = "attribute_order")
     @Builder.Default
     private List<AttributeEntity> attributes = new ArrayList<>();
 
