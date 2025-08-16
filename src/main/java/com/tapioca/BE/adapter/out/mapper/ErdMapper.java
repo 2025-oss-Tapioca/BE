@@ -66,7 +66,11 @@ public class ErdMapper {
                         null,
                         l.fromClientId(),
                         l.toClientId(),
-                        parseLinkType(l.linkType())
+                        parseLinkType(l.linkType()),
+                        l.sourceCard(),
+                        l.targetCard(),
+                        l.identifying()
+
                 ))
                 .toList();
 
@@ -130,6 +134,9 @@ public class ErdMapper {
                     .fromAttribute(from)
                     .toAttribute(to)
                     .linkType(l.getLinkType())
+                    .sourceCard(l.getSourceCard())
+                    .targetCard(l.getTargetCard())
+                    .identifying(l.isIdentifying())
                     .erdEntity(erdEntity)
                     .build();
 

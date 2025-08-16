@@ -37,6 +37,15 @@ public class AttributeLinkEntity {
     @Column(name="link_type")
     private LinkType linkType;
 
+    @Column(name = "attribute_link_source_card")
+    private String sourceCard;
+
+    @Column(name = "attribute_link_target_card")
+    private String targetCard;
+
+    @Column(name = "attribute_link_identifying")
+    private boolean identifying;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="erd_id", nullable=false)
     private ErdEntity erdEntity;
