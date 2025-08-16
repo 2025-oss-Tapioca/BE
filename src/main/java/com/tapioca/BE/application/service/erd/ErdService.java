@@ -1,26 +1,26 @@
 package com.tapioca.BE.application.service.erd;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tapioca.BE.adapter.out.entity.erd.AttributeEntity;
 import com.tapioca.BE.adapter.out.entity.erd.AttributeLinkEntity;
 import com.tapioca.BE.adapter.out.entity.erd.DiagramEntity;
 import com.tapioca.BE.adapter.out.entity.erd.ErdEntity;
 import com.tapioca.BE.adapter.out.entity.user.MemberEntity;
+import com.tapioca.BE.adapter.out.entity.user.TeamEntity;
 import com.tapioca.BE.adapter.out.jpaRepository.*;
+import com.tapioca.BE.adapter.out.mapper.ErdMapper;
 import com.tapioca.BE.application.dto.request.erd.UpdateErdRequestDto;
 import com.tapioca.BE.application.dto.response.erd.ErdResponseDto;
 import com.tapioca.BE.config.exception.CustomException;
 import com.tapioca.BE.config.exception.ErrorCode;
 import com.tapioca.BE.domain.model.enumType.AttributeType;
 import com.tapioca.BE.domain.model.enumType.LinkType;
+import com.tapioca.BE.domain.model.erd.Erd;
 import com.tapioca.BE.domain.port.in.usecase.erd.ErdUseCase;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
+
 
 @Service
 @RequiredArgsConstructor
@@ -28,7 +28,6 @@ import java.util.stream.Collectors;
 public class ErdService implements ErdUseCase {
     private final MemberJpaRepository memberJpaRepository;
     private final ErdJpaRepository erdJpaRepository;
-    private final ObjectMapper objectMapper;
 
     @Override
     public ErdResponseDto getErd(UUID userId, String teamCode) {
@@ -49,57 +48,27 @@ public class ErdService implements ErdUseCase {
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MEMBER))
                 .getTeamEntity().getId();
 
-        ErdEntity erd = erdJpaRepository
+        ErdEntity erdEntity = erdJpaRepository
                 .findWithAllByTeamEntity_Id(teamId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ERD));
 
-        erd.getDiagrams().clear();
-        erd.getAttributeLinks().clear();
+        erdEntity.getDiagrams().clear();
+        erdEntity.getAttributeLinks().clear();
 
-        Map<String, AttributeEntity> attrByClientId = new HashMap<>();
+        Erd erdDomain = ErdMapper.toDomain(request);
 
-        for (UpdateErdRequestDto.DiagramRequestDto diagDto : request.diagrams()) {
-            DiagramEntity newDiag = DiagramEntity.builder()
-                    .name(diagDto.diagramName())
-                    .posX(diagDto.diagramPosX())
-                    .posY(diagDto.diagramPosY())
-                    .build();
+        TeamEntity teamEntity = erdEntity.getTeamEntity();
+        ErdEntity updateErdEntity = ErdMapper.toEntity(erdDomain,teamEntity);
 
-            for (UpdateErdRequestDto.AttributeRequestDto attrDto : diagDto.attributes()) {
-                AttributeEntity newAttr = AttributeEntity.builder()
-                        .name(attrDto.attributeName())
-                        .attributeType(AttributeType.valueOf(attrDto.attributeType()))
-                        .length(attrDto.varcharLength())
-                        .isPrimaryKey(attrDto.primaryKey())
-                        .isForeignKey(attrDto.foreignKey())
-                        .build();
-
-                newDiag.addAttribute(newAttr);
-
-                attrByClientId.put(attrDto.attributeId(), newAttr);
-            }
-            erd.addDiagram(newDiag);
+        for(DiagramEntity diagramEntity : updateErdEntity.getDiagrams()) {
+            erdEntity.addDiagram(diagramEntity);
+        }
+        for(AttributeLinkEntity linkEntity : updateErdEntity.getAttributeLinks()) {
+            erdEntity.addAttributeLink(linkEntity);
         }
 
-        for (UpdateErdRequestDto.AttributeLinkRequestDto linkDto : request.attributeLinks()) {
-            AttributeEntity fromAttr = attrByClientId.get(linkDto.fromClientId());
-            AttributeEntity toAttr = attrByClientId.get(linkDto.toClientId());
+        erdJpaRepository.save(erdEntity);
 
-            if (fromAttr == null || toAttr == null) {
-                throw new CustomException(ErrorCode.INVALID_REQUEST_BODY);
-            }
-
-            AttributeLinkEntity newLink = AttributeLinkEntity.builder()
-                    .fromAttribute(fromAttr)
-                    .toAttribute(toAttr)
-                    .linkType(LinkType.valueOf(linkDto.linkType()))
-                    .build();
-
-            erd.addAttributeLink(newLink);
-        }
-
-        erdJpaRepository.save(erd);
-
-        return ErdResponseDto.from(erd);
+        return ErdResponseDto.from(erdEntity);
     }
 }
