@@ -5,13 +5,17 @@ import java.util.UUID;
 
 @Getter
 public class Diagram {
-    private final UUID id;
-    private final UUID erdId;
+    private final String id;
+    private final String erdId;
     private final String name;
+    private final int posX;
+    private final int posY;
 
-    public Diagram(UUID id, UUID erdId, String name) {
+    public Diagram(String id, String erdId, String name, int posX, int posY) {
         this.id = id;
         this.erdId = erdId;
         this.name = name;
+        this.posX = posX;
+        this.posY = posY;
     }
 }

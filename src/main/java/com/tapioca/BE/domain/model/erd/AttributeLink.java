@@ -8,12 +8,12 @@ import java.util.UUID;
 
 @Getter
 public class AttributeLink {
-    private final UUID id;
-    private final UUID fromAttributeId;
-    private final UUID toAttributeId;
+    private final String id;
+    private final String fromAttributeId;
+    private final String toAttributeId;
     private final LinkType linkType;
 
-    public AttributeLink(UUID id, UUID fromAttributeId, UUID toAttributeId, LinkType linkType) {
+    public AttributeLink(String id, String fromAttributeId, String toAttributeId, LinkType linkType) {
         this.id = id;
         this.fromAttributeId = fromAttributeId;
         this.toAttributeId = toAttributeId;

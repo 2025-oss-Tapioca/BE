@@ -1,15 +1,17 @@
 package com.tapioca.BE.domain.model.erd;
 import lombok.Getter;
 
-import java.util.UUID;
+import java.util.List;
 
 @Getter
 public class Erd {
-    private final UUID id;
-    private final UUID teamId;
+    List<Diagram> diagrams;
+    List<Attribute> attributes;
+    List<AttributeLink> attributeLinks;
 
-    public Erd(UUID id, UUID teamId) {
-        this.id = id;
-        this.teamId = teamId;
+    public Erd(List<Diagram> diagrams, List<Attribute> attributes, List<AttributeLink> attributeLinks) {
+        this.diagrams = List.copyOf(diagrams);
+        this.attributes = List.copyOf(attributes);
+        this.attributeLinks = List.copyOf(attributeLinks);
     }
 }
