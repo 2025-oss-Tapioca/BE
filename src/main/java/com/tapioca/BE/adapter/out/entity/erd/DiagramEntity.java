@@ -40,7 +40,7 @@ public class DiagramEntity {
             orphanRemoval = true,
             fetch = FetchType.LAZY)
     @Builder.Default
-    private Set<AttributeEntity> attributes = new HashSet<>();
+    private List<AttributeEntity> attributes = new ArrayList<>();
 
     public void addAttribute(AttributeEntity attribute) {
         this.attributes.add(attribute);

@@ -33,14 +33,14 @@ public class ErdEntity {
             orphanRemoval = true,
             fetch = FetchType.LAZY)
     @Builder.Default
-    private Set<DiagramEntity> diagrams = new HashSet<>();
+    private List<DiagramEntity> diagrams = new ArrayList<>();
 
     @OneToMany(mappedBy = "erdEntity",
             cascade = CascadeType.ALL,
             orphanRemoval = true,
             fetch = FetchType.LAZY)
     @Builder.Default
-    private Set<AttributeLinkEntity> attributeLinks = new HashSet<>();
+    private List<AttributeLinkEntity> attributeLinks = new ArrayList<>();
 
     public void addDiagram(DiagramEntity diagram) {
         this.diagrams.add(diagram);
