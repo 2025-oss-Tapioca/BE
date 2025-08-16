@@ -26,6 +26,9 @@ public record UpdateErdRequestDto(
     public record AttributeLinkRequestDto(
             String fromClientId,
             String toClientId,
-            String linkType
+            String linkType,
+            String sourceCard,
+            String targetCard,
+            boolean identifying
     ) {}
 }

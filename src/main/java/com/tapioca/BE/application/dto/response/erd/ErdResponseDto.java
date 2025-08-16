@@ -74,14 +74,20 @@ public record ErdResponseDto(
             UUID linkId,
             UUID fromAttributeId,
             UUID toAttributeId,
-            String linkType
+            String linkType,
+            String sourceCard,
+            String targetCard,
+            boolean identifying
     ){
         public static AttributeLinkResponseDto from(AttributeLinkEntity attributeLinkEntity) {
             return new AttributeLinkResponseDto(
                     attributeLinkEntity.getId(),
                     attributeLinkEntity.getFromAttribute().getId(),
                     attributeLinkEntity.getToAttribute().getId(),
-                    attributeLinkEntity.getLinkType().name()
+                    attributeLinkEntity.getLinkType().name(),
+                    attributeLinkEntity.getSourceCard(),
+                    attributeLinkEntity.getTargetCard(),
+                    attributeLinkEntity.isIdentifying()
             );
         }
     }
