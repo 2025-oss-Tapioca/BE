@@ -22,7 +22,8 @@ public class WebConfig implements WebMvcConfigurer {
                         "https://ossp6-front.vercel.app",
                         "https://ossp6-front-4796s-projects.vercel.app",
                         "https://ossp6-front-git-main-4796s-projects.vercel.app",
-                        "https://3.37.148.82"
+                        "https://3.37.148.82",
+                        "https://oss-tapioca.vercel.app/"
                 )
                 .allowedMethods("GET", "POST", "PATCH","PUT", "DELETE", "OPTIONS") // 허용할 HTTP 메서드
                 .allowedHeaders("*") // 모든 요청 헤더 허용
