@@ -15,6 +15,8 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.context.annotation.Bean;
 
 @Configuration
 @EnableWebSecurity
@@ -39,6 +41,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/gpt-request").permitAll()
                         .requestMatchers("/api/login", "/api/signup").permitAll()
+                        .requestMatchers("/ws/**", "/api/log/register/**", "/api/log/query/**").permitAll() // log도 필터에 추가
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
