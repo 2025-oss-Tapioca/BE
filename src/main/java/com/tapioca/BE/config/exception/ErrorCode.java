@@ -76,26 +76,6 @@ public enum ErrorCode {
     METHOD_NOT_ALLOWED("40500", HttpStatus.METHOD_NOT_ALLOWED, "지원하지 않는 HTTP 메소드입니다."),
 
     /**
-     * 407** Bad Request (WebSocket & Logging)
-     */
-    WS_UNKNOWN_TYPE("40700", HttpStatus.BAD_REQUEST, "알 수 없는 메시지 타입입니다."),
-    WS_BAD_REGISTER("40701", HttpStatus.BAD_REQUEST, "sourceType, 팀 code 필수입니다."),
-    WS_NOT_REGISTERED("40702", HttpStatus.BAD_REQUEST, "register 먼저 호출 필요"),
-    WS_BAD_LOG_PAYLOAD("40703", HttpStatus.BAD_REQUEST, "`data`는 object(Map)여야 합니다."),
-    WS_INVALID_FILTER_DATE("40704", HttpStatus.BAD_REQUEST, "from/to 형식이 잘못되었습니다."),
-    WS_BAD_FILTER_RANGE("40705", HttpStatus.BAD_REQUEST, "`from`은 `to`보다 이후일 수 없습니다."),
-    WS_INVALID_LEVEL_FILTER("40706", HttpStatus.BAD_REQUEST, "level 필수"),
-    LOG_COLLECTION_REQUIRED("40710", HttpStatus.CONFLICT, "로그 수집이 시작되지 않았습니다. 먼저 '로그 수집 시작'을 누르고 다시 시도하세요."),
-    WS_INTERNAL_ERROR("40750", HttpStatus.INTERNAL_SERVER_ERROR, "WebSocket 처리 중 오류가 발생했습니다."),
-
-    /**
-     * 408** Conflict (MCP / RDS)
-     */
-    MCP_REGISTER_FAIL("40800", HttpStatus.BAD_REQUEST, "MCP 로그 등록에 실패했습니다."),
-    MCP_CONNECT_FAIL("40801", HttpStatus.SERVICE_UNAVAILABLE, "MCP 서버 연결 실패"),
-    RDS_KEY_REQUIRED("40802", HttpStatus.BAD_REQUEST, "RDS 식별자가 필요합니다."),
-
-    /**
      * 409** Conflict
      */
     CONFLICT_TEAM_NAME("40900", HttpStatus.CONFLICT, "팀 이름이 중복입니다."),

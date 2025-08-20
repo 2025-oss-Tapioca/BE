@@ -53,12 +53,6 @@ dependencies {
 	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
 	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'  // JSON 직렬화/역직렬화
 
-	// 웹소켓
-	implementation "org.springframework.boot:spring-boot-starter-webflux"
-	implementation 'org.springframework.boot:spring-boot-starter-websocket'
-	implementation 'com.fasterxml.jackson.core:jackson-databind'
-	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'  // LocalDateTime 직렬화용
-
 	implementation 'org.springframework.ai:spring-ai-openai-spring-boot-starter:1.0.0-M6'
 }
 
