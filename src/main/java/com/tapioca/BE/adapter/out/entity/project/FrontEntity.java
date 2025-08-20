@@ -26,7 +26,7 @@ public class FrontEntity extends BaseEntity {
     @Column(name = "front_ec2_host", nullable = false)
     private String ec2Host;
 
-    @Column(name = "front_auth_token", nullable = false)
+    @Column(name = "front_auth_token", nullable = false, columnDefinition = "text")
     private String authToken;
 
     @Column(name = "front_entry_point", nullable = false)

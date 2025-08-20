@@ -29,7 +29,7 @@ public class BackEntity extends BaseEntity {
     @Column(name = "back_ec2_url", nullable = false)
     private String ec2Url;
 
-    @Column(name = "back_auth_token", nullable = false)
+    @Column(name = "back_auth_token", nullable = false, columnDefinition = "text")
     private String authToken;
 
     @Column(name = "back_os", nullable = false)
